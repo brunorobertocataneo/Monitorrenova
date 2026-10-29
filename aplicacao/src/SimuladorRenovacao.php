@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/ValidacaoApolice.php';
+require_once __DIR__.'/triagem/RegraProduto.php';
+require_once __DIR__.'/triagem/RegraSituacao.php';
+require_once __DIR__.'/triagem/RegraConferencia.php';
 /**
  * Triagem conservadora (somente leitura). A aprovação local NUNCA libera envio:
  * dependem de comprovação na fonte, histórico externo e autorização do contato.
@@ -34,12 +37,15 @@ final class SimuladorRenovacao {
       $janela=self::janela($referencia);
       $contagens=array_fill_keys(array_keys(self::MOTIVOS),0);
       $vistos=[];$linhas=[];
+      // Heranca: todas as regras estendem RegraTriagem.
+      // Polimorfismo: o mesmo metodo avaliar() escolhe a resposta conforme
+      // a classe concreta, respeitando a ordem segura de classificacao.
+      $regras=[new RegraProduto(),new RegraSituacao(),new RegraConferencia()];
       foreach($seguros as $s){
         $segurado=trim((string)($s['segurado']??''));
         $vendedor=trim((string)($s['vendedor']??''));
         $vencimento=trim((string)($s['vencimento']??''));
         $produto=trim((string)($s['produto']??''));
-        $status=self::normalizar($s['status_atual']??'');
         $situacaoValidada=(string)($s['validacao_situacao']??'');
         $dataValidacao=(string)($s['validacao_data']??'');
         $dataVerificada=DateTimeImmutable::createFromFormat('!Y-m-d',$dataValidacao,$referencia->getTimezone());
@@ -54,26 +60,24 @@ final class SimuladorRenovacao {
         elseif((int)($s['nao_vai_renovar']??0)===1)$motivo='nao_renova';
         elseif(!in_array($vencimento,$janela,true))$motivo='fora_janela';
         else{
-          $key=self::normalizar($segurado).'|'.self::normalizar($vendedor).'|'.$vencimento;
+          $key=RegraTriagem::normalizar($segurado).'|'.RegraTriagem::normalizar($vendedor).'|'.$vencimento;
           if(isset($vistos[$key]))$motivo='duplicado';
           else{
             $vistos[$key]=true;
             if((int)($s['cobrado']??0)===1)$motivo='cobrado_conferir';
-            elseif($produto==='')$motivo='sem_produto';
-            elseif(preg_match('/CONSORCIO|VIDA|ACIDENTES PESSOAIS|(^|\W)AP($|\W)/',self::normalizar($produto)))$motivo='produto_excluido';
-            elseif(in_array($status,['C','CANCELADO','CANCELADA','R','RECUSADO','RECUSADA'],true)||($validacaoRecente&&in_array($situacaoValidada,['cancelada','recusada'],true)))$motivo='cancelado_recusado';
-            elseif(!$validacaoRecente||$situacaoValidada!=='ativa')$motivo='status_nao_comprovado';
-            else $motivo='aguardar_historico';
+            else{
+              $contexto=['situacao_validada'=>$situacaoValidada,'validacao_recente'=>$validacaoRecente];
+              $motivo='aguardar_historico'; // Fallback conservador: nunca autoriza envios.
+              foreach($regras as $regra){
+                $codigo=$regra->avaliar($s,$contexto);
+                if($codigo!==null){$motivo=$codigo;break;}
+              }
+            }
           }
         }
         $contagens[$motivo]++;
         $linhas[]=['id'=>(int)($s['id']??0),'linha_origem'=>(int)($s['linha_origem']??0),'segurado'=>$segurado,'vendedor'=>$vendedor,'vencimento'=>$vencimento,'produto'=>$produto,'status_atual'=>trim((string)($s['status_atual']??'')),'verificacao'=>$verificacao,'motivo_codigo'=>$motivo,'motivo'=>self::MOTIVOS[$motivo]];
       }
       return ['janela'=>$janela,'contagens'=>$contagens,'linhas'=>$linhas,'total'=>count($linhas),'envios'=>0];
-    }
-    private static function normalizar(mixed $s):string {
-      $v=preg_replace('/\s+/u',' ',trim((string)$s))??(string)$s;
-      $out=@iconv('UTF-8','ASCII//TRANSLIT//IGNORE',$v);
-      return strtoupper($out===false?$v:$out);
     }
 }

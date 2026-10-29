@@ -14,6 +14,22 @@ Projeto de demonstração desenvolvido em **PHP 8.3 + MySQL 8.4 + Docker + n8n**
 
 > O workflow n8n **não** está conectado ao MySQL do painel. Não há integração real com WhatsApp, Google Sheets ou APIs de produção.
 
+## Orientação a Objetos: Herança e Polimorfismo
+
+O simulador de renovações agora utiliza uma classe abstrata, RegraTriagem, e três
+classes filhas: RegraProduto, RegraSituacao e RegraConferencia. Cada uma
+sobrescreve avaliar(), chamado de forma polimórfica por SimuladorRenovacao.
+
+- [Explicação e diagrama de classes](aplicacao/docs/POO-HERANCA-POLIMORFISMO.md)
+- Código: aplicacao/src/triagem/
+- Testes: aplicacao/src/testar-heranca-polimorfismo.php (30 cenários aprovados)
+- Regressão: aplicacao/src/testar-simulador-validacao.php
+
+Para executar os testes com a aplicação iniciada:
+
+    docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/testar-heranca-polimorfismo.php
+
+Essas regras são somente leitura e não realizam envios ou cobranças.
 ## Requisitos
 
 - Docker Desktop com Linux containers e Docker Compose.
