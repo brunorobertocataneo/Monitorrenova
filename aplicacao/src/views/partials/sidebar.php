@@ -28,6 +28,7 @@ $navGroups = [
         ['id'=>'conferencia','path'=>'/conferencia.php','icon'=>'✓','label'=>'Conferência'],
         ['id'=>'prontidao','path'=>'/prontidao.php','icon'=>'◈','label'=>'Prontidão'],
         ['id'=>'acompanhamento','path'=>'/acompanhamento.php','icon'=>'▣','label'=>'Acompanhamento'],
+        ['id'=>'tarefas','path'=>'/tarefas.php','icon'=>'☑','label'=>'Tarefas (CRUD)'],
         ['id'=>'validacoes','path'=>'/validacoes.php','icon'=>'◇','label'=>'Validações'],
         ['id'=>'simulador','path'=>'/simulador.php','icon'=>'⊞','label'=>'Simulador'],
         ['id'=>'importar','path'=>'/importar.php','icon'=>'⇪','label'=>'Importações']

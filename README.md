@@ -30,6 +30,31 @@ Para executar os testes com a aplicação iniciada:
     docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/testar-heranca-polimorfismo.php
 
 Essas regras são somente leitura e não realizam envios ou cobranças.
+## CRUD de Tarefas (Programação II)
+
+Uma tela com CRUD completo de **tarefas de acompanhamento** está disponível em
+http://localhost:8088/tarefas.php (após login).
+
+- **Create:** cadastra tarefas e permite vincular um seguro **fictício**;
+- **Read:** lista e filtra por título/situação, com paginação;
+- **Update:** modifica os dados com controle de versão;
+- **Delete:** **arquiva logicamente**, sem apagar tarefas ou apólices fisicamente.
+
+Há proteção CSRF nas operações, escape de HTML, PDO parametrizado e autoria.
+O módulo é isolado dos registros históricos e **não envia mensagens**.
+
+- [Documentação e demonstração](aplicacao/docs/CRUD-TAREFAS.md).
+- [Migração](aplicacao/database/migrations/001_tarefa_acompanhamento.sql)
+  para bancos já existentes.
+- O demo-init.sql já inclui a tabela para instalações novas.
+
+Testes com rollback (não deixam registros persistidos):
+
+    docker exec aplicacao-web-1 php /var/www/src/testar-crud-tarefas.php
+    docker exec aplicacao-web-1 php /var/www/src/testar-renderizacao-tarefas.php
+
+Resultado no ambiente de desenvolvimento: **28/28 testes CRUD e 8/8 testes
+de renderização**, sem alterar os 65 seguros fictícios.
 ## Requisitos
 
 - Docker Desktop com Linux containers e Docker Compose.

@@ -7,6 +7,7 @@
 **/*.mrbackup
 **/*.sql
 !aplicacao/database/demo-init.sql
+!aplicacao/database/migrations/001_tarefa_acompanhamento.sql
 **/*.sqlite
 **/*.sqlite3
 **/*.db
