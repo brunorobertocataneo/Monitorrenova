@@ -19,12 +19,29 @@ final class SeguroRepository
         $pagina = max(1, min(10000, $pagina));
         $limite = max(1, min(100, $limite));
 
+        // Sem filtro de datas, exibe a competência ativa como antes.
+        // Ao informar um intervalo, soma as competências arquivadas à atual.
+        // A competência ativa é excluída do histórico para não aparecer duas vezes.
+        $modoHistorico = $filtros['de'] !== null || $filtros['ate'] !== null;
+        $fonte = 'seguro_dashboard';
+
+        if ($modoHistorico) {
+            $colunas = 'linha_origem,segurado,vendedor,vencimento,renovado,cobrado,'
+                . 'nao_vai_renovar,produto,status_atual,status_pdf,premio_pdf,fonte_pdf';
+            $fonte = '(SELECT ' . $colunas . ' FROM seguro_dashboard '
+                . 'UNION ALL SELECT ' . $colunas . ' FROM sheet_sync_registro_mensal '
+                . 'WHERE competencia <> COALESCE('
+                . '(SELECT competencia_ativa FROM sheet_sync_estado '
+                . 'WHERE id=1 AND total_registros>0), ' . "''" . ')) AS base_seguros';
+        }
+
         $vendedores = $this->db
-            ->query('SELECT DISTINCT vendedor FROM seguro_dashboard ORDER BY vendedor')
+            ->query('SELECT DISTINCT vendedor FROM ' . $fonte . ' ORDER BY vendedor')
             ->fetchAll(PDO::FETCH_COLUMN);
 
         $produtos = $this->db
-            ->query("SELECT DISTINCT produto FROM seguro_dashboard WHERE produto IS NOT NULL AND produto<>'' ORDER BY produto")
+            ->query("SELECT DISTINCT produto FROM " . $fonte
+                . " WHERE produto IS NOT NULL AND produto<>'' ORDER BY produto")
             ->fetchAll(PDO::FETCH_COLUMN);
 
         $condicoes = [];
@@ -53,7 +70,7 @@ final class SeguroRepository
 
         $where = $condicoes ? ' WHERE ' . implode(' AND ', $condicoes) : '';
 
-        $consultaTotal = $this->db->prepare('SELECT COUNT(*) FROM seguro_dashboard' . $where);
+        $consultaTotal = $this->db->prepare('SELECT COUNT(*) FROM ' . $fonte . $where);
         $consultaTotal->execute($params);
         $total = (int) $consultaTotal->fetchColumn();
 
@@ -62,7 +79,7 @@ final class SeguroRepository
         $offset = ($pagina - 1) * $limite;
 
         $sql = 'SELECT linha_origem,segurado,vendedor,vencimento,renovado,cobrado,nao_vai_renovar,produto,status_atual,status_pdf,premio_pdf,fonte_pdf '
-            . 'FROM seguro_dashboard' . $where
+            . 'FROM ' . $fonte . $where
             . ' ORDER BY vencimento ASC,vendedor ASC,linha_origem ASC LIMIT :limite OFFSET :offset';
 
         $consulta = $this->db->prepare($sql);
@@ -77,13 +94,15 @@ final class SeguroRepository
             ->query('SELECT iniciado_em,total_registros FROM importacao_snapshot ORDER BY id DESC LIMIT 1')
             ->fetch();
 
-        $estatisticas = $this->db->query(
+        $consultaEstatisticas = $this->db->prepare(
             "SELECT COUNT(*) AS total,"
             . "SUM(CASE WHEN produto IS NOT NULL AND produto<>'' THEN 1 ELSE 0 END) AS com_produto,"
             . "SUM(CASE WHEN status_atual IS NOT NULL AND status_atual<>'' THEN 1 ELSE 0 END) AS status_atual,"
             . "SUM(CASE WHEN status_pdf IS NOT NULL AND status_pdf<>'' THEN 1 ELSE 0 END) AS status_pdf "
-            . "FROM seguro_dashboard"
-        )->fetch();
+            . 'FROM ' . $fonte . $where
+        );
+        $consultaEstatisticas->execute($params);
+        $estatisticas = $consultaEstatisticas->fetch();
 
         return [
             'vendedores' => $vendedores,
@@ -94,6 +113,7 @@ final class SeguroRepository
             'registros' => $consulta->fetchAll(),
             'ultimaImportacao' => $ultimaImportacao,
             'estatisticas' => $estatisticas,
+            'modoHistorico' => $modoHistorico,
         ];
     }
 

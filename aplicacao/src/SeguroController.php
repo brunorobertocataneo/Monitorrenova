@@ -65,6 +65,7 @@ final class SeguroController
             'rows' => $consulta['registros'],
             'ultimaImportacao' => $consulta['ultimaImportacao'],
             'stats' => $consulta['estatisticas'],
+            'modoHistorico' => $consulta['modoHistorico'],
             'paramsUrl' => $filtros,
         ];
     }

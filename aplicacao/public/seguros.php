@@ -37,6 +37,7 @@ try {
     $rows = $dados['rows'];
     $ultimaImportacao = $dados['ultimaImportacao'];
     $stats = $dados['stats'];
+    $modoHistorico = $dados['modoHistorico'];
     $paramsUrl = $dados['paramsUrl'];
 } catch (Throwable $erro) {
     // Detalhes internos apenas no log, nunca no HTML do usuário.

@@ -39,9 +39,9 @@ function query(array $valores): string {
 <h1>Consulta de seguros</h1>
 <p>Pesquise apólices por nome, vendedor, produto ou vencimento.</p>
 </div><a class="btn-link" href="/competencias.php">Competências aprovadas ↗</a></div>
-<main><?php if(!empty($ultimaImportacao)):?><p class="muted"><strong>Último lote histórico importado:</strong> <?=h($ultimaImportacao['iniciado_em'])?> · <?=h($ultimaImportacao['total_registros'])?> registros · fonte: cópia de testes do Google Sheets.</p><?php endif;?><div class="notice"><strong>Atenção:</strong> este painel consulta a cópia sincronizada no MySQL, atualizada periodicamente pelo n8n; pode haver atraso. O campo <strong>status do PDF</strong> representa a situação informada em 26/08/2026, e não confirma que a apólice continua ativa. Esta tela é somente leitura e não envia mensagens.</div>
+<main><?php if(!empty($ultimaImportacao)):?><p class="muted"><strong>Último lote histórico importado:</strong> <?=h($ultimaImportacao['iniciado_em'])?> · <?=h($ultimaImportacao['total_registros'])?> registros.</p><?php endif;?><div class="notice"><strong>Demonstração com dados fictícios:</strong> sem datas, a consulta mostra a competência ativa. Ao aplicar um intervalo de vencimentos, a busca inclui as competências históricas preservadas no MySQL. <?php if ($modoHistorico):?><strong>Histórico mensal incluído nos resultados.</strong><?php endif;?> A ausência de marcações não confirma atraso; esta tela é somente leitura e não envia mensagens.</div>
 <div class="grid" style="margin-bottom:18px">
-<div class="panel"><span class="muted">Seguros importados</span><div class="metric"><?=h($stats['total'])?></div></div>
+<div class="panel"><span class="muted"><?= $modoHistorico ? 'Seguros no período' : 'Seguros nos filtros' ?></span><div class="metric"><?=h($stats['total']??0)?></div></div>
 <div class="panel"><span class="muted">Com produto</span><div class="metric"><?=h($stats['com_produto']??0)?></div></div>
 <div class="panel"><span class="muted">Com status histórico</span><div class="metric"><?=h($stats['status_pdf']??0)?></div></div>
 <div class="panel"><span class="muted">Status atual confirmado</span><div class="metric"><?=h($stats['status_atual']??0)?></div></div></div>
@@ -63,7 +63,7 @@ function query(array $valores): string {
 <div class="pagination"><div>Exibindo até <?=h($limite)?> registros por página · página <?=h($pagina)?> de <?=h($totalPages)?></div><div>
 <?php if($pagina>1):?><a href="?<?=h(query(array_merge($paramsUrl,['pagina'=>$pagina-1])))?>">← Anterior</a><?php endif;?>
 <?php if($pagina<$totalPages):?><a href="?<?=h(query(array_merge($paramsUrl,['pagina'=>$pagina+1])))?>">Próxima →</a><?php endif;?></div></div></section>
-<p class="muted">Dados no MySQL local, sincronizados em lotes; histórico preservado. Esta tela não altera apólices.</p>
+<p class="muted">Dados fictícios no MySQL local; histórico preservado. Esta tela não altera apólices.</p>
 </main>
 </div>
 </div>
