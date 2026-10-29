@@ -1,0 +1,42 @@
+services:
+  web:
+    build: ./docker
+    ports:
+      - "127.0.0.1:8088:80"
+    volumes:
+      - ./public:/var/www/html:ro
+      - ./src:/var/www/src:ro
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_NAME: monitor_renova_demo
+      DB_USER: demo
+      DB_PASSWORD: ${DEMO_DB_PASSWORD:?Configure no .env.demo}
+      INGEST_TOKEN: ""
+      GOOGLE_SHEETS_ID: "demo-offline-sem-planilha"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks: [demo_private]
+  database:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: monitor_renova_demo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: ${DEMO_DB_PASSWORD:?Configure no .env.demo}
+      MYSQL_ROOT_PASSWORD: ${DEMO_ROOT_PASSWORD:?Configure no .env.demo}
+    volumes:
+      - demo_mysql_data:/var/lib/mysql
+      - ./database/demo-init.sql:/docker-entrypoint-initdb.d/01-demo.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 8s
+      timeout: 5s
+      retries: 25
+    networks: [demo_private]
+networks:
+  demo_private:
+    driver: bridge
+    internal: false
+volumes:
+  demo_mysql_data:

@@ -1,0 +1,100 @@
+{
+  "name": "DEMO | MonitorRenova | Classificação fictícia (sem envios)",
+  "nodes": [
+    {
+      "id": "5e42dca0-8e12-4bf1-9ab8-83f521cd0010",
+      "name": "Iniciar demonstração",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "5e42dca0-8e12-4bf1-9ab8-83f521cd0020",
+      "name": "Gerar 8 clientes fictícios",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "// Base EXCLUSIVAMENTE FICTÍCIA, independente do MySQL.\n// O fluxo é manual e não envia WhatsApp, e-mail ou HTTP.\nconst dados = [\n  {\n    \"cliente\": \"Cliente Fictício A\",\n    \"vendedor\": \"Vendedor Alfa\",\n    \"produto\": \"Seguro Auto\",\n    \"vencimento\": \"2026-11-02\",\n    \"renovado\": false,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": false\n  },\n  {\n    \"cliente\": \"Cliente Fictício B\",\n    \"vendedor\": \"Vendedor Beta\",\n    \"produto\": \"Seguro Residencial\",\n    \"vencimento\": \"2026-11-05\",\n    \"renovado\": true,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": false\n  },\n  {\n    \"cliente\": \"Cliente Fictício C\",\n    \"vendedor\": \"Vendedor Gama\",\n    \"produto\": \"Seguro Vida\",\n    \"vencimento\": \"2026-11-08\",\n    \"renovado\": false,\n    \"cobrado\": true,\n    \"nao_vai_renovar\": false\n  },\n  {\n    \"cliente\": \"Cliente Fictício D\",\n    \"vendedor\": \"Vendedor Alfa\",\n    \"produto\": \"Seguro Empresarial\",\n    \"vencimento\": \"2026-11-12\",\n    \"renovado\": false,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": true\n  },\n  {\n    \"cliente\": \"Cliente Fictício E\",\n    \"vendedor\": \"Vendedor Beta\",\n    \"produto\": \"Seguro Auto\",\n    \"vencimento\": \"2026-11-18\",\n    \"renovado\": false,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": false\n  },\n  {\n    \"cliente\": \"Cliente Fictício F\",\n    \"vendedor\": \"Vendedor Gama\",\n    \"produto\": \"Seguro Residencial\",\n    \"vencimento\": \"2026-11-25\",\n    \"renovado\": true,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": false\n  },\n  {\n    \"cliente\": \"Cliente Fictício G\",\n    \"vendedor\": \"Vendedor Alfa\",\n    \"produto\": \"Seguro Vida\",\n    \"vencimento\": \"2026-11-26\",\n    \"renovado\": false,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": false\n  },\n  {\n    \"cliente\": \"Cliente Fictício H\",\n    \"vendedor\": \"Vendedor Beta\",\n    \"produto\": \"Seguro Empresarial\",\n    \"vencimento\": \"2026-11-29\",\n    \"renovado\": false,\n    \"cobrado\": false,\n    \"nao_vai_renovar\": false\n  }\n];\nreturn dados.map((registro) => ({ json: registro }));"
+      }
+    },
+    {
+      "id": "5e42dca0-8e12-4bf1-9ab8-83f521cd0030",
+      "name": "Classificar renovações",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        750,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const referencia = new Date('2026-10-29T12:00:00-03:00');\nreturn $input.all().map((item) => {\n  const s = item.json;\n  const dias = Math.ceil((new Date(s.vencimento+'T12:00:00-03:00')-referencia)/86400000);\n  const situacao = s.renovado ? 'RENOVADO' : s.nao_vai_renovar ? 'NAO_RENOVA' : s.cobrado ? 'COBRADO' : 'A_CONFERIR';\n  return { json: {...s, dias_ate_vencimento: dias, situacao} };\n});"
+      }
+    },
+    {
+      "id": "5e42dca0-8e12-4bf1-9ab8-83f521cd0040",
+      "name": "Resumo sem envio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        300
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const registros = $input.all().map((i) => i.json);\nconst contagem = {A_CONFERIR:0,RENOVADO:0,COBRADO:0,NAO_RENOVA:0};\nfor(const registro of registros) contagem[registro.situacao]++;\nreturn [{json:{\n  projeto:'MonitorRenova — demonstração acadêmica',\n  fonte:'8 clientes sintéticos dentro deste workflow; SEM acesso ao MySQL',\n  data_referencia:'2026-10-29',\n  competencia:'2026-11',\n  total:registros.length,\n  situacoes:contagem,\n  enviou_mensagens:false,\n  consultou_servicos_externos:false,\n  observacao:'Fluxo demonstrativo executado manualmente; nenhum dado real processado.'\n}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Iniciar demonstração": {
+      "main": [
+        [
+          {
+            "node": "Gerar 8 clientes fictícios",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar 8 clientes fictícios": {
+      "main": [
+        [
+          {
+            "node": "Classificar renovações",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classificar renovações": {
+      "main": [
+        [
+          {
+            "node": "Resumo sem envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false
+}
