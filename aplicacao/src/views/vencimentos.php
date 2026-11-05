@@ -21,6 +21,29 @@ function h(mixed $valor):string {
 .app-shell .rowbar>span{min-width:0;overflow-wrap:anywhere}
 @media(max-width:560px){.app-shell .page-content>main{max-width:100%;margin:0;padding:0}}
 </style>
+
+<style>
+.today-panel{border-color:#cde6df}
+.today-head{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.today-head h2{margin:3px 0 6px}
+.today-eyebrow{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#087f80;font-weight:800}
+.today-count{display:inline-flex;background:#e1f4ee;border-radius:20px;padding:5px 10px;color:#08706e;font-size:12px;font-weight:750;white-space:nowrap}
+.today-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.today-seller{border:1px solid #dfebec;border-radius:12px;padding:16px;background:#fbfefd;min-width:0}
+.today-seller-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.today-seller-head>div{display:flex;flex-wrap:wrap;gap:9px;align-items:center;min-width:0}
+.today-seller-head strong{overflow-wrap:anywhere}
+.copy-seller-btn{background:#087f80;border:1px solid #087f80;color:white;font-weight:700;white-space:nowrap;cursor:pointer}
+.copy-seller-btn:hover{background:#076967}
+.today-items{padding-left:20px;margin:13px 0 0;display:grid;gap:8px}
+.today-items li span{display:block;font-weight:650;overflow-wrap:anywhere}
+.today-items small{display:block;color:#687b8f;overflow-wrap:anywhere;font-size:12px}
+.copy-result{display:block;min-height:18px;margin-top:7px;color:#087f80;font-size:12px;font-weight:700}
+.copy-source{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.today-disclaimer{margin-top:16px;font-size:12px}
+@media(max-width:800px){.today-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.today-seller-head{align-items:start;flex-direction:column}.copy-seller-btn{width:100%}}
+</style>
 </head><body class="app-shell">
 <?php $activePage='vencimentos'; require __DIR__.'/partials/sidebar.php'; ?>
 <div class="app-content">
@@ -33,6 +56,53 @@ function h(mixed $valor):string {
 <p>Analise os vencimentos por período, vendedor e produto.</p>
 </div><a class="btn-link" href="/competencias.php">Competências aprovadas ↗</a></div><main>
 <div class="note"><strong>Importante:</strong> estes dados vêm do espelho do Google Sheets no MySQL, atualizado periodicamente; pode haver atraso. Os números de renovados e cobrados dependem do preenchimento da planilha. <strong>“Sem confirmação” não significa que o seguro esteja ativo ou que deva ser cobrado.</strong> Não há envio de mensagens nesta tela.</div>
+
+<section class="panel today-panel" aria-labelledby="titulo-hoje">
+  <div class="today-head">
+    <div>
+      <span class="today-eyebrow">Lista pronta para copiar</span>
+      <h2 id="titulo-hoje">Seguros que vencem hoje — <?=h((new DateTimeImmutable($dataHoje))->format('d/m/Y'))?></h2>
+      <p class="muted">Todos os vencimentos de hoje, separados por vendedor. Copie uma lista e cole manualmente no canal desejado.</p>
+    </div>
+    <span class="today-count"><?=h(array_sum(array_map('count',$vencimentosHoje)))?> seguros · <?=h(count($vencimentosHoje))?> vendedores</span>
+  </div>
+  <?php if(!$vencimentosHoje):?>
+    <p class="muted">Não há seguros com vencimento hoje na cópia local do MySQL.</p>
+  <?php else:?>
+    <div class="today-grid">
+    <?php foreach($vencimentosHoje as $nomeVendedor=>$lista):?>
+      <?php
+      $linhasTexto=["VENCIMENTOS DE HOJE — ".(new DateTimeImmutable($dataHoje))->format('d/m/Y'),
+        "Vendedor: ".$nomeVendedor,"Conferir situação atual antes de qualquer contato.",""];
+      ?>
+      <article class="today-seller">
+        <div class="today-seller-head">
+          <div><strong><?=h($nomeVendedor)?></strong><span class="today-count"><?=h(count($lista))?> seguro(s)</span></div>
+          <button type="button" class="copy-seller-btn" aria-label="Copiar lista de <?=h($nomeVendedor)?>">Copiar lista</button>
+        </div>
+        <ul class="today-items">
+        <?php foreach($lista as $seguro):?>
+          <?php
+          $nomeSegurado=trim((string)($seguro['segurado']??'')) ?: 'Segurado não informado';
+          $produtoSeguro=trim((string)($seguro['produto']??'')) ?: 'Produto não informado';
+          $marcacoes=[];
+          if((int)$seguro['renovado']===1)$marcacoes[]='marcado renovado';
+          if((int)$seguro['cobrado']===1)$marcacoes[]='marcado cobrado';
+          if((int)$seguro['nao_vai_renovar']===1)$marcacoes[]='marcado não vai renovar';
+          $statusSeguro=$marcacoes?implode(', ',$marcacoes):'sem marcações de conclusão';
+          $linhasTexto[]='• '.$nomeSegurado.' — '.$produtoSeguro.' ('.$statusSeguro.')';
+          ?>
+          <li><span><?=h($nomeSegurado)?></span><small><?=h($produtoSeguro)?> · <?=h($statusSeguro)?></small></li>
+        <?php endforeach;?>
+        </ul>
+        <textarea class="copy-source" readonly aria-label="Texto de vencimentos para <?=h($nomeVendedor)?>"><?=h(implode("\n",$linhasTexto))?></textarea>
+        <span class="copy-result" role="status" aria-live="polite"></span>
+      </article>
+    <?php endforeach;?>
+    </div>
+  <?php endif;?>
+  <p class="muted today-disclaimer">Dados da última cópia sincronizada no MySQL. As marcações são informativas e devem ser verificadas antes de contatar qualquer pessoa. Nenhuma mensagem é enviada pelo MonitorRenova.</p>
+</section>
 <section class="panel"><h2>Período de análise</h2>
 <div class="shortcuts" aria-label="Atalhos de período">
 <?php foreach($atalhos as $atalho):?>
@@ -69,4 +139,38 @@ function h(mixed $valor):string {
 </main>
 </div>
 </div>
+
+<script>
+document.querySelectorAll('.copy-seller-btn').forEach(function(botao){
+  botao.addEventListener('click',async function(){
+    const card=botao.closest('.today-seller');
+    const textarea=card.querySelector('.copy-source');
+    const retorno=card.querySelector('.copy-result');
+    try{
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(textarea.value);
+      }else{
+        textarea.style.position='fixed';
+        textarea.style.width='300px';
+        textarea.style.height='100px';
+        textarea.style.opacity='1';
+        textarea.style.pointerEvents='auto';
+        textarea.focus();
+        textarea.select();
+        if(!document.execCommand('copy'))throw new Error('Não foi possível copiar.');
+        textarea.removeAttribute('style');
+      }
+      retorno.textContent='Lista copiada! Agora é só colar.';
+    }catch(erro){
+      textarea.removeAttribute('style');
+      retorno.textContent='Não foi possível copiar automaticamente. Selecione a lista e copie manualmente.';
+      textarea.style.position='static';
+      textarea.style.width='100%';
+      textarea.style.height='140px';
+      textarea.style.opacity='1';
+      textarea.style.pointerEvents='auto';
+    }
+  });
+});
+</script>
 </body></html>
