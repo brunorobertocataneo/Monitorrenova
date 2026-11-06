@@ -78,7 +78,8 @@ final class SeguroRepository
         $pagina = min($pagina, $totalPaginas);
         $offset = ($pagina - 1) * $limite;
 
-        $sql = 'SELECT linha_origem,segurado,vendedor,vencimento,renovado,cobrado,nao_vai_renovar,produto,status_atual,status_pdf,premio_pdf,fonte_pdf '
+        $versaoExpr = $modoHistorico ? '0 AS versao_manual' : 'versao_manual';
+        $sql = 'SELECT linha_origem,segurado,vendedor,vencimento,renovado,cobrado,nao_vai_renovar,produto,status_atual,status_pdf,premio_pdf,fonte_pdf,' . $versaoExpr . ' '
             . 'FROM ' . $fonte . $where
             . ' ORDER BY vencimento ASC,vendedor ASC,linha_origem ASC LIMIT :limite OFFSET :offset';
 
