@@ -14,6 +14,22 @@ Projeto de demonstração desenvolvido em **PHP 8.3 + MySQL 8.4 + Docker + n8n**
 
 > O workflow n8n **não** está conectado ao MySQL do painel. Não há integração real com WhatsApp, Google Sheets ou APIs de produção.
 
+## Interface simplificada (novembro/2026)
+
+A interface principal do MonitorRenova tem visual **verde e branco** e um menu reduzido para facilitar a apresentação acadêmica:
+
+1. **Início** (`/`): mostra somente os seguros que vencem hoje e ainda estão para acompanhar, agrupados por vendedor. Renovados e marcados como **Não vai renovar** não aparecem na lista nem no texto do botão **Copiar lista**.
+2. **Vendedores** (`/vendedores.php`): subpastas geradas pelos vendedores do MySQL. Cada pasta apresenta os seguros em tabela, com pesquisa.
+3. **Consultar seguros** (`/seguros.php`): pesquisa e filtros.
+
+Na pasta de cada vendedor, a coluna **Situação do seguro** permite selecionar **Pendente**, **Renovado** ou **Não vai renovar** e clicar em **Salvar alteração**. O salvamento é autenticado, protegido por CSRF e usa transação PDO/MySQL com controle de versão e histórico. As decisões ficam em `seguro_status_manual` e `seguro_status_manual_historico`, sem sobrescrever a origem importada.
+
+A `VIEW seguro_dashboard` prioriza as decisões locais, preservando-as durante a sincronização de dados. **Não há sincronização de volta para o Google Sheets nem envio automático de mensagens.**
+
+**Instalação nova:** `aplicacao/database/demo-init.sql` já inclui as novas tabelas e a view. **Banco existente:** aplicar `aplicacao/database/migrations/002_status_manual_seguro.sql` antes de executar a nova versão (por exemplo, no MySQL Workbench conectado à instância de demonstração). O script é destinado a MySQL 8.4; faça backup do banco antes de aplicar migrações. Os arquivos PHP sozinhos não substituem uma migração no volume MySQL existente.
+
+Os módulos adicionais exigidos pela especificação acadêmica, como histórico, importação com prévia, competências, revisão e CRUD, continuam no código, mas não aparecem no menu principal. A versão simplificada não altera a lógica desses módulos.
+
 ## Orientação a Objetos: Herança e Polimorfismo
 
 O simulador de renovações agora utiliza uma classe abstrata, RegraTriagem, e três
