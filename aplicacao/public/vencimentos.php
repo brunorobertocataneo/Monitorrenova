@@ -17,6 +17,8 @@ try {
     $controller=new VencimentoController(new VencimentoRepository(Database::connection()));
     $dados=$controller->index($_GET);
     $de=$dados['de'];
+    $dataHoje=$dados['dataHoje'];
+    $vencimentosHoje=$dados['vencimentosHoje'];
     $ate=$dados['ate'];
     $vendedor=$dados['vendedor'];
     $sellers=$dados['sellers'];

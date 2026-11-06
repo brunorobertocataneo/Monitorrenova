@@ -19,6 +19,7 @@ header('Referrer-Policy: no-referrer');
 header('Cache-Control: no-store');
 
 require_once '/var/www/src/DashboardController.php';
+require_once '/var/www/src/VencimentoRepository.php';
 
 $dbOk=false;
 $dataHoje=(new DateTimeImmutable('now',new DateTimeZone('America/Sao_Paulo')))
@@ -29,6 +30,7 @@ $resumoDia=['total'=>0,'paraConferencia'=>0,'vendedores'=>0,
     'listados'=>0,'omitidos'=>0,'grupos'=>[]];
 $estadoSheet=$n8nResumo=null;
 $n8nUltimas=[];
+$vencimentosHoje=[];
 $status=null;
 $automacaoId=null;
 
@@ -42,6 +44,7 @@ try{
     );
     $dados=$dashboard->index($_GET);
     $dataHoje=$dados['dataHoje'];
+    $vencimentosHoje=(new VencimentoRepository($db))->vencimentosDeHoje($dataHoje);
     $kpi=$dados['kpi'];
     $automacoes=$dados['automacoes'];
     $status=$dados['status'];

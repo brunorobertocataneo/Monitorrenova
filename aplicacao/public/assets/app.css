@@ -98,3 +98,173 @@ body.app-shell{margin:0!important;background:var(--bg)!important;color:var(--ink
 .nav-item{flex:none;min-height:35px;padding:8px 11px;font-size:12px;border:1px solid #ffffff16}.nav-item .symbol{display:none}
 .app-content{margin:0}.page-topbar{padding:12px 20px}.page-content{padding:22px 18px 35px}}
 @media(max-width:560px){.metrics-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat-card{min-height:112px;padding:13px}.stat-card .stat-value{font-size:27px}.stat-card .stat-label{font-size:11px;padding-right:24px}.stat-icon{width:26px;height:26px;top:10px;right:10px;font-size:12px}.page-titlebar h1{font-size:23px}.topbar-time{display:none!important}.surface{padding:15px}.system-link-list{grid-template-columns:1fr}.legacy-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* MonitorRenova — identidade verde e branco, novembro/2026.
+   Camada global sem alterar lógica, dados ou HTML. */
+:root{
+ --ink:#123b2e;
+ --sub:#587264;
+ --nav:#063f32;
+ --bg:#f4faf6;
+ --line:#d8e9dc;
+ --teal:#087f5b;
+ --radius:16px;
+}
+body.app-shell{background:#f4faf6!important;color:#153c2f!important}
+.app-sidebar{background:linear-gradient(160deg,#07523c,#064332)!important;color:#e5f8ea!important}
+.brand-icon{background:#ffffff!important;color:#08704d!important}
+.brand small,.nav-footer{color:#cce9d7!important}
+.nav-category{color:#aed9c2!important}
+.nav-item{color:#e4f2e9!important}
+.nav-item.active,.nav-item[aria-current="page"]{background:#15956b!important;color:white!important;box-shadow:inset 3px 0 0 #d0f7de!important}
+.nav-item:hover{background:#ffffff22!important}
+.page-topbar{background:#ffffff!important;border-color:#d8e9dc!important}
+.topbar-kicker,.topbar-time{color:#637d70!important}
+.page-titlebar h1,.surface h2,.section-head h2{color:#13452e!important}
+.eyebrow{color:#07845d!important}
+.app-shell a{color:#087454}
+.app-shell a:hover{color:#055e41}
+.app-shell a:focus-visible,.app-shell button:focus-visible,.app-shell input:focus-visible,.app-shell select:focus-visible{outline-color:#36b885!important}
+.stat-card,.surface,.legacy-details,.app-shell .panel{background:#fff!important;border-color:#d8e9dc!important}
+.stat-card.important{background:linear-gradient(150deg,#fff,#effcf3)!important;border-color:#8ed9b5!important}
+.stat-card.important .stat-value{color:#078254!important}
+.stat-icon,.box-icon{background:#e4f8e9!important;color:#0c845e!important}
+.status-dot{background:#13a774!important;box-shadow:0 0 0 4px #e3f7e9!important}
+.status-dot.is-warn{background:#c79437!important;box-shadow:0 0 0 4px #fff3df!important}
+.syncline{background:#effbf3!important;border-color:#b6e2c6!important;color:#1e6948!important}
+.syncline.stale{background:#fff9ec!important;border-color:#f0ddb1!important;color:#805f28!important}
+.tag,.count-bubble{background:#e3f7e9!important;color:#086d4f!important}
+.btn-link{border-color:#a8d5bc!important;color:#087454!important}
+.btn-link:hover,.system-link:hover{background:#effaf3!important}
+.primary-action,.app-shell button[type=submit]:not(.nav-footer button){background:#087f5b!important;border-color:#087f5b!important;color:#fff!important}
+.primary-action:hover,.app-shell button[type=submit]:not(.nav-footer button):hover{background:#06684a!important}
+.system-link{border-color:#d8e9dc!important;background:#fbfefc!important;color:#236347!important}
+.info-line{background:#f0f8f2!important;color:#557265!important}
+.app-shell table th{background:#f1f9f4!important;color:#446c55!important}
+.app-shell table td{color:#274d39!important}
+.app-shell table tbody tr:hover{background:#f2faf4!important}
+/* Gráficos e controles legados nas telas que ainda usam estilos inline. */
+.app-shell .fill,.app-shell .datebar{background:#15956b!important}
+.app-shell .fill.product{background:#65b79b!important}
+.app-shell .shortcuts a{background:#edfaf1!important;border-color:#b9dfc8!important;color:#0c6c4a!important}
+.app-shell .shortcuts a:hover{background:#daf4e2!important}
+.app-shell .track{background:#e7f2ea!important}
+.app-shell .mr-copy,.app-shell .copy-seller-btn{background:#087f5b!important;border-color:#087f5b!important;color:#fff!important}
+.app-shell .today-panel{border-color:#b9dfc8!important}
+.app-shell .today-seller{border-color:#d3e8db!important;background:#fbfefc!important}
+.app-shell .today-eyebrow,.app-shell .copy-result{color:#087f5b!important}
+.app-shell .today-count{background:#e2f8e9!important;color:#087047!important}
+/* Preferência por controles claros em telas de consulta. */
+.app-shell input,.app-shell select,.app-shell textarea{border-color:#bad8c6!important}
+
+/* MonitorRenova — navegação simplificada e tabelas por vendedor (nov/2026) */
+.seller-folder,.advanced-folder{margin:3px 0}
+.seller-folder summary,.advanced-folder summary{cursor:pointer;list-style:none}
+.seller-folder summary::-webkit-details-marker,.advanced-folder summary::-webkit-details-marker{display:none}
+.seller-folder summary{display:flex;align-items:center}
+.folder-chevron{margin-left:auto;font-size:14px;transition:transform .15s}
+.seller-folder[open] .folder-chevron{transform:rotate(180deg)}
+.seller-subfolders{display:grid;gap:2px;margin:4px 0 12px 22px;padding-left:8px;border-left:1px solid #ffffff30}
+.seller-subfolder{display:flex;align-items:center;gap:4px;color:#cfe9d7!important;text-decoration:none!important;padding:8px 9px;font-size:12px;border-radius:7px;overflow-wrap:anywhere;line-height:1.3}
+.seller-subfolder:hover{background:#ffffff1d}
+.seller-subfolder.selected{background:#ffffff28!important;color:#fff!important;font-weight:800}
+.advanced-folder{border-top:1px solid #ffffff20;margin-top:15px;padding-top:8px}
+.advanced-summary{display:flex;justify-content:space-between;align-items:center}
+.advanced-folder .nav-item{font-size:12px;min-height:34px;padding:7px 12px}
+.daily-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:18px}
+.daily-stat{background:#fff;border:1px solid #d6e8db;border-radius:14px;padding:18px 20px;min-width:0;box-shadow:0 3px 12px #0b4e2909}
+.daily-stat span{font-size:12px;color:#5a7964;font-weight:650;display:block}
+.daily-stat strong{font-size:32px;color:#087f5b;display:block;margin-top:5px}
+.daily-list{padding:23px}
+.daily-sellers{display:grid;gap:15px}
+.daily-seller{border:1px solid #d5e9dd;border-radius:12px;overflow:hidden;background:white}
+.daily-seller-header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 17px;background:#f2faf4;border-bottom:1px solid #e0eee4;flex-wrap:wrap}
+.daily-seller-header>div{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.daily-seller-header h3{font-size:17px;color:#174b33;margin:0}
+.daily-copy{background:#087f5b!important;color:white!important;border:1px solid #087f5b!important;border-radius:9px!important;padding:9px 14px!important;font:inherit!important;font-size:12px!important;font-weight:760!important;cursor:pointer;min-height:38px}
+.daily-copy:hover{background:#066c4d!important}
+.daily-table td,.daily-table th{white-space:normal!important;min-width:100px}
+.daily-table td:first-child{min-width:175px}
+.daily-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:12px 17px;border-top:1px solid #e7f0e9}
+.daily-actions a{font-size:12px;font-weight:750}
+.daily-copy-feedback{font-size:12px;font-weight:750;color:#087f5b}
+.daily-copy-text{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.daily-copy-text.copy-visible{position:static!important;width:100%!important;height:115px!important;opacity:1!important;pointer-events:auto!important;padding:9px!important}
+.daily-empty{border:1px dashed #b1d9bd;border-radius:11px;padding:28px;text-align:center;background:#f7fcf8}
+.daily-empty strong{color:#315c40}
+.daily-empty p{color:#627965;font-size:13px}
+.daily-footer-links{display:flex;flex-wrap:wrap;gap:10px;margin:17px 0}
+.daily-footer-links a{display:inline-flex;align-items:center;padding:11px 13px;background:#fff;border:1px solid #d7e8dc;border-radius:10px;font-size:12px;font-weight:750;text-decoration:none!important}
+.vendor-folder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.vendor-folder-card{display:flex;align-items:center;gap:12px;border:1px solid #d7e9dc;background:#f9fdfa;border-radius:11px;padding:17px;text-decoration:none!important;color:#174b33!important;font-size:13px;font-weight:750;min-width:0}
+.vendor-folder-card span:nth-child(2){flex:1;overflow-wrap:anywhere}
+.vendor-folder-card:hover{background:#e9f8ee}
+.vendor-folder-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:9px;background:#dbf4e3;color:#087f5b;font-size:19px;flex:none}
+.vendor-search{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:14px 0 22px}
+.vendor-search>div{flex:1;min-width:200px}
+.vendor-search label{display:block;font-size:12px;color:#55735d;margin-bottom:5px}
+.vendor-search input{width:100%;padding:10px 12px;border:1px solid #bdd9c5;border-radius:8px;font:inherit}
+.vendor-search button{background:#087f5b;color:white;border:0;border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:700}
+.vendor-search a{padding:10px;font-size:12px}
+.vendor-table{min-width:770px}
+.vendor-table td:first-child{min-width:170px}
+.vendor-status{color:#7a8b7d}
+.vendor-status.is-done{background:#e1f5e7;color:#08734f;padding:4px 8px;border-radius:40px;font-weight:750}
+.vendor-status.is-alert{background:#fff0dc;color:#985e16;padding:4px 8px;border-radius:40px;font-weight:750}
+.vendor-pages{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:#67816d;margin-top:14px}
+.vendor-pages a{margin-left:15px;font-weight:750}
+@media(max-width:950px){.vendor-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){
+ .seller-subfolders{margin:5px 0;padding-left:0;border:0;max-height:240px;overflow-y:auto}
+ .seller-folder{flex:none;min-width:150px}
+ .advanced-folder{flex:none;min-width:160px}
+ .app-sidebar nav{align-items:flex-start}
+ .advanced-folder .nav-list{display:flex;flex-direction:column}
+}
+@media(max-width:600px){
+ .daily-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .daily-stat{padding:13px}.daily-stat strong{font-size:25px}
+ .daily-list{padding:14px}
+ .vendor-folder-grid{grid-template-columns:1fr}
+ .daily-seller-header{align-items:flex-start}
+ .daily-copy{width:100%}
+}
+
+/* Visual de planilha nas pastas dos vendedores */
+.sheet-legend{display:flex;align-items:center;flex-wrap:wrap;gap:10px 19px;margin:8px 0 15px;color:#4f7059;font-size:12px}
+.sheet-legend>span{display:inline-flex;align-items:center;gap:7px}
+.sheet-legend .sheet-note{margin-left:auto;color:#778a7c}
+.sheet-check{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1.5px solid #adcbb6;border-radius:4px;background:#fff;color:#fff;vertical-align:middle;flex:none;font-size:13px;font-weight:850;line-height:1}
+.sheet-check.is-checked{background:#09825a;border-color:#09825a;color:#fff}
+.sheet-scroll{border:1px solid #dce9e0;border-radius:10px;max-width:100%}
+.app-shell .sheet-table{min-width:1040px;border-collapse:separate;border-spacing:0}
+.app-shell .sheet-table th{background:#e8f4ec!important;color:#256148!important;font-weight:800;border-bottom:2px solid #bddfca;position:sticky;top:0;z-index:1}
+.app-shell .sheet-table td{border-bottom:1px solid #e6eee7;white-space:normal!important;padding:11px 12px}
+.app-shell .sheet-table tbody tr:nth-child(2n){background:#f9fcfa}
+.app-shell .sheet-table tbody tr:hover{background:#eaf7ee!important}
+.app-shell .sheet-table .sheet-name{min-width:190px;color:#17432d}
+.app-shell .sheet-table .sheet-date{white-space:nowrap!important}
+.app-shell .sheet-table .sheet-center{text-align:center!important;min-width:108px}
+.sheet-status{display:inline-flex;align-items:center;max-width:190px;padding:5px 9px;border-radius:7px;font-size:11px;line-height:1.3;font-weight:720;white-space:normal}
+.sheet-status.is-pending{color:#99600c;background:#fff3d7}
+.sheet-status.is-renewed{color:#086947;background:#e2f5e9}
+.sheet-status.is-no-renewal{color:#9b3737;background:#fff0ed}
+.sheet-status.is-charged{color:#1c6791;background:#e7f4fb}
+.sheet-status.is-neutral{color:#567265;background:#eff3f0}
+@media(max-width:800px){.sheet-legend .sheet-note{margin-left:0}.app-shell .sheet-table{min-width:950px}}
+
+/* Edição de status por seguro: compacto como uma célula de planilha */
+.sheet-status-form{display:flex;align-items:center;gap:6px;min-width:250px}
+.sheet-status-form input[type=hidden]{display:none}
+.sheet-status-form select{min-width:140px;max-width:180px;flex:1;background:#fff;border:1px solid #b5d8c1;border-radius:7px;padding:8px;color:#205b3e;font:inherit;font-weight:650;font-size:12px}
+.sheet-status-form select:focus-visible,.sheet-status-form button:focus-visible{outline:3px solid #57b98c;outline-offset:1px}
+.sheet-status-form button{padding:8px 11px;border-radius:7px;border:1px solid #087f5b;background:#087f5b;color:#fff;font-size:12px;font-weight:750;cursor:pointer}
+.sheet-status-form button:hover{background:#066447}
+@media(max-width:570px){.sheet-status-form{min-width:220px}.sheet-status-form select{min-width:130px}}
+
+/* Planilha simples: única situação editável por seguro */
+.app-shell .sheet-table{min-width:730px}
+.sheet-status-form{min-width:300px;flex-wrap:nowrap}
+.sheet-status-form select{min-width:145px;max-width:none}
+.sheet-status-form button{white-space:nowrap}
+@media(max-width:750px){.app-shell .sheet-table{min-width:710px}.sheet-status-form{min-width:280px}}

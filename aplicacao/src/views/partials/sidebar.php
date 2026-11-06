@@ -1,65 +1,58 @@
 <?php
-require_once __DIR__.'/../../Auth.php';
 /**
- * Navegação reaproveitável do MonitorRenova.
- *
- * Só é incluída por telas que já exigiram autenticação.
- * Todos os destinos são rotas locais fixas; nenhum link vem do banco.
- * A classe "active" informa a posição atual aos leitores de tela.
- *
- * @var string|null $activePage
+ * Navegação simples: início, vendedores (subpastas) e consultas.
+ * Recursos acadêmicos continuam no código, mas não aparecem no menu.
  */
-$activePage = isset($activePage) && is_string($activePage)
-    ? $activePage : 'dashboard';
-$navGroups = [
-    'Operação' => [
-        ['id'=>'dashboard','path'=>'/','icon'=>'◈','label'=>'Visão geral'],
-        ['id'=>'seguros','path'=>'/seguros.php','icon'=>'▤','label'=>'Seguros'],
-        ['id'=>'vencimentos','path'=>'/vencimentos.php','icon'=>'◷','label'=>'Vencimentos'],
-        ['id'=>'competencias','path'=>'/competencias.php','icon'=>'▦','label'=>'Competências'],
-        ['id'=>'meses','path'=>'/meses.php','icon'=>'▧','label'=>'Histórico mensal']
-    ],
-    'Monitoramento' => [
-        ['id'=>'n8n','path'=>'/historico-n8n.php','icon'=>'◉','label'=>'Execuções do n8n'],
-        ['id'=>'integracoes','path'=>'/integracoes.php','icon'=>'⌁','label'=>'Integrações'],
-        ['id'=>'indicadores','path'=>'/indicadores.php','icon'=>'▥','label'=>'Indicadores']
-    ],
-    'Ferramentas' => [
-        ['id'=>'conferencia','path'=>'/conferencia.php','icon'=>'✓','label'=>'Conferência'],
-        ['id'=>'prontidao','path'=>'/prontidao.php','icon'=>'◈','label'=>'Prontidão'],
-        ['id'=>'acompanhamento','path'=>'/acompanhamento.php','icon'=>'▣','label'=>'Acompanhamento'],
-        ['id'=>'tarefas','path'=>'/tarefas.php','icon'=>'☑','label'=>'Tarefas (CRUD)'],
-        ['id'=>'validacoes','path'=>'/validacoes.php','icon'=>'◇','label'=>'Validações'],
-        ['id'=>'simulador','path'=>'/simulador.php','icon'=>'⊞','label'=>'Simulador'],
-        ['id'=>'importar','path'=>'/importar.php','icon'=>'⇪','label'=>'Importações']
-    ]
-];
+require_once __DIR__.'/../../Auth.php';
+$activePage=isset($activePage)&&is_string($activePage)?$activePage:'dashboard';
+$vendedoresMenu=[];
+try {
+    // Utiliza a mesma fonte da competência ativa, sem nomes fixos.
+    $vendedoresMenu=Database::connection()->query(
+        "SELECT DISTINCT vendedor FROM seguro_dashboard WHERE vendedor IS NOT NULL AND TRIM(vendedor)<>'' ORDER BY vendedor"
+    )->fetchAll(PDO::FETCH_COLUMN);
+} catch (Throwable $e) {
+    error_log('Menu de vendedores: '.$e->getMessage());
+}
+$vendedorAtual=isset($vendedorAtual)&&is_string($vendedorAtual)?$vendedorAtual:'';
+$menuVendedoresAberto=($activePage==='vendedores');
 ?>
-<aside class="app-sidebar" aria-label="Menu lateral do MonitorRenova">
-  <a class="brand" href="/" aria-label="MonitorRenova, ir à visão geral">
+<aside class="app-sidebar" aria-label="Menu principal">
+  <a class="brand" href="/" aria-label="MonitorRenova, voltar para início">
     <span class="brand-icon" aria-hidden="true">MR</span>
-    <span><strong>MonitorRenova</strong><small>DEMONSTRAÇÃO • dados fictícios</small></span>
+    <span><strong>MonitorRenova</strong><small>GESTÃO DE SEGUROS</small></span>
   </a>
   <nav aria-label="Navegação principal">
-    <?php foreach($navGroups as $grupo=>$links): ?>
-      <div class="nav-category"><?=h($grupo)?></div>
-      <div class="nav-list">
-        <?php foreach($links as $link):?>
-          <a class="nav-item <?=$activePage===$link['id']?'active':''?>"
-             href="<?=h($link['path'])?>"
-             <?=$activePage===$link['id']?'aria-current="page"':''?>>
-             <span class="symbol" aria-hidden="true"><?=h($link['icon'])?></span>
-             <span><?=h($link['label'])?></span>
-          </a>
-        <?php endforeach;?>
-      </div>
-    <?php endforeach;?>
+    <div class="nav-category">Dia a dia</div>
+    <div class="nav-list">
+      <a class="nav-item <?=$activePage==='dashboard'?'active':''?>" href="/" <?=$activePage==='dashboard'?'aria-current="page"':''?>>
+        <span class="symbol" aria-hidden="true">⌂</span><span>Início · Vencimentos de hoje</span>
+      </a>
+      <details class="seller-folder" <?=$menuVendedoresAberto?'open':''?>>
+        <summary class="nav-item <?=$menuVendedoresAberto?'active':''?>">
+          <span class="symbol" aria-hidden="true">▣</span><span>Vendedores</span>
+          <span class="folder-chevron" aria-hidden="true">⌄</span>
+        </summary>
+        <div class="seller-subfolders">
+          <a href="/vendedores.php" class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===''?'selected':''?>">▤ &nbsp; Todos os vendedores</a>
+          <?php foreach($vendedoresMenu as $nome):?>
+            <a href="/vendedores.php?<?=h(http_build_query(['vendedor'=>$nome]))?>"
+               class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===$nome?'selected':''?>">
+              <span aria-hidden="true">▸</span> <?=h($nome)?>
+            </a>
+          <?php endforeach;?>
+          <?php if(!$vendedoresMenu):?><span class="seller-subfolder">Nenhum vendedor cadastrado</span><?php endif;?>
+        </div>
+      </details>
+      <a class="nav-item <?=$activePage==='seguros'?'active':''?>" href="/seguros.php" <?=$activePage==='seguros'?'aria-current="page"':''?>>
+        <span class="symbol" aria-hidden="true">⌕</span><span>Consultar seguros</span>
+      </a>
+    </div>
+
   </nav>
   <div class="nav-spacer"></div>
   <div class="nav-footer">
-    <div>Ambiente demonstrativo • sem envios reais</div>
-    <div style="margin-top:5px;opacity:.72">Painel PHP + MySQL • n8n</div>
-    <div style="margin-top:8px"><a href="http://127.0.0.1:5678/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">Abrir editor n8n local ↗</a></div>
+    <div>Dados demonstrativos · sem disparos automáticos</div>
     <form method="post" action="/sair.php">
       <input type="hidden" name="csrf" value="<?=h(Auth::csrf())?>">
       <button type="submit">Sair com segurança</button>
