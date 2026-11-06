@@ -1,0 +1,172 @@
+/* MonitorRenova • acesso verde e branco • identidade 2026
+   Apenas apresentação; mantém formulário, CSRF, sessão e autenticação em PHP. */
+:root{
+  --login-forest:#064a35;
+  --login-deep:#073a2b;
+  --login-green:#087f5b;
+  --login-sage:#c9eed8;
+  --login-ink:#183d2d;
+  --login-muted:#647c6d;
+}
+html{color-scheme:light}
+body{
+  background:#f5faf6;
+  color:var(--login-ink);
+}
+.auth-layout{
+  grid-template-columns:minmax(350px,1.05fr) minmax(390px,.95fr);
+}
+.auth-brand{
+  position:relative;
+  overflow:hidden;
+  padding:clamp(38px,7vw,105px);
+  background:linear-gradient(145deg,#086449 0%,#07523c 43%,#053d2d 100%);
+  isolation:isolate;
+}
+.auth-brand::before{
+  content:"";
+  position:absolute;
+  width:min(52vw,640px);
+  height:min(52vw,640px);
+  right:-210px;
+  top:20%;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:50%;
+  box-shadow:0 0 0 72px rgba(255,255,255,.035),0 0 0 144px rgba(255,255,255,.025);
+  z-index:-1;
+  pointer-events:none;
+}
+.auth-brand::after{
+  content:"";
+  position:absolute;
+  width:220px;
+  height:220px;
+  left:-140px;
+  bottom:12%;
+  background:rgba(170,247,197,.07);
+  border-radius:50%;
+  pointer-events:none;
+}
+.identity{gap:13px}
+.logo{
+  background:#fff;
+  color:#08734f;
+  border-radius:14px;
+  box-shadow:0 6px 20px rgba(0,0,0,.13);
+}
+.identity strong{letter-spacing:-.55px}
+.identity small{color:#c9f0dc}
+.auth-brand h1{
+  max-width:600px;
+  font-size:clamp(34px,4vw,57px);
+  line-height:1.1;
+  letter-spacing:-1.9px;
+}
+.auth-brand p{
+  color:#d2efdf;
+  line-height:1.8;
+  max-width:490px;
+}
+.brand-note{color:#c4e7d2}
+.auth-main{
+  padding:55px clamp(25px,6vw,95px);
+  background:radial-gradient(circle at 88% 9%,#e7f7eb,transparent 50%),#f8fcf9;
+}
+.auth-card{
+  position:relative;
+  max-width:455px;
+  border:1px solid #d9e9df;
+  border-radius:22px;
+  padding:clamp(27px,3vw,43px);
+  box-shadow:0 22px 60px rgba(20,72,48,.08),0 5px 14px rgba(12,65,36,.035);
+  background:#fff;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:#087f5b;
+  letter-spacing:1.3px;
+  font-size:10.5px;
+}
+.eyebrow::before{
+  content:"";
+  width:7px;
+  height:7px;
+  background:#13a678;
+  border-radius:100%;
+  box-shadow:0 0 0 4px #e5f7ec;
+}
+.auth-card h2{
+  font-size:clamp(26px,3vw,33px);
+  color:#163d2c;
+  margin-top:8px;
+}
+.muted{color:var(--login-muted);line-height:1.7}
+label{color:#2d5540}
+input{
+  border:1px solid #cbded2;
+  background:#fff;
+  color:#194533;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+input:disabled{
+  background:#eff6f0;
+  color:#617d6b;
+  border-color:#dfece3;
+}
+input:not(:disabled):hover{border-color:#8fbea1}
+input:not(:disabled):focus{
+  outline:none;
+  border-color:#16865e;
+  box-shadow:0 0 0 4px #dff4e6;
+}
+input:focus-visible,button:focus-visible{
+  outline:3px solid #48b789;
+  outline-offset:2px;
+}
+button{
+  color:#fff;
+  background:#087f5b;
+  border-color:#087f5b;
+  box-shadow:0 6px 13px rgba(8,127,91,.16);
+  transition:background-color .15s ease,transform .15s ease;
+}
+button:hover{
+  background:#066a4b;
+  transform:translateY(-1px);
+}
+button:active{transform:translateY(0)}
+.footnote{
+  border-top:1px solid #e6efe8;
+  padding-top:17px;
+  color:#768b7a;
+  line-height:1.6;
+}
+.error{
+  background:#fff3f1;
+  border-color:#efcfc8;
+  color:#993b2f;
+}
+@media(max-width:850px){
+ .auth-layout{grid-template-columns:1fr}
+ .auth-brand{padding:26px 25px 28px;gap:30px}
+ .auth-brand::before{width:380px;height:380px;right:-190px;top:-80px}
+ .auth-brand h1{font-size:29px;letter-spacing:-1px;margin-bottom:9px}
+ .auth-brand p{font-size:13px;line-height:1.55}
+ .auth-main{padding:26px 18px 45px}
+ .auth-card{max-width:550px;padding:28px 24px}
+}
+@media(max-width:430px){
+ .identity strong{font-size:17px}
+ .logo{width:42px;height:42px;font-size:17px}
+ .auth-brand{gap:22px}
+ .auth-brand h1{font-size:27px}
+ .auth-card{padding:26px 19px;border-radius:17px}
+ .form-field{margin-top:15px}
+ .auth-card h2{font-size:27px}
+}
+@media(prefers-reduced-motion:reduce){
+ button,input{transition:none}
+ button:hover{transform:none}
+}

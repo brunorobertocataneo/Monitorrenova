@@ -24,7 +24,7 @@ try{
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#102238">
+<meta name="theme-color" content="#07523c">
 <title>Entrar — MonitorRenova</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:#f1f5f8;color:#183047}
@@ -51,7 +51,7 @@ button:hover{background:#0d726f}
 .error{background:#fff0f0;color:#9a3733;padding:12px 14px;border:1px solid #f3cece;border-radius:10px;margin-top:14px}
 .footnote{color:#718496;font-size:12px;margin-top:21px}
 @media(max-width:850px){.auth-layout{grid-template-columns:1fr}.auth-brand{padding:22px 23px 27px;gap:30px}.auth-brand h1{font-size:27px}.auth-brand p{font-size:13px}.brand-note{display:none}.auth-main{padding:35px 20px 55px}.auth-card h2{font-size:25px}}
-</style></head>
+</style><link rel="stylesheet" href="/assets/login.css?v=1"></head>
 <body>
 <div class="auth-layout">
   <section class="auth-brand" aria-label="Sobre o MonitorRenova">
