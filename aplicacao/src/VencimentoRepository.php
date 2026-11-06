@@ -115,6 +115,34 @@ final class VencimentoRepository
      * Centraliza o uso de parâmetros e proíbe SQL não parametrizado
      * vindo de filtros HTTP. O trecho WHERE foi construído internamente.
      */
+
+    /**
+     * Retorna seguros que vencem hoje e ainda nao foram concluidos, agrupados por vendedor.
+     * Consulta exclusivamente a cópia local de seguro_dashboard.
+     * Nao altera status nem faz envios. Exclui renovados e nao renovados.
+     *
+     * @return array<string,list<array<string,mixed>>>
+     */
+    public function vencimentosDeHoje(string $dia): array
+    {
+        $data=DateTimeImmutable::createFromFormat('!Y-m-d',$dia);
+        if(!$data || $data->format('Y-m-d')!==$dia){
+            throw new InvalidArgumentException('Data inválida para vencimentos de hoje.');
+        }
+        $sql='SELECT segurado,vendedor,produto,renovado,cobrado,nao_vai_renovar '
+            .'FROM seguro_dashboard WHERE vencimento=:dia AND renovado=0 AND nao_vai_renovar=0 '
+            .'ORDER BY vendedor ASC,segurado ASC,linha_origem ASC';
+        $consulta=$this->db->prepare($sql);
+        $consulta->execute(['dia'=>$dia]);
+        $grupos=[];
+        foreach($consulta->fetchAll(PDO::FETCH_ASSOC) as $seguro){
+            $nome=trim((string)($seguro['vendedor']??''));
+            if($nome==='')$nome='SEM VENDEDOR';
+            $grupos[$nome][]=$seguro;
+        }
+        return $grupos;
+    }
+
     private function query(string $sql, array $params): PDOStatement
     {
         $q=$this->db->prepare($sql);

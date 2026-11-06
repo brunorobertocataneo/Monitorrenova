@@ -40,6 +40,7 @@ final class VencimentoController
             : '';
 
         $retorno=$this->repository->consultar($de,$ate,$vendedor);
+        $vencimentosHoje=$this->repository->vencimentosDeHoje($hoje->format('Y-m-d'));
         $stats=$retorno['stats'];
         $bySeller=$retorno['bySeller'];
         $byProduct=$retorno['byProduct'];
@@ -47,6 +48,8 @@ final class VencimentoController
 
         return [
             'de'=>$de,'ate'=>$ate,'vendedor'=>$vendedor,
+            'dataHoje'=>$hoje->format('Y-m-d'),
+            'vencimentosHoje'=>$vencimentosHoje,
             'atalhos'=>[
     ['label'=>'Hoje','de'=>$hoje->format('Y-m-d'),'ate'=>$hoje->format('Y-m-d')],
     ['label'=>'Próximos 7 dias','de'=>$hoje->format('Y-m-d'),'ate'=>$hoje->modify('+6 days')->format('Y-m-d')],
