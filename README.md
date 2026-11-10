@@ -71,6 +71,35 @@ Testes com rollback (não deixam registros persistidos):
 
 Resultado no ambiente de desenvolvimento: **28/28 testes CRUD e 8/8 testes
 de renderização**, sem alterar os 65 seguros fictícios.
+## POO: interfaces e relacionamentos entre classes (Programacao II)
+
+A triagem conserva os motivos e o retorno publico do simulador, mas agora
+aplica os relacionamentos OO diretamente na sua execucao:
+
+- **Interface:** `src/triagem/RegraAvaliavel.php` declara o contrato `avaliar()`;
+  `RegraTriagem implements RegraAvaliavel`, mantendo heranca e polimorfismo nas
+  tres regras concretas.
+- **Associacao:** `TarefaService` depende de `TarefaRepository` injetado, com
+  objetos independentes.
+- **Agregacao:** `ConjuntoRegrasTriagem` recebe objetos de regras ja criados,
+  reutiliza as mesmas instancias e respeita a ordem de avaliacao.
+- **Composicao:** `ResultadoTriagem` cria e mantem suas
+  `LinhaResultadoTriagem`, oferecendo apenas copias dos dados como arrays.
+- **Traits:** nao utilizadas porque o contrato e a classe abstrata ja atendem
+  ao reuso; no roteiro da disciplina, traits sao opcionais quando pertinentes.
+
+Consulte [o diagrama e a explicacao](aplicacao/docs/RELACIONAMENTOS-POO-PROGRAMACAO-II.md).
+Execute sem MySQL:
+
+```bash
+php aplicacao/src/testar-relacionamentos-poo.php
+php aplicacao/src/testar-heranca-polimorfismo.php
+php aplicacao/src/testar-simulador-validacao.php
+```
+
+Uma Action na branch de desenvolvimento executa PHP 8.3, lint e os tres scripts
+de teste. As telas principais e o esquema MySQL nao foram alterados nessa etapa.
+
 ## Requisitos
 
 - Docker Desktop com Linux containers e Docker Compose.

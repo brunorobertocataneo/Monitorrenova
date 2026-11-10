@@ -10,7 +10,9 @@ declare(strict_types=1);
  *
  * Regras apenas classificam; nao gravam no MySQL nem enviam mensagens.
  */
-abstract class RegraTriagem
+require_once __DIR__ . '/RegraAvaliavel.php';
+
+abstract class RegraTriagem implements RegraAvaliavel
 {
     /**
      * @param array<string,mixed> $seguro
