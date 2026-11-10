@@ -4,6 +4,8 @@ require_once __DIR__.'/ValidacaoApolice.php';
 require_once __DIR__.'/triagem/RegraProduto.php';
 require_once __DIR__.'/triagem/RegraSituacao.php';
 require_once __DIR__.'/triagem/RegraConferencia.php';
+require_once __DIR__.'/triagem/ConjuntoRegrasTriagem.php';
+require_once __DIR__.'/triagem/ResultadoTriagem.php';
 /**
  * Triagem conservadora (somente leitura). A aprovação local NUNCA libera envio:
  * dependem de comprovação na fonte, histórico externo e autorização do contato.
@@ -36,11 +38,11 @@ final class SimuladorRenovacao {
     public static function avaliar(array $seguros,DateTimeImmutable $referencia):array {
       $janela=self::janela($referencia);
       $contagens=array_fill_keys(array_keys(self::MOTIVOS),0);
-      $vistos=[];$linhas=[];
+      $vistos=[];$resultado=new ResultadoTriagem();
       // Heranca: todas as regras estendem RegraTriagem.
       // Polimorfismo: o mesmo metodo avaliar() escolhe a resposta conforme
       // a classe concreta, respeitando a ordem segura de classificacao.
-      $regras=[new RegraProduto(),new RegraSituacao(),new RegraConferencia()];
+      $regras=new ConjuntoRegrasTriagem([new RegraProduto(),new RegraSituacao(),new RegraConferencia()]);
       foreach($seguros as $s){
         $segurado=trim((string)($s['segurado']??''));
         $vendedor=trim((string)($s['vendedor']??''));
@@ -68,16 +70,14 @@ final class SimuladorRenovacao {
             else{
               $contexto=['situacao_validada'=>$situacaoValidada,'validacao_recente'=>$validacaoRecente];
               $motivo='aguardar_historico'; // Fallback conservador: nunca autoriza envios.
-              foreach($regras as $regra){
-                $codigo=$regra->avaliar($s,$contexto);
-                if($codigo!==null){$motivo=$codigo;break;}
-              }
+              $codigo=$regras->avaliar($s,$contexto);
+              if($codigo!==null)$motivo=$codigo;
             }
           }
         }
         $contagens[$motivo]++;
-        $linhas[]=['id'=>(int)($s['id']??0),'linha_origem'=>(int)($s['linha_origem']??0),'segurado'=>$segurado,'vendedor'=>$vendedor,'vencimento'=>$vencimento,'produto'=>$produto,'status_atual'=>trim((string)($s['status_atual']??'')),'verificacao'=>$verificacao,'motivo_codigo'=>$motivo,'motivo'=>self::MOTIVOS[$motivo]];
+        $resultado->adicionar(['id'=>(int)($s['id']??0),'linha_origem'=>(int)($s['linha_origem']??0),'segurado'=>$segurado,'vendedor'=>$vendedor,'vencimento'=>$vencimento,'produto'=>$produto,'status_atual'=>trim((string)($s['status_atual']??'')),'verificacao'=>$verificacao,'motivo_codigo'=>$motivo,'motivo'=>self::MOTIVOS[$motivo]]);
       }
-      return ['janela'=>$janela,'contagens'=>$contagens,'linhas'=>$linhas,'total'=>count($linhas),'envios'=>0];
+      return ['janela'=>$janela,'contagens'=>$contagens,'linhas'=>$resultado->linhas(),'total'=>$resultado->total(),'envios'=>0];
     }
 }
