@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mxfile host="app.diagrams.net" version="24.7.17" type="device" pages="7">
+  <diagram id="MR-APRES-02" name="02 - Classes conceituais">
+    <mxGraphModel dx="1500" dy="1100" grid="1" gridSize="10" guides="1" connect="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1120">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="x2" value="MonitorRenova — classes conceituais do domínio (modelo de análise)" style="text;html=1;strokeColor=none;fillColor=none;fontSize=23;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="25" width="1350" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="x3" value="As caixas representam CONCEITOS do domínio, não classes PHP já implementadas. Relações embasadas no esquema relacional." style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="78" width="1370" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="x4" value="Usuário&#xA;+ id: inteiro&#xA;+ login: texto&#xA;+ autenticar()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
+          <mxGeometry x="75" y="175" width="330" height="195" as="geometry" />
+        </mxCell>
+        <mxCell id="x5" value="SeguroMensal&#xA;+ id: inteiro&#xA;+ competencia: ano-mês&#xA;+ segurado: texto&#xA;+ vencimento: data&#xA;+ consultar()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="175" width="335" height="205" as="geometry" />
+        </mxCell>
+        <mxCell id="x6" value="TarefaAcompanhamento&#xA;+ id: inteiro&#xA;+ titulo: texto&#xA;+ descricao: texto&#xA;+ prioridade: enum&#xA;+ situacao: enum&#xA;+ vencimento: data?&#xA;+ versao: inteiro&#xA;+ excluidoEm: data?&#xA;+ cadastrar()&#xA;+ atualizar()&#xA;+ arquivar()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
+          <mxGeometry x="490" y="435" width="465" height="385" as="geometry" />
+        </mxCell>
+        <mxCell id="x7" value="EventoHistorico&#xA;+ id: inteiro&#xA;+ acao: enum&#xA;+ versao: inteiro&#xA;+ dadosAntes: JSON?&#xA;+ dadosDepois: JSON&#xA;+ criadoEm: data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="865" width="365" height="225" as="geometry" />
+        </mxCell>
+        <mxCell id="x8" value="autoria de criação (1 tarefa → 1 usuário; usuário → 0..* tarefas)" style="endArrow=none;html=1;strokeColor=#36576d;strokeWidth=1.6;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="x4" target="x6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x9" value="seguro associado (tarefa 0..1; seguro 0..* tarefas)" style="endArrow=none;html=1;strokeColor=#36576d;strokeWidth=1.6;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="x5" target="x6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x10" value="histórico (evento 1 tarefa; tarefa 0..* eventos)" style="endArrow=none;html=1;strokeColor=#36576d;strokeWidth=1.6;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="x6" target="x7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x11" value="Associações de análise: a tarefa registra usuário criador e atualizador e pode registrar autor de arquivamento. Cada evento de histórico possui autoria própria. Não presumir composição de objetos PHP a partir de FKs." style="text;html=1;whiteSpace=wrap;strokeColor=#b1b9c1;fillColor=#f6f8fa;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="70" y="990" width="850" height="95" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
