@@ -1,0 +1,37 @@
+name: Programacao II - POO (PHP)
+on:
+  push:
+    branches:
+      - feature/poo-interfaces-relacionamentos-unoesc-20261110
+  pull_request:
+    paths:
+      - 'aplicacao/src/**'
+      - 'aplicacao/docs/RELACIONAMENTOS-POO-PROGRAMACAO-II.md'
+      - '.github/workflows/poo-php-tests.yml'
+permissions:
+  contents: read
+jobs:
+  poo:
+    name: PHP 8.3 - syntax and no-database regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, iconv
+          coverage: none
+      - name: Validate all PHP file syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r -d '' file; do
+            php -l "$file" >/dev/null
+          done < <(find aplicacao/src aplicacao/public -name '*.php' -print0)
+          echo 'PHP syntax OK'
+      - name: New interface, association, aggregation and composition tests
+        run: php aplicacao/src/testar-relacionamentos-poo.php
+      - name: Existing inheritance and polymorphism regression
+        run: php aplicacao/src/testar-heranca-polimorfismo.php
+      - name: Existing simulator validation regression
+        run: php aplicacao/src/testar-simulador-validacao.php
