@@ -134,3 +134,7 @@ altera seguros, MySQL, pagina inicial nem envia mensagens reais.
 - Composicao: resultado cria, controla e encapsula suas linhas.
 - PDO/CRUD: modulo de tarefas existente, separado da simulacao em memoria.
 - Trait: opcional conforme roteiro; nao foi criada uma trait artificial.
+
+## Arquivo UML editavel no diagrams.net
+
+[MonitorRenova-UML-PHP-MySQL.drawio](uml/MonitorRenova-UML-PHP-MySQL.drawio) contem quatro abas: (1) classes e relacionamentos OO, (2) sequencia do salvamento, (3) recorte SQL da situacao manual/historico e (4) casos de uso da interface principal. Abra o arquivo no https://app.diagrams.net/ em **Arquivo > Abrir de > Dispositivo**, ou abra pelo GitHub conectado ao diagrams.net. Todas as formas e conectores sao editaveis. As abas de dados e casos de uso sao recortes explicativos, nao substituem o DER/UML completo da especificacao de Engenharia de Software I.
