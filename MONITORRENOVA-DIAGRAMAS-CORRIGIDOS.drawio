@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <mxfile host="app.diagrams.net" version="24.7.17" type="device" pages="7">
   <diagram id="MR-APRES-01" name="01 - Casos de uso">
     <mxGraphModel dx="1450" dy="1180" grid="1" gridSize="10" guides="1" connect="1" page="1" pageScale="1" pageWidth="1420" pageHeight="1200">
@@ -186,20 +186,20 @@
         <mxCell id="1-1" value="&lt;b style=&quot;font-size:27px&quot;&gt;UML de classes — CRUD e auditoria&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=25;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="55" y="20" width="1500" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="1-2" value="Modelagem dos componentes PHP reais: rota, Service, Repository e PDO. Entidades persistidas no diagrama relacional." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
+        <mxCell id="1-2" value="Componentes PHP atuais: tarefas.php e historico-tarefa.php (rotas), TarefaService, TarefaRepository e PDO. Eventos gravados em transacao." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="60" y="78" width="1490" height="45" as="geometry" />
         </mxCell>
         <mxCell id="1-3" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«boundary / arquivo PHP»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;public/tarefas.php&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;Recebe GET / POST&lt;br/&gt;Exige sessão e verifica CSRF&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;criar / editar / arquivar&lt;br/&gt;renderiza views/tarefas.php&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="70" y="210" width="340" height="260" as="geometry" />
         </mxCell>
-        <mxCell id="1-4" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«classe final»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;TarefaService&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;- repository: TarefaRepository&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ validar(form): array&lt;br/&gt;+ criar(form, usuarioId): int&lt;br/&gt;+ atualizar(id: mixed, versao: mixed, form: array, usuarioId: int): void&lt;br/&gt;+ excluir(id, versao, usuarioId): void&lt;br/&gt;+ identificador(valor): int {static}&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDF6ED;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="470" y="180" width="440" height="350" as="geometry" />
+        <mxCell id="1-4" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;&amp;lt;&amp;lt;final&amp;gt;&amp;gt;&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;TarefaService&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.45&quot;&gt;- repository: TarefaRepository {readonly}&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.45&quot;&gt;+ __construct(repository: TarefaRepository)&lt;br/&gt;+ validar(form: array): array&lt;br/&gt;+ criar(form: array, usuarioId: int): int&lt;br/&gt;+ atualizar(id: mixed, versao: mixed, form: array, usuarioId: int): void&lt;br/&gt;+ excluir(id: mixed, versao: mixed, usuarioId: int): void&lt;br/&gt;+ identificador(valor: mixed): int {static}&lt;br/&gt;- texto(valor: mixed, max: int, nome: string, min: int): string&lt;br/&gt;- exigirUsuario(usuarioId: int): void {static}&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDF6ED;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="460" y="160" width="475" height="480" as="geometry" />
         </mxCell>
-        <mxCell id="1-5" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«classe final»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;TarefaRepository&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;- db: PDO&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ criar(dados, usuarioId): int&lt;br/&gt;+ listar(situacao, busca, pagina, limite): array&lt;br/&gt;+ buscar(id): ?array&lt;br/&gt;+ atualizar(id, versao, dados, usuarioId): bool&lt;br/&gt;+ excluir(id, versao, usuarioId): bool&lt;br/&gt;+ historico(id): array&lt;br/&gt;+ buscarComArquivadas(id): ?array&lt;br/&gt;- registrarEvento(...): void&lt;br/&gt;- comTransacao(op): mixed&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E9F1FF;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="980" y="165" width="505" height="445" as="geometry" />
+        <mxCell id="1-5" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;&amp;lt;&amp;lt;final&amp;gt;&amp;gt;&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;TarefaRepository&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.4&quot;&gt;- db: PDO {readonly}&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.4&quot;&gt;+ __construct(db: PDO)&lt;br/&gt;+ criar(data: array, usuarioId: int): int&lt;br/&gt;+ listar(situacao: string, busca: string, pagina: int, limite: int): array&lt;br/&gt;+ buscar(id: int): ?array&lt;br/&gt;+ atualizar(id: int, versao: int, data: array, usuarioId: int): bool&lt;br/&gt;+ excluir(id: int, versao: int, usuarioId: int): bool&lt;br/&gt;+ historico(id: int): array&lt;br/&gt;+ buscarComArquivadas(id: int): ?array&lt;br/&gt;+ seguroExiste(id: int): bool&lt;br/&gt;+ segurosParaAssociar(): array&lt;br/&gt;- estado(id: int, travar: bool): ?array&lt;br/&gt;- registrarEvento(...): void&lt;br/&gt;- transacao(operacao: callable): mixed&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E9F1FF;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="970" y="150" width="570" height="565" as="geometry" />
         </mxCell>
         <mxCell id="1-6" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«biblioteca PHP»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;PDO&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;Conexão MySQL&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ prepare(sql)&lt;br/&gt;+ beginTransaction()&lt;br/&gt;+ commit() / rollBack()&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="1120" y="755" width="300" height="183" as="geometry" />
+          <mxGeometry x="1130" y="760" width="325" height="180" as="geometry" />
         </mxCell>
         <mxCell id="1-7" value="chama" style="endArrow=open;endFill=0;dashed=1;strokeColor=#64748B;strokeWidth=2;fontSize=13;html=1;labelBackgroundColor=#FFFFFF;;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.85;entryX=0;entryY=0.80;" edge="1" parent="1" source="1-3" target="1-4">
           <mxGeometry relative="1" as="geometry" />
@@ -210,24 +210,24 @@
         <mxCell id="1-9" value="depende de" style="endArrow=open;endFill=0;dashed=1;strokeColor=#64748B;strokeWidth=2;fontSize=13;html=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="1-5" target="1-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="1-10" value="&lt;b&gt;Notas de UML:&lt;/b&gt; public/tarefas.php é uma rota PHP, e não classe de domínio. O Service valida regras, o Repository usa PDO. Os objetos são recebidos via construtor (injeção de dependência)." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="70" y="650" width="790" height="120" as="geometry" />
+        <mxCell id="1-10" value="TarefaService valida regras. Repository possui transacao(), historico(), buscarComArquivadas() e registrarEvento(), com dependencia de PDO. Rotas PHP nao sao classes." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="70" y="670" width="790" height="105" as="geometry" />
         </mxCell>
         <mxCell id="1-11" value="&lt;b&gt;Persistência:&lt;/b&gt; CREATE, UPDATE e arquivamento inserem evento auditável na mesma transação. Arquivamento é exclusão lógica (UPDATE excluido_em), e não DELETE físico." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="70" y="810" width="900" height="140" as="geometry" />
+          <mxGeometry x="70" y="825" width="940" height="130" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="MR-APRES-04" name="04 - Classes POO e heranca">
-    <mxGraphModel dx="1600" dy="1050" grid="1" gridSize="10" guides="1" connect="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1050" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1050" grid="1" gridSize="10" guides="1" connect="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1980" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2-1" value="&lt;b style=&quot;font-size:27px&quot;&gt;UML de classes — interface, herança e polimorfismo&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=25;fontColor=#18354E;" vertex="1" parent="1">
+        <mxCell id="2-1" value="MonitorRenova - POO real: interfaces, heranca, agregacao e composicao" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=25;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="55" y="20" width="1500" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="2-2" value="Implementação real em src/triagem e src/SimuladorRenovacao.php; as regras são somente leitura." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
+        <mxCell id="2-2" value="Classes reais em src/triagem e SimuladorRenovacao.php; as regras executam somente classificacao e nao enviam mensagens." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="60" y="78" width="1490" height="45" as="geometry" />
         </mxCell>
         <mxCell id="2-3" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«interface»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;RegraAvaliavel&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ avaliar(seguro: array, contexto: array): ?string&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDF6ED;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
@@ -245,8 +245,8 @@
         <mxCell id="2-7" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«final»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;RegraConferencia&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ avaliar(seguro, contexto): ?string&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="1130" y="715" width="390" height="140" as="geometry" />
         </mxCell>
-        <mxCell id="2-8" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«final»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;SimuladorRenovacao&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ janela(referencia): array {static}&lt;br/&gt;+ avaliar(seguros, referencia): array {static}&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDF6ED;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="1130" y="150" width="385" height="180" as="geometry" />
+        <mxCell id="2-8" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;&amp;lt;&amp;lt;final&amp;gt;&amp;gt;&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;SimuladorRenovacao&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px&quot;&gt;+ MOTIVOS: array {const}&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.5&quot;&gt;+ janela(referencia: DateTimeImmutable): array {static}&lt;br/&gt;+ avaliar(seguros: array, referencia: DateTimeImmutable): array {static}&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDF6ED;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="150" width="425" height="200" as="geometry" />
         </mxCell>
         <mxCell id="2-9" value="implements" style="endArrow=block;endFill=0;dashed=1;strokeColor=#0F766E;strokeWidth=2.5;fontSize=13;html=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="2-4" target="2-3">
           <mxGeometry relative="1" as="geometry" />
@@ -263,11 +263,49 @@
         <mxCell id="2-13" value="usa regras concretas" style="endArrow=open;endFill=0;dashed=1;strokeColor=#64748B;strokeWidth=2;fontSize=13;html=1;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="2-8" target="2-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="2-14" value="&lt;b&gt;Polimorfismo:&lt;/b&gt; o simulador percorre as três regras com o mesmo método avaliar(). Cada implementação retorna um motivo ou null, mantendo a ordem conservadora." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="2-14" value="&lt;b&gt;Polimorfismo:&lt;/b&gt; RegraProduto, RegraSituacao e RegraConferencia implementam avaliar() por meio de RegraTriagem. O conjunto delega na ordem das regras." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="70" y="370" width="430" height="170" as="geometry" />
         </mxCell>
-        <mxCell id="2-15" value="RegraAvaliavel é interface real em PHP; RegraTriagem é classe abstrata real. O simulador não envia mensagens e não altera o MySQL." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="70" y="900" width="900" height="90" as="geometry" />
+        <mxCell id="2-15" value="&lt;b&gt;Relacionamentos reais:&lt;/b&gt; o Simulador cria um ConjuntoRegrasTriagem e um ResultadoTriagem; Conjunto agrega instancias de RegraAvaliavel recebidas externamente; Resultado compoe LinhaResultadoTriagem criada internamente. O banco nao participa desse fluxo." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1815" width="1490" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-conjunto" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;&amp;lt;&amp;lt;final&amp;gt;&amp;gt;&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;ConjuntoRegrasTriagem&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;- regras: list&amp;lt;RegraAvaliavel&amp;gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ __construct(regras: array)&lt;br/&gt;+ avaliar(seguro: array, contexto: array): ?string&lt;br/&gt;+ quantidade(): int&lt;br/&gt;+ contem(regra: RegraAvaliavel): bool&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3D8;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="65" y="1090" width="490" height="270" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-resultado" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;&amp;lt;&amp;lt;final&amp;gt;&amp;gt;&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;ResultadoTriagem&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;- linhas: list&amp;lt;LinhaResultadoTriagem&amp;gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ adicionar(dados: array): void&lt;br/&gt;+ linhas(): array&lt;br/&gt;+ total(): int&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#DDF6ED;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1090" width="490" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-linha" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;&amp;lt;&amp;lt;final&amp;gt;&amp;gt;&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;LinhaResultadoTriagem&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;- dados: array {readonly}&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;+ __construct(dados: array)&lt;br/&gt;+ paraArray(): array&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E9F1FF;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1520" width="490" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-agg" value="0..* regras / contrato" style="startArrow=diamond;startFill=0;endArrow=none;html=1;strokeColor=#A36B16;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;exitX=0;exitY=0.35;entryX=0;entryY=0.5;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="conc-conjunto" target="2-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="25" y="1165" />
+              <mxPoint x="25" y="215" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conc-comp" value="0..* linhas" style="startArrow=diamond;startFill=1;endArrow=none;html=1;strokeColor=#0F766E;strokeWidth=2.5;edgeStyle=orthogonalEdgeStyle;exitX=0.7;exitY=1;entryX=0.7;entryY=0;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="conc-resultado" target="conc-linha">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="conc-sim-regras" value="cria e utiliza" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#64748B;strokeWidth=1.8;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=1;entryY=0.5;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="2-8" target="conc-conjunto">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1560" y="245" />
+              <mxPoint x="1560" y="1020" />
+              <mxPoint x="590" y="1020" />
+              <mxPoint x="590" y="1220" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conc-sim-resultado" value="cria resultado" style="endArrow=open;endFill=0;dashed=1;html=1;strokeColor=#64748B;strokeWidth=1.8;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.85;entryX=1;entryY=0.2;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="2-8" target="conc-resultado">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1580" y="315" />
+              <mxPoint x="1580" y="1120" />
+            </Array>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
@@ -280,7 +318,7 @@
         <mxCell id="3-1" value="&lt;b style=&quot;font-size:27px&quot;&gt;Modelo relacional MySQL — tarefas e auditoria&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=25;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="55" y="20" width="1600" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="3-2" value="Tabelas implementadas: migrations 001 e 002. PK = chave primária; FK = chave estrangeira." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
+        <mxCell id="3-2" value="Modelo relacional da auditoria de tarefas (subconjunto das tabelas do sistema). FKs usuario: criado_por, atualizado_por e excluido_por (opcional)." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="60" y="78" width="1590" height="45" as="geometry" />
         </mxCell>
         <mxCell id="3-3" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;small&gt;«tabela»&lt;/small&gt;&lt;br/&gt;&lt;b style=&quot;font-size:17px&quot;&gt;usuario&lt;/b&gt;&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;PK id: BIGINT&lt;br/&gt;login: VARCHAR(80)&lt;br/&gt;senha_hash: VARCHAR(255)&lt;/div&gt;&lt;hr/&gt;&lt;div style=&quot;font-size:13px;line-height:1.55&quot;&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E9F1FF;strokeColor=#47617A;strokeWidth=2;align=left;verticalAlign=top;spacing=12;overflow=hidden;fontSize=13;" vertex="1" parent="1">
@@ -326,7 +364,7 @@
         <mxCell id="4-1" value="&lt;b style=&quot;font-size:27px&quot;&gt;UML de sequência — cadastrar tarefa&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=25;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="55" y="20" width="1500" height="58" as="geometry" />
         </mxCell>
-        <mxCell id="4-2" value="Caminho real do POST no CRUD, incluindo a transação que grava a tarefa e o primeiro evento." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
+        <mxCell id="4-2" value="Caminho real do POST: Service valida, Repository insere tarefa e evento CRIACAO na mesma transacao; falha aciona rollBack()." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#18354E;" vertex="1" parent="1">
           <mxGeometry x="60" y="78" width="1490" height="45" as="geometry" />
         </mxCell>
         <mxCell id="4-3" value="&lt;b&gt;Administrador&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAF3ED;strokeColor=#0F766E;strokeWidth=2;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
@@ -386,7 +424,7 @@
             <mxPoint x="690" y="312" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="4-15" value="A rota verifica sessão/CSRF. Dentro do Service ocorre validar(form) e a verificação do seguro; falhas interrompem o cadastro antes do INSERT." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="4-15" value="Rota exige autenticacao e CSRF. TarefaService::criar chama validar(form); TarefaRepository::criar grava tarefa e evento dentro da mesma transacao." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FB;strokeColor=#CBD5E1;strokeWidth=1.3;align=left;verticalAlign=middle;spacing=15;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="265" y="355" width="750" height="68" as="geometry" />
         </mxCell>
         <mxCell id="4-16" value="3. criar(dados, usuarioId)" style="endArrow=classic;endFill=1;dashed=0;strokeColor=#1E506A;strokeWidth=2;html=1;fontSize=13;labelBackgroundColor=#FFFFFF;verticalLabelPosition=top;verticalAlign=bottom;" edge="1" parent="1">
@@ -559,7 +597,7 @@
             <mxPoint x="420" y="920" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="v27" value="Exceção SQL: Repository executa rollBack() durante a transação; erro é propagado sem gravação parcial." style="text;html=1;whiteSpace=wrap;fillColor=#f5f7f9;strokeColor=#a8b8c4;align=left;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="v27" value="Conflito de versao: nenhuma alteracao ou evento. No sucesso: UPDATE tarefa + INSERT evento EDICAO + commit(). Erro SQL: rollBack()." style="text;html=1;whiteSpace=wrap;fillColor=#f5f7f9;strokeColor=#a8b8c4;align=left;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="70" y="1055" width="1365" height="55" as="geometry" />
         </mxCell>
         <mxCell id="fix-insert-history" value="INSERT historico_tarefa_acompanhamento" style="endArrow=block;html=1;strokeColor=#284a63;strokeWidth=2;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1">

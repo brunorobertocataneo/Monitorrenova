@@ -28,7 +28,6 @@ $service = new TarefaService($repository);
 $usuario = (int) $db->query('SELECT id FROM usuario ORDER BY id LIMIT 1')->fetchColumn();
 $seguro = (int) $db->query('SELECT id FROM seguro_mensal ORDER BY id LIMIT 1')->fetchColumn();
 $anterior = (int) $db->query('SELECT COUNT(*) FROM tarefa_acompanhamento')->fetchColumn();
-verificarCrud('usuario_teste_existe', $usuario > 0);
 verificarCrud('seguro_ficticio_existe', $seguro > 0);
 $base = [
     'titulo' => 'Conferir apólice fictícia',
@@ -41,6 +40,14 @@ $base = [
 
 $db->beginTransaction();
 try {
+    // Instalacoes novas nao possuem administrador: criar ator ficticio apenas
+    // dentro da transacao, que sera revertida ao final dos testes.
+    if ($usuario <= 0) {
+        $stmtUsuario = $db->prepare('INSERT INTO usuario (login, senha_hash) VALUES (?, ?)');
+        $stmtUsuario->execute(['teste-crud-local', password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT)]);
+        $usuario = (int) $db->lastInsertId();
+    }
+    verificarCrud('usuario_teste_existe', $usuario > 0);
     // CREATE
     $id = $service->criar($base, $usuario);
     verificarCrud('create_insert', $id > 0, $id);

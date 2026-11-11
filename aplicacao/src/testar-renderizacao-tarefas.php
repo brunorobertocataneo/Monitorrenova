@@ -31,7 +31,7 @@ $testes = [
     'opcao_seguro' => str_contains($html, 'name="seguro_id"'),
     'tabela_sql' => str_contains($html, '<table class="task-table">'),
     'token_csrf' => str_contains($html, 'name="csrf"'),
-    'menu_crud' => str_contains($html, 'Tarefas (CRUD)'),
+    'link_historico' => str_contains((string) file_get_contents(__DIR__ . '/views/tarefas.php'), '/historico-tarefa.php?id='),
     'sem_html_cru_dados' => !str_contains($html, '<script>alert('),
 ];
 $ok = count(array_filter($testes));

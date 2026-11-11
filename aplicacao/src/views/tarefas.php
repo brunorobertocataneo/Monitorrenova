@@ -171,6 +171,7 @@ $csrfToken = Auth::csrf();
                 <td><small><?=h($r['atualizado_em'])?></small></td>
                 <td>
                   <a class="task-link" href="/tarefas.php?editar=<?=h($r['id'])?>#formulario">Editar</a>
+                  <a class="task-link" href="/historico-tarefa.php?id=<?=h($r['id'])?>">Histórico</a>
                   <details class="task-delete">
                     <summary>Arquivar</summary>
                     <form method="post" action="/tarefas.php">
