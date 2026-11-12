@@ -61,7 +61,7 @@ th{background:#eef4f8}small{color:#556b79}details{max-width:440px}pre{white-spac
     <?php foreach ($eventos as $evento): ?>
       <tr>
         <td><?=escHist($evento['versao'])?></td>
-        <td><?=escHist(ucfirst((string) $evento['acao']))?></td>
+        <td><?=escHist(['criacao' => 'Criação', 'edicao' => 'Edição', 'arquivamento' => 'Arquivamento'][$evento['acao']] ?? ucfirst((string) $evento['acao']))?></td>
         <td><?=escHist($evento['autor'])?> <small>(#<?=escHist($evento['usuario_id'])?>)</small></td>
         <td><?=escHist($evento['criado_em'])?></td>
         <td><details><summary>Ver estados</summary>
