@@ -57,9 +57,13 @@ http://localhost:8088/tarefas.php (após login).
 - **Delete:** **arquiva logicamente**, sem apagar tarefas ou apólices fisicamente.
 
 Há proteção CSRF nas operações, escape de HTML, PDO parametrizado e autoria.
-O módulo é isolado dos registros históricos e **não envia mensagens**.
+O módulo registra seu próprio histórico auditável de tarefas, não modifica os seguros importados e **não envia mensagens**.
 
 - [Documentação e demonstração](aplicacao/docs/CRUD-TAREFAS.md).
+- **RF05 / RN07 — Histórico auditável:** em `tarefas.php`, use o link **Histórico** de cada tarefa para consultar criação, edição e arquivamento, incluindo usuário, data, versão e estados anterior/posterior. A consulta também permanece disponível após arquivamento em `/historico-tarefa.php?id=ID`.
+- **Instalação em banco existente:** execute `aplicacao/database/migrations/003_historico_tarefas.sql` após a migração `001_tarefa_acompanhamento.sql`. O `demo-init.sql` já cria essa tabela em uma instalação nova. A migração não recria eventos retroativos de tarefas anteriores à implementação.
+- **Teste automatizado:** `docker compose --env-file .env -f compose.demo.yaml exec -T web php /var/www/src/testar-historico-tarefas.php` (na pasta `aplicacao`). O teste insere dados fictícios dentro de uma transação e executa `rollBack()` ao finalizar.
+- **RNF01–RNF06:** os testes de validação, concorrência, CSRF, acesso anônimo, desempenho e persistência foram executados no Cataneo. Evidências reprodutíveis nos scripts [testar-rnf-validacoes.php](aplicacao/src/testar-rnf-validacoes.php), [testar-rnf-http.php](aplicacao/src/testar-rnf-http.php) e [testar-rnf-persistencia.php](aplicacao/src/testar-rnf-persistencia.php). O relatório detalhado de testes permanece local e não está nesta branch. Para rodar as suítes automatizadas no ambiente demo, use `src/testar-rnf-validacoes.php` e `src/testar-rnf-http.php`. O teste HTTP só cria administrador temporário se não existir nenhum usuário, e o remove ao final; nunca o execute contra dados reais.
 - [Migração](aplicacao/database/migrations/001_tarefa_acompanhamento.sql)
   para bancos já existentes.
 - O demo-init.sql já inclui a tabela para instalações novas.

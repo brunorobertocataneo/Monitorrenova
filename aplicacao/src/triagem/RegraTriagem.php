@@ -24,7 +24,19 @@ abstract class RegraTriagem implements RegraAvaliavel
     final public static function normalizar(mixed $valor): string
     {
         $texto = preg_replace('/\\s+/u', ' ', trim((string) $valor)) ?? (string) $valor;
-        $semAcentos = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $texto);
-        return strtoupper($semAcentos === false ? $texto : $semAcentos);
+        // Mapeamento UTF-8 previsivel no Windows e no Linux, independente do locale.
+        $semAcentos = strtr($texto, [
+            'á'=>'a', 'à'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a',
+            'é'=>'e', 'è'=>'e', 'ê'=>'e', 'ë'=>'e',
+            'í'=>'i', 'ì'=>'i', 'î'=>'i', 'ï'=>'i',
+            'ó'=>'o', 'ò'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o',
+            'ú'=>'u', 'ù'=>'u', 'û'=>'u', 'ü'=>'u', 'ç'=>'c',
+            'Á'=>'A', 'À'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A',
+            'É'=>'E', 'È'=>'E', 'Ê'=>'E', 'Ë'=>'E',
+            'Í'=>'I', 'Ì'=>'I', 'Î'=>'I', 'Ï'=>'I',
+            'Ó'=>'O', 'Ò'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O',
+            'Ú'=>'U', 'Ù'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ç'=>'C',
+        ]);
+        return strtoupper($semAcentos);
     }
 }
