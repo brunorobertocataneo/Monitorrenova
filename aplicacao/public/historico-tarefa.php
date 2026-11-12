@@ -41,7 +41,7 @@ try {
 <style>
 body{font:15px/1.5 system-ui,Arial,sans-serif;max-width:1100px;margin:30px auto;padding:0 18px;background:#f5f8fb;color:#183047}
 a{color:#075c73}.card{background:white;border:1px solid #d9e4eb;border-radius:12px;padding:20px;margin-top:18px}
-table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid #e1e8ef;padding:12px 8px;text-align:left;vertical-align:top}
+.history-table-scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid #e1e8ef;border-radius:8px}table{border-collapse:collapse;width:100%;min-width:720px}th,td{border-bottom:1px solid #e1e8ef;padding:12px 8px;text-align:left;vertical-align:top}
 th{background:#eef4f8}small{color:#556b79}details{max-width:440px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
 </style>
 </head>
@@ -54,6 +54,7 @@ th{background:#eef4f8}small{color:#556b79}details{max-width:440px}pre{white-spac
   <h1>Histórico da tarefa #<?=escHist($tarefa['id'])?></h1>
   <p><strong><?=escHist($tarefa['titulo'])?></strong> — <?= $tarefa['excluido_em'] !== null ? 'Arquivada' : 'Ativa' ?></p>
   <p><small>Os eventos abaixo permanecem consultáveis após o arquivamento.</small></p>
+  <div class="history-table-scroll" role="region" aria-label="Eventos de auditoria da tarefa" tabindex="0">
   <table>
     <thead><tr><th>Versão</th><th>Ação</th><th>Autor</th><th>Data</th><th>Alterações</th></tr></thead>
     <tbody>
@@ -74,6 +75,7 @@ th{background:#eef4f8}small{color:#556b79}details{max-width:440px}pre{white-spac
     <?php if ($eventos === []): ?><tr><td colspan="5">Nenhum evento registrado nesta tarefa.</td></tr><?php endif; ?>
     </tbody>
   </table>
+  </div>
 </main>
 <?php endif; ?>
 </body></html>
