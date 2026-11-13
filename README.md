@@ -173,3 +173,8 @@ Apenas nomes de personagens aparecem nos registros; nenhuma imagem, episódio ou
 ## Licença
 
 Uso demonstrativo acadêmico. Nenhuma licença de código aberto foi atribuída nesta versão; defina uma licença apropriada antes de autorizar redistribuição ou reutilização por terceiros.
+
+
+## Diagramas UML editáveis
+
+Todos os arquivos do diagrams.net estão organizados na pasta única [**diagramas-corrigidos-editaveis/**](diagramas-corrigidos-editaveis/README.md). Os modelos complementares de status manual foram movidos para a mesma pasta. A pasta `documentação/` permanece separada para documentos acadêmicos.
