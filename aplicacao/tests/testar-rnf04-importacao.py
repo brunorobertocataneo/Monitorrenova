@@ -25,9 +25,9 @@ token = re.search(r'name="csrf"\s+value="([^"]+)"', html)
 if not token:
     sys.exit("Token importação indisponível")
 csrf=token.group(1)
-header="linha_origem,segurado,vendedor,vencimento,produto,renovado,cobrado,nao_vai_renovar\n"
-valid="2,SEGURO RNF04 FICTICIO,VENDEDOR TESTE,2027-10-12,Auto,0,0,0\n"
-invalid="3,SEGURO RNF04 INVALIDO,VENDEDOR TESTE,2027-10-99,Auto,0,0,0\n"
+header="linha_origem;segurado;vendedor;vencimento;produto;renovado;cobrado;nao_vai_renovar\n"
+valid="2;SEGURO RNF04 FICTICIO;VENDEDOR TESTE;2027-10-12;Auto;0;0;0\n"
+invalid="3;SEGURO RNF04 INVALIDO;VENDEDOR TESTE;2027-10-99;Auto;0;0;0\n"
 
 def upload(csv):
     boundary="----MonitorRenovaRNF04"
