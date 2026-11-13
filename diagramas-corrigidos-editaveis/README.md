@@ -1,29 +1,36 @@
-# Diagramas UML — MonitorRenova
+# MonitorRenova — Diagramas UML finais editáveis
 
-**Pasta única para arquivos editáveis do diagrams.net.**
+Pasta única dos arquivos `.drawio` para a banca da UNOESC. Os diagramas 01–09 seguem a especificação de Engenharia de Software I e os módulos de Programação II. Todos podem ser abertos e editados em https://app.diagrams.net/.
 
-As versões originais foram organizadas para evitar arquivos duplicados na raiz ou na antiga pasta `aplicacao/docs/uml`. A pasta `documentação` guarda relatórios acadêmicos e não é uma duplicação desta pasta.
+## Abrir tudo de uma vez
 
-## Diagramas principais (versão integrada atualmente)
+- **`00-MONITORRENOVA-DIAGRAMAS-ROTEIROS-CORRIGIDOS.drawio`** — arquivo consolidado com nove páginas.
 
-1. `01-casos-de-uso.drawio` — casos de uso acadêmicos.
-2. `02-classes-conceituais.drawio` — classes conceituais.
-3. `03-classes-php-crud.drawio` — classes PHP e CRUD de tarefas.
-4. `04-heranca-polimorfismo.drawio` — interface, herança e relacionamentos POO.
-5. `05-modelo-relacional.drawio` — modelo relacional de tarefas e histórico.
-6. `06-sequencia-cadastro.drawio` — sequência de cadastro de tarefa (versão histórica).
-7. `07-sequencia-edicao-alt.drawio` — sequência de edição de tarefa com `alt` (versão histórica).
+## Diagramas individuais
 
-## Modelos complementares preservados
+1. `01-casos-de-uso.drawio` — atores, UC01–UC09 e extensões claramente separadas.
+2. `02-classes-conceituais.drawio` — entidades do domínio e multiplicidades.
+3. `03-classes-php-crud.drawio` — classes PHP, Service, Repository, PDO e CRUD.
+4. `04-heranca-polimorfismo.drawio` — interface, herança, polimorfismo, associação, agregação e composição.
+5. `05-modelo-relacional.drawio` — tabelas, chaves e histórico de tarefas.
+6. `06-sequencia-consulta-uc02.drawio` — consulta de seguros (UC02).
+7. `07-sequencia-importacao-uc05.drawio` — validação, prévia, confirmação e caminhos alternativos (UC05).
+8. `08-sequencia-cadastro-tarefa-ext.drawio` — CRUD como funcionalidade adicional, sem renumerar UC original.
+9. `09-sequencia-edicao-tarefa-ext.drawio` — concorrência, versões e histórico de tarefas.
 
-- `10-modelos-status-manual-complementares.drawio`: quatro páginas de modelos PHP/POO, sequência da atualização da situação do seguro, banco de decisões/status e casos de uso da interface simplificada. **Preservado por ter conteúdo distinto** dos sete diagramas principais.
+## Conteúdo complementar preservado
 
-## Revisão acadêmica em andamento
+- `10-modelos-status-manual-complementares.drawio` — quatro páginas sobre a atualização manual da situação do seguro. É um arquivo complementar e **não** faz parte das nove páginas consolidadas.
 
-O Pull Request [#5](https://github.com/brunorobertocataneo/Monitorrenova/pull/5) alinha os casos de uso e sequências à especificação original da professora, com UC02 para consulta e UC05 para importação, além de preservar cadastro/edição como extensões. Quando essa revisão for aprovada e integrada, usar apenas os nomes atuais definidos pelo PR #5 e o arquivo consolidado dentro desta pasta.
+## Correspondência com a especificação
 
-## Como abrir
+- **RF05 / UC04** = histórico mensal de competências; não confundir com histórico de tarefas.
+- **RN07** = exportação respeitando filtros; não renomear como auditoria de tarefa.
+- **EXT-T01 / EXT-T02** = CRUD e histórico de tarefas, complementares.
+- Diagramas de sequência **UC02** e **UC05** documentam os casos do roteiro de Engenharia de Software I.
 
-Entre em [diagrams.net](https://app.diagrams.net/), selecione **Arquivo → Abrir de → Dispositivo** e escolha um arquivo `.drawio`. Os diagramas continuam editáveis.
+## Limites da validação
 
-**Observação de rastreabilidade:** RF05 e UC04 na especificação V7 tratam de histórico mensal, não de histórico de tarefas. A revisão do PR #5 esclarece essa distinção.
+Os arquivos foram revisados estruturalmente e integrados ao repositório. A aprovação formal das representações gráficas cabe à avaliação docente. O conteúdo técnico do código e as evidências de testes estão documentados separadamente.
+
+Para baixar apenas esta pasta, use o arquivo consolidado individual ou baixe o ZIP do repositório no GitHub e abra `diagramas-corrigidos-editaveis`.
