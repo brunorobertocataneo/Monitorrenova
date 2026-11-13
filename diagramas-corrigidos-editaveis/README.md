@@ -1,6 +1,6 @@
 # Diagramas UML — revisão para os roteiros UNOESC (13/11/2026)
 
-**Arquivo único para abrir no diagrams.net:** [MONITORRENOVA-DIAGRAMAS-ROTEIROS-CORRIGIDOS.drawio](../MONITORRENOVA-DIAGRAMAS-ROTEIROS-CORRIGIDOS.drawio).
+**Arquivo único para abrir no diagrams.net:** [00-MONITORRENOVA-DIAGRAMAS-ROTEIROS-CORRIGIDOS.drawio](00-MONITORRENOVA-DIAGRAMAS-ROTEIROS-CORRIGIDOS.drawio).
 
 Abra o diagrams.net → **Arquivo → Abrir de → Dispositivo** e escolha o arquivo `.drawio`. O documento consolidado contém **nove abas/páginas**, todas editáveis. Os arquivos individuais também são disponibilizados nesta pasta.
 
