@@ -42,6 +42,7 @@ def upload(csv):
 
 out=upload(header+valid+invalid)
 if "inválid" not in out and "inval" not in out.lower():
+    print("RNF04 diagnóstico da resposta (sem credenciais):", re.sub(r"<[^>]+>", " ", out)[-1000:])
     sys.exit("RNF04: não houve erro visível de linha inválida")
 print("RNF04 arquivo parcialmente válido rejeitado na prévia")
 
