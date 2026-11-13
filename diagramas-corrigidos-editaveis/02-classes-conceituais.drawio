@@ -1,41 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<mxfile host="app.diagrams.net" version="24.7.17" type="device" pages="1">
-  <diagram id="MR-APRES-02" name="02 - Classes conceituais">
-    <mxGraphModel dx="1500" dy="1100" grid="1" gridSize="10" guides="1" connect="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1120">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="x2" value="MonitorRenova — classes conceituais do domínio (modelo de análise)" style="text;html=1;strokeColor=none;fillColor=none;fontSize=23;fontStyle=1;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="25" width="1350" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="x3" value="As caixas representam CONCEITOS do domínio, não classes PHP já implementadas. Relações embasadas no esquema relacional." style="text;html=1;strokeColor=none;fillColor=none;fontSize=14;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="78" width="1370" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="x4" value="Usuário&#xA;+ id: inteiro&#xA;+ login: texto&#xA;+ autenticar()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
-          <mxGeometry x="75" y="175" width="330" height="195" as="geometry" />
-        </mxCell>
-        <mxCell id="x5" value="SeguroMensal&#xA;+ id: inteiro&#xA;+ competencia: ano-mês&#xA;+ segurado: texto&#xA;+ vencimento: data&#xA;+ consultar()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
-          <mxGeometry x="1030" y="175" width="335" height="205" as="geometry" />
-        </mxCell>
-        <mxCell id="x6" value="TarefaAcompanhamento&#xA;+ id: inteiro&#xA;+ titulo: texto&#xA;+ descricao: texto&#xA;+ prioridade: enum&#xA;+ situacao: enum&#xA;+ vencimento: data?&#xA;+ versao: inteiro&#xA;+ excluidoEm: data?&#xA;+ cadastrar()&#xA;+ atualizar()&#xA;+ arquivar()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
-          <mxGeometry x="490" y="435" width="465" height="385" as="geometry" />
-        </mxCell>
-        <mxCell id="x7" value="EventoHistorico&#xA;+ id: inteiro&#xA;+ acao: enum&#xA;+ versao: inteiro&#xA;+ dadosAntes: JSON?&#xA;+ dadosDepois: JSON&#xA;+ criadoEm: data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#36576d;fontSize=17;align=left;verticalAlign=top;spacingLeft=14;spacingTop=14;spacingRight=8;spacingBottom=8;" vertex="1" parent="1">
-          <mxGeometry x="1030" y="865" width="365" height="225" as="geometry" />
-        </mxCell>
-        <mxCell id="x8" value="autoria de criação (1 tarefa → 1 usuário; usuário → 0..* tarefas)" style="endArrow=none;html=1;strokeColor=#36576d;strokeWidth=1.6;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="x4" target="x6">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="x9" value="seguro associado (tarefa 0..1; seguro 0..* tarefas)" style="endArrow=none;html=1;strokeColor=#36576d;strokeWidth=1.6;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="x5" target="x6">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="x10" value="histórico (evento 1 tarefa; tarefa 0..* eventos)" style="endArrow=none;html=1;strokeColor=#36576d;strokeWidth=1.6;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="x6" target="x7">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="x11" value="Associações de análise: a tarefa registra usuário criador e atualizador e pode registrar autor de arquivamento. Cada evento de histórico possui autoria própria. Não presumir composição de objetos PHP a partir de FKs." style="text;html=1;whiteSpace=wrap;strokeColor=#b1b9c1;fillColor=#f6f8fa;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="70" y="990" width="850" height="95" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
-</mxfile>
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-13T13:00:00.000Z" agent="MonitorRenova UML Revisao" version="24.7.17" type="device" pages="1">
+<diagram id="MR-CONCEPT-ESI-2026" name="02 - Classes conceituais V7">
+<mxGraphModel dx="1700" dy="1250" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1520" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/>
+<mxCell id="title" value="MONITORRENOVA  |  CLASSES CONCEITUAIS DE ANÁLISE" style="text;html=1;align=left;verticalAlign=middle;fontSize=27;fontStyle=1;fontColor=#123D49;strokeColor=none;fillColor=none;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="35" y="22" width="1730" height="52" as="geometry"/></mxCell>
+<mxCell id="subtitle" value="Modelo V7 (requisitos e domínio), não mapeamento 1:1 de classes PHP. Multiplicidades representam hipóteses de especificação a validar." style="text;html=1;align=left;verticalAlign=top;fontSize=15;fontColor=#496C79;strokeColor=none;fillColor=none;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="35" y="78" width="1730" height="52" as="geometry"/></mxCell>
+<mxCell id="usuario" value="&lt;b&gt;Usuario&lt;/b&gt;&lt;hr/&gt;- id: inteiro&lt;br/&gt;- login: texto&lt;br/&gt;+ autenticar()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="65" y="230" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="seguro" value="&lt;b&gt;Seguro&lt;/b&gt;&lt;hr/&gt;- id: inteiro&lt;br/&gt;- segurado: texto&lt;br/&gt;- vencimento: data&lt;br/&gt;- situacao: texto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="600" y="230" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="competencia" value="&lt;b&gt;Competencia&lt;/b&gt;&lt;hr/&gt;- anoMes: texto&lt;br/&gt;- ativa: booleano&lt;br/&gt;+ consultarHistorico()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="1180" y="230" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="analista" value="&lt;b&gt;Analista&lt;/b&gt;&lt;hr/&gt;&lt;i&gt;Especialização conceitual de Usuário&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="65" y="510" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="revisao" value="&lt;b&gt;Revisao&lt;/b&gt;&lt;hr/&gt;- data: datahora&lt;br/&gt;- situacao: texto&lt;br/&gt;- observacao: texto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="600" y="510" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="lote" value="&lt;b&gt;LoteImportacao&lt;/b&gt;&lt;hr/&gt;- id: inteiro&lt;br/&gt;- status: texto&lt;br/&gt;+ validarPrevia()" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="1180" y="510" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="gestor" value="&lt;b&gt;Gestor&lt;/b&gt;&lt;hr/&gt;&lt;i&gt;Especialização conceitual de Usuário&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="65" y="790" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="validacao" value="&lt;b&gt;ValidacaoApolice&lt;/b&gt;&lt;hr/&gt;- fonte: texto&lt;br/&gt;- dataConsulta: datahora&lt;br/&gt;- resultado: texto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="600" y="790" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="item" value="&lt;b&gt;ItemImportacao&lt;/b&gt;&lt;hr/&gt;- linha: inteiro&lt;br/&gt;- dados: array&lt;br/&gt;- problemas: list" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="1180" y="790" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="tarefa" value="&lt;b&gt;TarefaAcompanhamento&lt;/b&gt;&lt;hr/&gt;- titulo: texto&lt;br/&gt;- situacao: texto&lt;br/&gt;- versao: inteiro" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="65" y="1090" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="evento" value="&lt;b&gt;EventoHistoricoTarefa&lt;/b&gt;&lt;hr/&gt;- acao: texto&lt;br/&gt;- versao: inteiro&lt;br/&gt;- instante: datahora" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F6F7;strokeColor=#426675;strokeWidth=1.6;align=left;verticalAlign=top;spacingTop=12;spacingLeft=14;fontSize=15;fontColor=#162F3A;" vertex="1" parent="1"><mxGeometry x="600" y="1090" width="420" height="165" as="geometry"/></mxCell>
+<mxCell id="inh1" value="" style="endArrow=block;endFill=0;strokeColor=#2F746F;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="analista" target="usuario"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="inh2" value="" style="endArrow=block;endFill=0;strokeColor=#2F746F;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="gestor" target="usuario"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a1" value="1 Seguro : 0..* Revisões" style="endArrow=none;html=1;strokeColor=#718096;strokeWidth=1.6;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="seguro" target="revisao"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a2" value="1 Seguro : 0..* Validações" style="endArrow=none;html=1;strokeColor=#718096;strokeWidth=1.6;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="seguro" target="validacao"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a3" value="1 Competência : 0..* Seguros" style="endArrow=none;html=1;strokeColor=#718096;strokeWidth=1.6;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="competencia" target="seguro"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a4" value="1 Lote : 1..* Itens" style="startArrow=diamond;startFill=1;endArrow=none;strokeColor=#0F766E;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="lote" target="item"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a5" value="1 Seguro : 0..* Tarefas (associação opcional)" style="endArrow=none;html=1;strokeColor=#718096;strokeWidth=1.6;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="seguro" target="tarefa"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a6" value="1 Tarefa : 0..* Eventos" style="endArrow=none;html=1;strokeColor=#718096;strokeWidth=1.6;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="tarefa" target="evento"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="a7" value="1 Usuário : 0..* Tarefas" style="endArrow=none;html=1;strokeColor=#718096;strokeWidth=1.6;rounded=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="usuario" target="tarefa"><mxGeometry relative="1" as="geometry"/></mxCell>
+<mxCell id="conceptNote" value="Modelo conceitual inclui elementos de consulta, importação, aprovação e revisão do roteiro da professora. Herança de Analista/Gestor é conceitual (NÃO há alegação de herança PHP dessas entidades). O diagrama 03 mostra classes PHP reais." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7E9;strokeColor=#CEAE74;fontColor=#62471F;align=left;verticalAlign=middle;spacing=12;fontSize=14;" vertex="1" parent="1"><mxGeometry x="1090" y="1110" width="645" height="178" as="geometry"/></mxCell>
+</root></mxGraphModel></diagram></mxfile>
