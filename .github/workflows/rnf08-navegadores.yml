@@ -1,0 +1,48 @@
+name: MonitorRenova - RNF08 tres navegadores e responsividade
+on:
+  push:
+    branches: [testes-rnf-especificacao-v7-20261113]
+  pull_request:
+    paths:
+      - 'aplicacao/tests/testar-rnf08-navegadores.js'
+      - '.github/workflows/rnf08-navegadores.yml'
+      - 'aplicacao/public/**'
+permissions:
+  contents: read
+jobs:
+  browsers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI_RNF_ISOLATED: '1'
+      CI_RNF_PASSWORD: 'SenhaDemoAcademicaSomenteCI2026_48'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preparar navegadores reais para teste
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chrome firefox msedge
+      - name: Subir aplicação fictícia isolada
+        run: |
+          printf 'DEMO_DB_PASSWORD=%s\nDEMO_ROOT_PASSWORD=%s\n' 'CI_Demo_Password_Only_2026_987' 'CI_Root_Password_Only_2026_654' > aplicacao/.env
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml up -d --build
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 -e CI_RNF_PASSWORD="$CI_RNF_PASSWORD" web php /var/www/src/preparar-rnf-isolado.php admin
+      - name: Testar Chrome Firefox Edge desktop e mobile
+        run: node aplicacao/tests/testar-rnf08-navegadores.js
+      - name: Publicar capturas e relatório de compatibilidade
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidencias-rnf08-navegadores
+          path: rnf08-evidencias/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Logs se falhar
+        if: failure()
+        run: docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml logs --tail=100 web database || true
+      - name: Apagar dados de teste
+        if: always()
+        run: docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml down -v --remove-orphans || true
