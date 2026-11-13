@@ -38,6 +38,8 @@ jobs:
         run: |
           php -l aplicacao/src/testar-rnf-especificacao.php
           php -l aplicacao/src/preparar-rnf-isolado.php
+          php -l aplicacao/src/auditar-rnf07-demo.php
+          python3 -m py_compile aplicacao/tests/auditar-rnf02-rotas.py
           python3 -m py_compile aplicacao/tests/testar-rnf01-carga.py aplicacao/tests/testar-rnf04-importacao.py
 
       - name: Subir Docker e MySQL em base descartável
@@ -55,6 +57,12 @@ jobs:
           for script in testar-crud-tarefas.php testar-renderizacao-tarefas.php testar-heranca-polimorfismo.php testar-relacionamentos-poo.php testar-historico-tarefas.php testar-rnf-validacoes.php; do
             docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T web php "/var/www/src/$script"
           done
+
+      - name: RNF02 - inventário completo das rotas PHP e proteção CSRF
+        run: python3 aplicacao/tests/auditar-rnf02-rotas.py
+
+      - name: RNF07 - varrer campos textuais em todas tabelas sintéticas
+        run: docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 web php /var/www/src/auditar-rnf07-demo.php
 
       - name: Evidências RNF03, RNF06 e triagem parcial RNF07
         run: |
