@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""RNF01: 100 consultas autenticadas em até cinco workers concorrentes.
-Executar APENAS após preparar base de demonstração com 500 registros adicionais.
-Não usar em produção. Gera falha se houver respostas não-200 ou <95% <=3s.
+"""RNF01: 5 sessões independentes, 100 consultas autenticadas concorrentes.
+Somente com banco descartável e 500 seguros sintéticos adicionais.
 """
 import concurrent.futures
 import http.cookiejar
@@ -17,41 +16,49 @@ secret = os.environ.get("CI_RNF_PASSWORD")
 if os.environ.get("CI_RNF_ISOLATED") != "1" or not secret or len(secret) < 16:
     sys.exit("Ambiente RNF isolado/credencial demo não configurados")
 
-jar = http.cookiejar.CookieJar()
-opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
-page = opener.open(BASE + "/login.php", timeout=10).read().decode("utf-8", "replace")
-token = re.search(r'name="csrf"\s+value="([^"]+)"', page)
-if not token:
-    sys.exit("RNF01: formulário de login sem token CSRF")
-
-data = urllib.parse.urlencode({"csrf": token.group(1), "senha": secret}).encode()
-opener.open(urllib.request.Request(BASE + "/login.php", data=data, method="POST"), timeout=10).read()
-cookie = "; ".join(c.name + "=" + c.value for c in jar)
-if "MONITOR_RENOVA_SESSION=" not in cookie:
-    sys.exit("RNF01: cookie autenticado não encontrada")
+def login():
+    jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    page = opener.open(BASE + "/login.php", timeout=10).read().decode("utf-8", "replace")
+    token = re.search(r'name="csrf"\s+value="([^"]+)"', page)
+    if not token:
+        raise RuntimeError("formulário de login sem token CSRF")
+    data = urllib.parse.urlencode({"csrf": token.group(1), "senha": secret}).encode()
+    opener.open(urllib.request.Request(BASE + "/login.php", data=data, method="POST"), timeout=10).read()
+    cookies = [c.value for c in jar if c.name == "MONITOR_RENOVA_SESSION"]
+    if len(cookies) != 1:
+        raise RuntimeError("sessão autenticada não encontrada")
+    page = opener.open(BASE + "/seguros.php", timeout=10)
+    if page.status != 200:
+        raise RuntimeError("sessão não autorizou consulta")
+    page.close()
+    return opener, cookies[0]
 
 def worker(index):
+    opener, session_id = login()  # cookie jar exclusivo por worker (não compartilhado)
     values = []
     for i in range(20):
         query = urllib.parse.urlencode({"busca": "SEGURO-TESTE-" if i % 2 else "", "pagina": "1"})
-        req = urllib.request.Request(BASE + "/seguros.php?" + query, headers={"Cookie": cookie})
+        req = urllib.request.Request(BASE + "/seguros.php?" + query)
         t0 = time.perf_counter()
-        with urllib.request.urlopen(req, timeout=10) as res:
+        with opener.open(req, timeout=10) as res:
             status = res.status
             res.read()
         values.append((status, time.perf_counter() - t0))
-    return values
+    return (session_id, values)
 
 try:
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
-        results = [record for batch in pool.map(worker, range(5)) for record in batch]
+        batches = list(pool.map(worker, range(5)))
 except Exception as exc:
-    sys.exit("RNF01 FALHA transporte: " + str(exc))
+    sys.exit("RNF01 FALHA transporte/login: " + str(exc))
 
+unique_sessions = len({session for session, _ in batches})
+results = [rec for _, batch in batches for rec in batch]
 success = sum(code == 200 and seconds <= 3 for code, seconds in results)
 times = sorted(seconds for _, seconds in results)
-passed = len(results) == 100 and success >= 95
+passed = len(results) == 100 and unique_sessions == 5 and success >= 95
 print("RNF01 " + ("APROVADO" if passed else "REPROVADO") +
       f" consultas_ate_3s={success}/{len(results)} p95={times[94]:.3f}s max={times[-1]:.3f}s" +
-      " workers=5 apolices_adicionais=500")
+      f" sessoes_distintas={unique_sessions}/5 workers=5 apolices_adicionais=500")
 sys.exit(0 if passed else 1)
