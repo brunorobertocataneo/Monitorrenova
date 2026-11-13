@@ -1,0 +1,100 @@
+name: MonitorRenova - Auditoria de RNFs (ambiente isolado)
+on:
+  pull_request:
+    paths:
+      - 'aplicacao/src/**'
+      - 'aplicacao/tests/**'
+      - 'aplicacao/database/**'
+      - 'aplicacao/public/**'
+      - 'aplicacao/compose.demo.yaml'
+      - '.github/workflows/rnf-auditoria.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rnfs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      CI_RNF_ISOLATED: '1'
+      CI_RNF_PASSWORD: 'SenhaDemoAcademicaSomenteCI2026_48'
+    steps:
+      - name: Checkout de branch avaliada
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP 8.3 para análise
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, iconv
+          coverage: none
+
+      - name: Verificar sintaxe de scripts de RNF
+        run: |
+          php -l aplicacao/src/testar-rnf-especificacao.php
+          php -l aplicacao/src/preparar-rnf-isolado.php
+          python3 -m py_compile aplicacao/tests/testar-rnf01-carga.py aplicacao/tests/testar-rnf04-importacao.py
+
+      - name: Subir Docker e MySQL em base descartável
+        run: |
+          printf 'DEMO_DB_PASSWORD=%s\nDEMO_ROOT_PASSWORD=%s\n' 'CI_Demo_Password_Only_2026_987' 'CI_Root_Password_Only_2026_654' > aplicacao/.env
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml up -d --build
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml ps
+
+      - name: Evidências RNF02 - sessões, CSRF e consultas HTTP existentes
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T web php /var/www/src/testar-rnf-http.php
+
+      - name: Regressão CRUD, POO e eventos
+        run: |
+          for script in testar-crud-tarefas.php testar-renderizacao-tarefas.php testar-heranca-polimorfismo.php testar-relacionamentos-poo.php testar-historico-tarefas.php testar-rnf-validacoes.php; do
+            docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T web php "/var/www/src/$script"
+          done
+
+      - name: Evidências RNF03, RNF06 e triagem parcial RNF07
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 web php /var/www/src/testar-rnf-especificacao.php
+
+      - name: Preparar usuário fictício e verificar massa de 65 seguros
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 -e CI_RNF_PASSWORD="$CI_RNF_PASSWORD" web php /var/www/src/preparar-rnf-isolado.php admin
+          cnt=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_demo.seguro_mensal"')
+          test "$cnt" = '65'
+
+      - name: Evidência RNF04 - validação de CSV e zero gravações
+        run: |
+          python3 aplicacao/tests/testar-rnf04-importacao.py
+          cnt=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_demo.seguro_mensal WHERE competencia = '\''2027-10'\''"')
+          test "$cnt" = '0'
+          echo 'RNF04 OK: zero registros após CSV inválido, prévia e cancelamento'
+
+      - name: RNF09 - backup e RESTAURAÇÃO real em segundo schema isolado
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqldump -u root --single-transaction --no-tablespaces monitor_renova_demo' > /tmp/rnf09-backup.sql
+          test -s /tmp/rnf09-backup.sql
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -e "CREATE DATABASE monitor_renova_rnf09 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"'
+          cat /tmp/rnf09-backup.sql | docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root monitor_renova_rnf09'
+          restored=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_rnf09.seguro_mensal"')
+          admins=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_rnf09.usuario WHERE login = '\''admin'\'' AND CHAR_LENGTH(senha_hash)>30"')
+          test "$restored" = '65'
+          test "$admins" = '1'
+          echo "RNF09 RESTAURACAO_OK seguros=$restored usuario_admin_hash=$admins"
+          rm -f /tmp/rnf09-backup.sql
+
+      - name: RNF01 - inserir 500 apólices fictícias adicionais e medir 5 workers
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 web php /var/www/src/preparar-rnf-isolado.php carga
+          python3 aplicacao/tests/testar-rnf01-carga.py
+
+      - name: Logs de diagnóstico em caso de falha
+        if: failure()
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml ps || true
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml logs --tail=100 web database || true
+
+      - name: Remover ambiente descartável ao final
+        if: always()
+        run: |
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml down -v --remove-orphans || true
