@@ -14,7 +14,7 @@ if (process.env.CI_RNF_ISOLATED !== '1' || !pw || pw.length < 16) {
   throw new Error('RNF08 exige ambiente isolado com credenciais sintéticas');
 }
 const browsers = [
-  { name: 'Chrome-Chromium', engine: chromium },
+  { name: 'Google-Chrome', engine: chromium, channel: 'chrome' },
   { name: 'Firefox', engine: firefox },
   { name: 'Microsoft-Edge', engine: chromium, channel: 'msedge' },
 ];
