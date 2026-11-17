@@ -25,6 +25,7 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
 <meta name="theme-color" content="#07523c">
 <title>Vendedores — MonitorRenova</title>
 <link rel="stylesheet" href="/assets/app.css?v=6">
+<link rel="stylesheet" href="/assets/redesign.css?v=1">
 </head><body class="app-shell">
 <?php require __DIR__.'/partials/sidebar.php'; ?>
 <div class="app-content">
