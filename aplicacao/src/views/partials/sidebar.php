@@ -1,7 +1,7 @@
 <?php
 /**
- * Navegação simples: início, vendedores (subpastas) e consultas.
- * Recursos acadêmicos continuam no código, mas não aparecem no menu.
+ * Navegação principal: início, vendedores, consulta e tarefas.
+ * Os módulos complementares permanecem acessíveis por suas próprias rotas.
  */
 require_once __DIR__.'/../../Auth.php';
 $activePage=isset($activePage)&&is_string($activePage)?$activePage:'dashboard';
@@ -46,6 +46,9 @@ $menuVendedoresAberto=($activePage==='vendedores');
       </details>
       <a class="nav-item <?=$activePage==='seguros'?'active':''?>" href="/seguros.php" <?=$activePage==='seguros'?'aria-current="page"':''?>>
         <span class="symbol" aria-hidden="true">⌕</span><span>Consultar seguros</span>
+      </a>
+      <a class="nav-item <?=$activePage==='tarefas'?'active':''?>" href="/tarefas.php" <?=$activePage==='tarefas'?'aria-current="page"':''?>>
+        <span class="symbol" aria-hidden="true">☑</span><span>Tarefas</span>
       </a>
     </div>
 
