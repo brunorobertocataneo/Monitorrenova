@@ -53,6 +53,7 @@ $csrfToken = Auth::csrf();
 .task-filter .task-field{min-width:180px;flex:1}
 @media(max-width:750px){.task-grid{grid-template-columns:1fr}.task-field.wide{grid-column:auto}.task-panel{padding:16px}}
 </style>
+<link rel="stylesheet" href="/assets/redesign.css?v=1">
 </head>
 <body class="app-shell">
 <?php $activePage = 'tarefas'; require __DIR__ . '/partials/sidebar.php'; ?>
