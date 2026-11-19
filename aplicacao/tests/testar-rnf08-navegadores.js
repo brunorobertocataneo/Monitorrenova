@@ -60,6 +60,30 @@ const report = [];
             if (!info.bodyText.includes('Monitor') && info.bodyText.trim().length < 10) {
               throw new Error('Conteúdo vazio ou tela inesperada em ' + item.route);
             }
+            // RNF08 / interface de pastas: navegação e filtro sem tocar em seguros.
+            if (item.name === 'vendedores') {
+              const folders = page.locator('#vendor-folder-list .vendor-folder-card');
+              const count = await folders.count();
+              if (count === 0) throw new Error('Pasta de vendedor não renderizada na massa demo');
+              const first = folders.first();
+              const firstName = (await first.locator('.vendor-folder-name').innerText()).trim();
+              const target = await first.getAttribute('href');
+              if (!firstName || !target || !target.includes('vendedor=')) throw new Error('Card de vendedor sem destino válido');
+              const search = page.locator('#buscar-vendedor');
+              await search.fill('VENDEDOR-SEM-CORRESPONDENCIA-987');
+              if (await page.locator('#vendor-folder-list .vendor-folder-card:visible').count() !== 0)
+                throw new Error('Pesquisa de vendedores não filtrou as pastas');
+              if (!await page.locator('#vendor-no-results').isVisible())
+                throw new Error('Estado vazio da busca de vendedores ausente');
+              await search.fill(firstName);
+              if (await page.locator('#vendor-folder-list .vendor-folder-card:visible').count() < 1)
+                throw new Error('Pesquisa pelo nome do vendedor não encontrou a pasta');
+              await search.fill('');
+              const opened = await page.goto(BASE + target, { waitUntil: 'domcontentloaded' });
+              if (!opened || opened.status() !== 200 || !await page.locator('table.vendor-table').isVisible())
+                throw new Error('Abertura da pasta não exibiu tabela de seguros');
+              await page.goto(BASE + '/vendedores.php', { waitUntil: 'domcontentloaded' });
+            }
             const filename = config.name + '-' + vp.name + '-' + item.name + '.png';
             await page.screenshot({ path: path.join(outDir, filename), fullPage: true });
             const overflow = info.width - info.client;
