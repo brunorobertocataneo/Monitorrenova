@@ -19,6 +19,7 @@ $pagina=1;
 $erro=null;
 $sucesso=isset($_GET['ok'])&&$_GET['ok']==='salvo'?'Situação salva no MySQL com registro no histórico.':null;
 $resultado=['registros'=>[],'total'=>0,'totalPaginas'=>1,'pagina'=>1,'vendedores'=>[]];
+$estatisticasVendedores=[];
 $method=$_SERVER['REQUEST_METHOD']??'GET';
 if(!in_array($method,['GET','POST'],true)){
     header('Allow: GET, POST');
@@ -66,6 +67,23 @@ try {
     $filtros=['vendedor'=>$vendedorAtual,'produto'=>'','de'=>null,'ate'=>null,'busca'=>$busca];
     $resultado=$repo->consultar($filtros,$pagina,40);
     $vendedores=array_values(array_filter($resultado['vendedores'],static fn($v)=>trim((string)$v)!==''));
+    // Contadores das pastas virtuais: agrupamento da mesma view da competência ativa.
+    // Não cria pastas físicas, nem altera registros dos seguros.
+    if($vendedorAtual===''){
+        $contagens=Database::connection()->query(
+            "SELECT vendedor,COUNT(*) AS total,
+              SUM(CASE WHEN renovado=0 AND nao_vai_renovar=0 THEN 1 ELSE 0 END) AS pendentes
+             FROM seguro_dashboard
+             WHERE vendedor IS NOT NULL AND TRIM(vendedor)<>''
+             GROUP BY vendedor"
+        )->fetchAll(PDO::FETCH_ASSOC);
+        foreach($contagens as $linha){
+            $estatisticasVendedores[(string)$linha['vendedor']]=[
+                'total'=>(int)$linha['total'],
+                'pendentes'=>(int)$linha['pendentes']
+            ];
+        }
+    }
     if($vendedorAtual!==''&&!in_array($vendedorAtual,$vendedores,true)){
         http_response_code(404);
         $erro='Vendedor não encontrado na competência ativa.';
