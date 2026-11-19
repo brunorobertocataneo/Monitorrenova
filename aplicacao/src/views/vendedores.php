@@ -83,7 +83,7 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
         const counter=document.getElementById('vendedores-visiveis');
         const empty=document.getElementById('vendor-no-results');
         if(!field||!counter)return;
-        const normalize=text=>text.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase('pt-BR');
+        const normalize=text=>text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
         field.addEventListener('input',()=>{
           const term=normalize(field.value.trim());
           let count=0;
