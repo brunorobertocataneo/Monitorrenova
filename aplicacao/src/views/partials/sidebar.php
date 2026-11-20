@@ -34,11 +34,11 @@ $menuVendedoresAberto=($activePage==='vendedores');
           <span class="folder-chevron" aria-hidden="true">⌄</span>
         </summary>
         <div class="seller-subfolders">
-          <a href="/vendedores.php" class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===''?'selected':''?>">▤ &nbsp; Todos os vendedores</a>
+          <a href="/vendedores.php" class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===''?'selected':''?>"><svg class="seller-folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/><path d="M3 11h18"/></svg><span>Todos os vendedores</span></a>
           <?php foreach($vendedoresMenu as $nome):?>
             <a href="/vendedores.php?<?=h(http_build_query(['vendedor'=>$nome]))?>"
                class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===$nome?'selected':''?>">
-              <span aria-hidden="true">▸</span> <?=h($nome)?>
+              <svg class="seller-folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/><path d="M3 11h18"/></svg><span><?=h($nome)?></span>
             </a>
           <?php endforeach;?>
           <?php if(!$vendedoresMenu):?><span class="seller-subfolder">Nenhum vendedor cadastrado</span><?php endif;?>

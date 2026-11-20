@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Revisar seguro — Monitor Renova</title>
 <style>body{font:15px system-ui,-apple-system,Segoe UI,sans-serif;background:#f3f6fa;color:#20334a;margin:0}header{background:#122a46;color:white;padding:22px max(20px,calc((100vw - 940px)/2))}header a{color:#e0efff}main{max-width:980px;margin:24px auto;padding:0 18px}.panel{border-radius:12px;border:1px solid #dce5f0;background:white;padding:22px;margin:18px 0}.info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.info p{margin:6px 0}.muted{color:#63758a}.alert{background:#fff4df;border:1px solid #eed8b1;border-radius:8px;padding:12px}.error{background:#ffe7e7;padding:12px;border-radius:8px}.ok{background:#e3f2e7;padding:12px;border-radius:8px}label{display:block;margin:17px 0 6px;font-weight:600}select,textarea,button{font:inherit;border:1px solid #c4d0dd;border-radius:7px;padding:10px}textarea{width:100%;box-sizing:border-box}button{margin-top:15px;background:#165889;color:white;border:0;cursor:pointer}table{border-collapse:collapse;width:100%}th,td{text-align:left;border-bottom:1px solid #e6edf4;padding:10px;vertical-align:top;overflow-wrap:anywhere}.wrap{overflow-x:auto}h1{margin:7px 0 0;font-size:25px}@media(max-width:600px){.info{grid-template-columns:1fr}}</style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 .app-shell .form-module .panel,.app-shell .form-module .card{box-shadow:0 3px 14px #19365009}
 .app-shell .form-module{max-width:1080px;margin:0 auto;min-width:0}

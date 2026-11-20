@@ -19,7 +19,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 a{color:#1460a1;text-decoration:none}header a{color:#d3eaff}.wrap{overflow-x:auto}
 @media(max-width:650px){.grid{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 .app-shell .form-module .panel,.app-shell .form-module .card{box-shadow:0 3px 14px #19365009}
 .app-shell .form-module{max-width:1080px;margin:0 auto;min-width:0}

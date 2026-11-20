@@ -19,7 +19,7 @@ a{color:#1660a8}h2{margin:0 0 12px;font-size:19px}h3{margin:0 0 7px;font-size:16
 small{line-height:1.5}code{background:#f0f3f9;padding:2px 5px;border-radius:4px}
 @media(max-width:750px){.grid{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 /* Ajustes mínimos: conteúdo original preservado dentro da nova estrutura */
 .app-shell .module-layout .card,.app-shell .module-layout .panel{box-shadow:0 3px 14px #19365009}

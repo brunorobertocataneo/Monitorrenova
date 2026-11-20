@@ -12,7 +12,7 @@ foreach($vencimentosHoje as $linhas) $totalHoje+=count($linhas);
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07523c">
 <title>Início · Vencimentos de hoje — MonitorRenova</title>
-<link rel="stylesheet" href="/assets/app.css?v=3">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 </head><body class="app-shell">
 <?php require __DIR__.'/partials/sidebar.php'; ?>
 <div class="app-content">

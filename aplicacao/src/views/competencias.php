@@ -29,7 +29,7 @@ button{font:inherit;padding:9px 13px;border:0;border-radius:8px;background:#1e60
 button:disabled{opacity:.55;cursor:not-allowed}a{color:#155b9c}
 @media(max-width:700px){.stats{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 /* Ajustes mínimos: conteúdo original preservado dentro da nova estrutura */
 .app-shell .module-layout .card,.app-shell .module-layout .panel{box-shadow:0 3px 14px #19365009}

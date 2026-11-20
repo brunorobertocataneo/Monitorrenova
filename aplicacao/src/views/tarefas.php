@@ -19,7 +19,7 @@ $csrfToken = Auth::csrf();
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CRUD de Tarefas — MonitorRenova</title>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 .task-wrap{max-width:1200px;margin:0 auto;padding:6px 0 35px}
 .task-panel{background:white;border:1px solid #dbe4ee;border-radius:12px;padding:22px;margin:0 0 18px}

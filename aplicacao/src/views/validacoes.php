@@ -23,7 +23,7 @@ table{width:100%;border-collapse:collapse;min-width:900px}th,td{border-bottom:1p
 th{color:#69788a}.table-wrap{overflow:auto}.pager{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:15px}
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.grid{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 /* Ajuste visual isolado às telas antigas */
 .app-shell .module-layout .panel,.app-shell .module-layout .card{box-shadow:0 3px 14px #19365009}

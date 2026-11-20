@@ -24,7 +24,7 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07523c">
 <title>Vendedores — MonitorRenova</title>
-<link rel="stylesheet" href="/assets/app.css?v=7">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 </head><body class="app-shell">
 <?php require __DIR__.'/partials/sidebar.php'; ?>
 <div class="app-content">

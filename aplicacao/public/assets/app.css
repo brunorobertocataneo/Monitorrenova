@@ -166,6 +166,9 @@ body.app-shell{background:#f4faf6!important;color:#153c2f!important}
 .seller-folder[open] .folder-chevron{transform:rotate(180deg)}
 .seller-subfolders{display:grid;gap:2px;margin:4px 0 12px 22px;padding-left:8px;border-left:1px solid #ffffff30}
 .seller-subfolder{display:flex;align-items:center;gap:4px;color:#cfe9d7!important;text-decoration:none!important;padding:8px 9px;font-size:12px;border-radius:7px;overflow-wrap:anywhere;line-height:1.3}
+.seller-folder-icon{width:16px;height:16px;flex:0 0 16px;color:#f5ce74;fill:#f5ce7425}
+.seller-subfolder.selected .seller-folder-icon{color:#ffe49b;fill:#ffe49b40}
+.seller-subfolder{gap:9px}
 .seller-subfolder:hover{background:#ffffff1d}
 .seller-subfolder.selected{background:#ffffff28!important;color:#fff!important;font-weight:800}
 .advanced-folder{border-top:1px solid #ffffff20;margin-top:15px;padding-top:8px}
@@ -296,3 +299,40 @@ body.app-shell{background:#f4faf6!important;color:#153c2f!important}
 @media(max-width:1100px){.vendor-explorer .vendor-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.vendor-explorer{padding:16px}.vendor-explorer .vendor-folder-grid{grid-template-columns:1fr}.vendor-explorer-toolbar{align-items:stretch}.vendor-explorer-summary{padding-bottom:0}.vendor-explorer .vendor-folder-card{min-height:88px}}
 @media(prefers-reduced-motion:reduce){.vendor-explorer .vendor-folder-card{transition:none}.vendor-explorer .vendor-folder-card:hover{transform:none}}
+
+/* Painel lateral retrátil no desktop: borda visível como área de aproximação.
+   O mouse, foco por teclado e foco em elementos internos expandem o painel. */
+@media (min-width:901px) and (hover:hover) and (pointer:fine){
+  .app-shell .app-sidebar{
+    width:280px;
+    transform:translateX(calc(-100% + 18px));
+    transition:transform .25s ease,box-shadow .25s ease;
+    box-shadow:2px 0 8px #092c1c16;
+    overflow-x:hidden;
+    will-change:transform;
+  }
+  .app-shell .app-sidebar:hover,
+  .app-shell .app-sidebar:focus-within{
+    transform:translateX(0);
+    box-shadow:8px 0 28px #092c1c42;
+  }
+  .app-shell .app-sidebar::after{
+    content:"";
+    position:absolute;
+    right:5px;
+    top:calc(50% - 30px);
+    width:4px;
+    height:60px;
+    border-radius:4px;
+    background:#a8e3c8;
+    opacity:.9;
+    pointer-events:none;
+    transition:opacity .15s;
+  }
+  .app-shell .app-sidebar:hover::after,
+  .app-shell .app-sidebar:focus-within::after{opacity:0}
+  .app-shell .app-content{margin-left:18px;transition:margin-left .25s ease}
+}
+@media (min-width:901px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:reduce){
+  .app-shell .app-sidebar,.app-shell .app-content{transition:none}
+}

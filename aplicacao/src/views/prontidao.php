@@ -15,7 +15,7 @@ main{max-width:1140px;margin:24px auto;padding:0 18px}.panel{background:white;bo
 select,button{border:1px solid #c5d5e6;padding:10px;font:inherit;border-radius:8px}button{background:#1d5f93;color:white;cursor:pointer}table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid #e5ecf3;text-align:left}th{color:#63778c}
 @media(max-width:750px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){.grid{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 /* Ajuste visual isolado às telas antigas */
 .app-shell .module-layout .panel,.app-shell .module-layout .card{box-shadow:0 3px 14px #19365009}

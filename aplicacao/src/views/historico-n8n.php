@@ -35,7 +35,7 @@ select,button{font:inherit;border:1px solid #c7d4e2;border-radius:8px;padding:9p
 button{background:#155a92;color:white;border-color:#155a92;cursor:pointer}
 @media(max-width:700px){.metrics{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="/assets/app.css?v=1">
+<link rel="stylesheet" href="/assets/app.css?v=8">
 <style>
 /* Ajustes mínimos: conteúdo original preservado dentro da nova estrutura */
 .app-shell .module-layout .card,.app-shell .module-layout .panel{box-shadow:0 3px 14px #19365009}

@@ -2,7 +2,7 @@ services:
   web:
     build: ./docker
     ports:
-      - "127.0.0.1:8088:80"
+      - "127.0.0.1:8090:80"
     volumes:
       - ./public:/var/www/html:ro
       - ./src:/var/www/src:ro
