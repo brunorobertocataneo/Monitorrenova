@@ -1,180 +1,211 @@
-# MonitorRenova — demonstração acadêmica
+<div align="center">
 
-Projeto de demonstração desenvolvido em **PHP 8.3 + MySQL 8.4 + Docker + n8n**, com foco em consulta e acompanhamento de vencimentos de seguros.
+# 📊 MonitorRenova
 
-**Este repositório contém exclusivamente dados fictícios.** Os 65 nomes de segurados são personagens de anime/desenhos, e os 5 vendedores usam nomes de figuras históricas. Ninguém listado representa um cliente ou vendedor real. As marcas, personagens e personalidades citadas pertencem a seus respectivos titulares e aparecem apenas como exemplos textuais, sem endosso.
+### Acompanhamento de vencimentos e renovações de seguros
 
-## Funcionalidades
+**Aplicação acadêmica em PHP e MySQL para consultar apólices fictícias, organizar pendências e registrar o andamento de renovações.**
 
-- Autenticação com senha armazenada como hash.
-- Painel com indicadores e consultas usando PHP/MVC e PDO.
-- Filtros por segurado, vendedor, produto e vencimento.
-- Histórico de duas competências: outubro/2026 (15 seguros) e novembro/2026 (50 seguros).
-- Workflow n8n **independente**, que classifica 8 registros sintéticos com execução manual e sem envio de mensagens.
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.4-4479A1?logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![n8n](https://img.shields.io/badge/n8n-Demo-EA4B71?logo=n8n&logoColor=white)
+![Status](https://img.shields.io/badge/Projeto-Acad%C3%AAmico-228B22)
 
-> O workflow n8n **não** está conectado ao MySQL do painel. Não há integração real com WhatsApp, Google Sheets ou APIs de produção.
+**[Funcionalidades](#-funcionalidades) · [Tecnologias](#-tecnologias) · [Instalação](#-como-executar) · [Documentação](#-documentação-técnica)**
 
-## Interface simplificada (novembro/2026)
+</div>
 
-A interface principal do MonitorRenova tem visual **verde e branco** e um menu reduzido para facilitar a apresentação acadêmica:
+---
 
-1. **Início** (`/`): mostra somente os seguros que vencem hoje e ainda estão para acompanhar, agrupados por vendedor. Renovados e marcados como **Não vai renovar** não aparecem na lista nem no texto do botão **Copiar lista**.
-2. **Vendedores** (`/vendedores.php`): subpastas geradas pelos vendedores do MySQL. Cada pasta apresenta os seguros em tabela, com pesquisa.
-3. **Consultar seguros** (`/seguros.php`): pesquisa e filtros.
+## 💡 Sobre o projeto
 
-Na pasta de cada vendedor, a coluna **Situação do seguro** permite selecionar **Pendente**, **Renovado** ou **Não vai renovar** e clicar em **Salvar alteração**. O salvamento é autenticado, protegido por CSRF e usa transação PDO/MySQL com controle de versão e histórico. As decisões ficam em `seguro_status_manual` e `seguro_status_manual_historico`, sem sobrescrever a origem importada.
+O **MonitorRenova** foi desenvolvido como demonstração de um sistema de acompanhamento de seguros. A proposta é reunir os vencimentos em um painel, facilitar a consulta por vendedor e registrar decisões de acompanhamento sem modificar os dados importados originalmente.
 
-A `VIEW seguro_dashboard` prioriza as decisões locais, preservando-as durante a sincronização de dados. **Não há sincronização de volta para o Google Sheets nem envio automático de mensagens.**
+O projeto também explora **PHP orientado a objetos, padrão MVC, acesso ao banco com PDO, CRUD, histórico auditável, testes e automações demonstrativas no n8n**.
 
-**Instalação nova:** `aplicacao/database/demo-init.sql` já inclui as novas tabelas e a view. **Banco existente:** aplicar `aplicacao/database/migrations/002_status_manual_seguro.sql` antes de executar a nova versão (por exemplo, no MySQL Workbench conectado à instância de demonstração). O script é destinado a MySQL 8.4; faça backup do banco antes de aplicar migrações. Os arquivos PHP sozinhos não substituem uma migração no volume MySQL existente.
+> [!IMPORTANT]
+> **Ambiente demonstrativo, sem dados de clientes reais.** A base contém 65 segurados fictícios (personagens de anime e desenhos) e cinco vendedores fictícios (nomes de figuras históricas). A presença desses nomes é apenas textual, sem associação ou endosso de seus titulares.
 
-Os módulos adicionais exigidos pela especificação acadêmica, como histórico, importação com prévia, competências, revisão e CRUD, continuam no código, mas não aparecem no menu principal. A versão simplificada não altera a lógica desses módulos.
+## ✨ Funcionalidades
 
-## Orientação a Objetos: Herança e Polimorfismo
+| Módulo | O que permite fazer |
+| --- | --- |
+| **Início** | Visualizar seguros pendentes que vencem no dia, agrupados por vendedor, e copiar a lista |
+| **Vendedores** | Consultar seguros por vendedor, com tabela e pesquisa |
+| **Consultar seguros** | Filtrar registros por segurado, vendedor, produto e vencimento |
+| **Situação dos seguros** | Registrar **Pendente**, **Renovado** ou **Não vai renovar** |
+| **Histórico de alterações** | Preservar decisões locais com autoria, versão e trilha de mudanças |
+| **Tarefas** | Cadastrar, listar, editar e arquivar tarefas de acompanhamento |
+| **Simulador de triagem** | Avaliar cenários fictícios com regras orientadas a objetos |
+| **n8n demonstrativo** | Classificar oito exemplos sintéticos em um fluxo manual e independente |
 
-O simulador de renovações agora utiliza uma classe abstrata, RegraTriagem, e três
-classes filhas: RegraProduto, RegraSituacao e RegraConferencia. Cada uma
-sobrescreve avaliar(), chamado de forma polimórfica por SimuladorRenovacao.
+A navegação principal foi simplificada para **Início**, **Vendedores** e **Consultar seguros**. Os módulos complementares permanecem disponíveis no código para a demonstração acadêmica.
 
-- [Explicação e diagrama de classes](aplicacao/docs/POO-HERANCA-POLIMORFISMO.md)
-- Código: aplicacao/src/triagem/
-- Testes: aplicacao/src/testar-heranca-polimorfismo.php (30 cenários aprovados)
-- Regressão: aplicacao/src/testar-simulador-validacao.php
+### 📅 Base de demonstração
 
-Para executar os testes com a aplicação iniciada:
+- **Outubro/2026:** 15 seguros fictícios.
+- **Novembro/2026:** 50 seguros fictícios.
+- **Total:** 65 seguros, distribuídos entre cinco vendedores fictícios.
 
-    docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/testar-heranca-polimorfismo.php
+## 🧰 Tecnologias
 
-Essas regras são somente leitura e não realizam envios ou cobranças.
-## CRUD de Tarefas (Programação II)
+| Camada | Tecnologia |
+| --- | --- |
+| Backend | PHP 8.3, programação orientada a objetos e MVC |
+| Banco de dados | MySQL 8.4 |
+| Persistência | PDO e consultas parametrizadas |
+| Interface | HTML, CSS e páginas PHP |
+| Infraestrutura local | Docker e Docker Compose |
+| Automação de exemplo | n8n |
+| Modelagem | UML e diagramas editáveis no diagrams.net |
 
-Uma tela com CRUD completo de **tarefas de acompanhamento** está disponível em
-http://localhost:8088/tarefas.php (após login).
+## 🚀 Como executar
 
-- **Create:** cadastra tarefas e permite vincular um seguro **fictício**;
-- **Read:** lista e filtra por título/situação, com paginação;
-- **Update:** modifica os dados com controle de versão;
-- **Delete:** **arquiva logicamente**, sem apagar tarefas ou apólices fisicamente.
+### Pré-requisitos
 
-Há proteção CSRF nas operações, escape de HTML, PDO parametrizado e autoria.
-O módulo registra seu próprio histórico auditável de tarefas, não modifica os seguros importados e **não envia mensagens**.
+- Docker Desktop ou Docker Engine com Docker Compose;
+- Git;
+- Navegador web;
+- Windows, Linux ou macOS com Docker configurado.
 
-- [Documentação e demonstração](aplicacao/docs/CRUD-TAREFAS.md).
-- **RF05 / RN07 — Histórico auditável:** em `tarefas.php`, use o link **Histórico** de cada tarefa para consultar criação, edição e arquivamento, incluindo usuário, data, versão e estados anterior/posterior. A consulta também permanece disponível após arquivamento em `/historico-tarefa.php?id=ID`.
-- **Instalação em banco existente:** execute `aplicacao/database/migrations/003_historico_tarefas.sql` após a migração `001_tarefa_acompanhamento.sql`. O `demo-init.sql` já cria essa tabela em uma instalação nova. A migração não recria eventos retroativos de tarefas anteriores à implementação.
-- **Teste automatizado:** `docker compose --env-file .env -f compose.demo.yaml exec -T web php /var/www/src/testar-historico-tarefas.php` (na pasta `aplicacao`). O teste insere dados fictícios dentro de uma transação e executa `rollBack()` ao finalizar.
-- **RNF01–RNF06:** os testes de validação, concorrência, CSRF, acesso anônimo, desempenho e persistência foram executados no Cataneo. Evidências reprodutíveis nos scripts [testar-rnf-validacoes.php](aplicacao/src/testar-rnf-validacoes.php), [testar-rnf-http.php](aplicacao/src/testar-rnf-http.php) e [testar-rnf-persistencia.php](aplicacao/src/testar-rnf-persistencia.php). O relatório detalhado de testes permanece local e não está nesta branch. Para rodar as suítes automatizadas no ambiente demo, use `src/testar-rnf-validacoes.php` e `src/testar-rnf-http.php`. O teste HTTP só cria administrador temporário se não existir nenhum usuário, e o remove ao final; nunca o execute contra dados reais.
-- [Migração](aplicacao/database/migrations/001_tarefa_acompanhamento.sql)
-  para bancos já existentes.
-- O demo-init.sql já inclui a tabela para instalações novas.
-
-Testes com rollback (não deixam registros persistidos):
-
-    docker exec aplicacao-web-1 php /var/www/src/testar-crud-tarefas.php
-    docker exec aplicacao-web-1 php /var/www/src/testar-renderizacao-tarefas.php
-
-Resultado no ambiente de desenvolvimento: **28/28 testes CRUD e 8/8 testes
-de renderização**, sem alterar os 65 seguros fictícios.
-## POO: interfaces e relacionamentos entre classes (Programacao II)
-
-A triagem conserva os motivos e o retorno publico do simulador, mas agora
-aplica os relacionamentos OO diretamente na sua execucao:
-
-- **Interface:** `src/triagem/RegraAvaliavel.php` declara o contrato `avaliar()`;
-  `RegraTriagem implements RegraAvaliavel`, mantendo heranca e polimorfismo nas
-  tres regras concretas.
-- **Associacao:** `TarefaService` depende de `TarefaRepository` injetado, com
-  objetos independentes.
-- **Agregacao:** `ConjuntoRegrasTriagem` recebe objetos de regras ja criados,
-  reutiliza as mesmas instancias e respeita a ordem de avaliacao.
-- **Composicao:** `ResultadoTriagem` cria e mantem suas
-  `LinhaResultadoTriagem`, oferecendo apenas copias dos dados como arrays.
-- **Traits:** nao utilizadas porque o contrato e a classe abstrata ja atendem
-  ao reuso; no roteiro da disciplina, traits sao opcionais quando pertinentes.
-
-Consulte [o diagrama e a explicacao](aplicacao/docs/RELACIONAMENTOS-POO-PROGRAMACAO-II.md).
-Execute sem MySQL:
+### 1. Clonar o repositório
 
 ```bash
-php aplicacao/src/testar-relacionamentos-poo.php
-php aplicacao/src/testar-heranca-polimorfismo.php
-php aplicacao/src/testar-simulador-validacao.php
+git clone https://github.com/brunorobertocataneo/Monitorrenova.git
+cd Monitorrenova
 ```
 
-Uma Action na branch de desenvolvimento executa PHP 8.3, lint e os tres scripts
-de teste. As telas principais e o esquema MySQL nao foram alterados nessa etapa.
+### 2. Configurar as senhas do banco
 
-## Requisitos
+Copie `aplicacao/.env.example` para `aplicacao/.env` e preencha:
 
-- Docker Desktop com Linux containers e Docker Compose.
-- Windows 10/11, Linux ou macOS com Docker disponível.
-- Navegador web.
+```dotenv
+DEMO_DB_PASSWORD=defina_uma_senha_forte
+DEMO_ROOT_PASSWORD=defina_outra_senha_forte
+```
 
-## Executar localmente
+Use **duas senhas diferentes**, exclusivas para esse ambiente. O arquivo `.env` não deve ser enviado ao GitHub.
 
-1. Faça o clone deste repositório.
-2. Na pasta `aplicacao`, copie `.env.example` para `.env` e defina duas **senhas fortes, diferentes e exclusivas**, uma em `DEMO_DB_PASSWORD` e outra em `DEMO_ROOT_PASSWORD`. Não publique o arquivo `.env`.
-3. Para iniciar PHP e MySQL, no diretório raiz do repositório:
+### 3. Iniciar o painel
 
-   ```bash
-   docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml up -d --build
-   ```
+Na raiz do repositório:
 
-4. Para iniciar o n8n local:
+```bash
+docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml up -d --build
+```
 
-   ```bash
-   docker compose -f n8n-demo/compose.yaml up -d
-   ```
+Abra **http://localhost:8090/configurar-acesso.php** para configurar a senha do administrador na primeira execução. Depois, acesse o painel em **http://localhost:8090/**.
 
-5. Abra **http://localhost:8088/configurar-acesso.php**, crie a senha de administrador na primeira execução e faça login.
-6. Abra **http://localhost:5678** para acessar o n8n. Importe o arquivo `n8n-demo/workflow-demonstracao.json` pela interface do n8n, caso deseje executar a demonstração manualmente.
+> A aplicação usa a porta local **8090**, conforme o arquivo `aplicacao/compose.demo.yaml`. Os dados iniciais são carregados quando o volume do MySQL é criado pela primeira vez.
 
-O banco é inicializado com registros fictícios **somente quando seu volume MySQL é criado pela primeira vez**. A senha do administrador não é fornecida neste repositório.
+### 4. Executar a demonstração opcional do n8n
 
-### Parar sem excluir os dados
+```bash
+docker compose -f n8n-demo/compose.yaml up -d
+```
+
+Acesse **http://localhost:5678/** e importe o arquivo `n8n-demo/workflow-demonstracao.json` para executar manualmente o fluxo de exemplo.
+
+**Importante:** esse fluxo **não se conecta ao MySQL do painel** e **não envia mensagens**. Não existe, nesta demonstração, integração operacional com WhatsApp, Google Sheets ou APIs externas de produção.
+
+### Encerrar sem perder os dados
 
 ```bash
 docker compose -f n8n-demo/compose.yaml stop
 docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml stop
 ```
 
-**Não use `down -v`**, que exclui os volumes persistentes.
+Evite `docker compose down -v`: a opção `-v` remove os volumes persistentes e pode apagar o banco local.
 
-### Testes
-
-Os scripts CLI selecionados ficam em `aplicacao/src`: `verificar-demo.php`, `testar-telas-demo.php`, `testar-filtros-demo.php` e `verificar-personagens-demo.php`. Após iniciar o serviço:
-
-```bash
-docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/verificar-demo.php
-docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/testar-filtros-demo.php
-```
-
-## Estrutura
+## 🏗️ Estrutura do repositório
 
 ```text
-aplicacao/
-  public/             Rotas PHP e estilos
-  src/                Controllers, repositories, views e testes CLI demonstrativos
-  database/           Esquema e dados SQL totalmente fictícios
-  docker/             Imagem PHP
-  compose.demo.yaml   Serviços web e MySQL
-  .env.example        Modelo de configuração SEM senhas
-n8n-demo/
-  compose.yaml        Serviço n8n local
-  workflow-demonstracao.json  Workflow manual e independente (8 exemplos)
+Monitorrenova/
+├── aplicacao/
+│   ├── public/              # Páginas, rotas e assets
+│   ├── src/                 # Regras de negócio, MVC e testes CLI
+│   ├── database/            # Esquema, dados demo e migrações
+│   ├── docker/              # Imagem de execução PHP
+│   ├── docs/                # Documentação dos módulos
+│   ├── tests/               # Testes adicionais
+│   ├── compose.demo.yaml    # Serviços web e MySQL
+│   └── .env.example         # Exemplo de variáveis sem segredos
+├── n8n-demo/
+│   ├── compose.yaml
+│   └── workflow-demonstracao.json
+├── diagramas-corrigidos-editaveis/
+├── documentação/
+└── README.md
 ```
 
-## Segurança e limitações
+## 🧠 Conceitos aplicados
 
-Este projeto é **educacional**, não um serviço pronto para produção. Ele não inclui credenciais de integração, backups operacionais, dados de clientes reais, nem tokens de produção. As portas são publicadas somente em `127.0.0.1`, mas os contêineres utilizam rede Docker normal; **isso não significa bloqueio completo de acesso à internet**. Não conecte credenciais ou contatos reais sem uma revisão de segurança adequada.
+**Orientação a objetos:** a triagem utiliza uma interface `RegraAvaliavel`, uma classe abstrata `RegraTriagem` e implementações específicas como `RegraProduto`, `RegraSituacao` e `RegraConferencia`. O projeto também demonstra **herança, polimorfismo, associação, agregação e composição**.
 
-Apenas nomes de personagens aparecem nos registros; nenhuma imagem, episódio ou arte protegida foi incorporada.
+**CRUD de tarefas:** inclui criação, listagem com filtros, atualização e **arquivamento lógico**. O histórico mantém o registro das mudanças e a autoria, sem apagar fisicamente tarefas ou seguros.
 
-## Licença
+**Persistência e segurança:** consultas com PDO parametrizado, autenticação, proteção CSRF, escape de HTML, controle de versão e histórico de operações. As escolhas manuais sobre renovações são armazenadas separadamente da origem importada.
 
-Uso demonstrativo acadêmico. Nenhuma licença de código aberto foi atribuída nesta versão; defina uma licença apropriada antes de autorizar redistribuição ou reutilização por terceiros.
+## 🧪 Testes
 
+Com os contêineres em execução, use os comandos abaixo a partir da raiz do projeto:
 
-## Diagramas UML editáveis
+```bash
+# Verificação geral da demonstração
+docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/verificar-demo.php
 
-Todos os arquivos do diagrams.net estão organizados na pasta única [**diagramas-corrigidos-editaveis/**](diagramas-corrigidos-editaveis/README.md). Os modelos complementares de status manual foram movidos para a mesma pasta. A pasta `documentação/` permanece separada para documentos acadêmicos.
+# Validação de filtros
+docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/testar-filtros-demo.php
+
+# Herança e polimorfismo
+docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec web php /var/www/src/testar-heranca-polimorfismo.php
+```
+
+Há também testes do CRUD, da renderização de tarefas, de relacionamentos POO e de requisitos não funcionais. Consulte os scripts em `aplicacao/src/` e a documentação específica.
+
+> Os resultados relatados na documentação acadêmica incluem **28/28 testes CRUD**, **8/8 testes de renderização** e **30 cenários de herança/polimorfismo** aprovados no ambiente de desenvolvimento. Esses números são registros anteriores, não resultados de uma execução realizada por este README.
+
+## 🗄️ Banco de dados e migrações
+
+Uma instalação nova usa `aplicacao/database/demo-init.sql`. Se o MySQL já possui um volume com dados, modificar os arquivos PHP **não aplica automaticamente** mudanças de esquema.
+
+As migrações de módulos existentes ficam em `aplicacao/database/migrations/`, incluindo:
+
+- `001_tarefa_acompanhamento.sql`: estrutura de tarefas;
+- `002_status_manual_seguro.sql`: decisões manuais de acompanhamento;
+- `003_historico_tarefas.sql`: histórico auditável das tarefas.
+
+**Faça backup antes de aplicar qualquer migração** e respeite a ordem e as dependências descritas na documentação.
+
+## 📚 Documentação técnica
+
+- [CRUD de tarefas](aplicacao/docs/CRUD-TAREFAS.md)
+- [Herança e polimorfismo](aplicacao/docs/POO-HERANCA-POLIMORFISMO.md)
+- [Interfaces e relacionamentos entre classes](aplicacao/docs/RELACIONAMENTOS-POO-PROGRAMACAO-II.md)
+- [Diagramas UML editáveis](diagramas-corrigidos-editaveis/README.md)
+- [Arquivos acadêmicos](documentação/)
+
+## 🔒 Segurança e limitações
+
+Este repositório é **acadêmico**, não uma solução pronta para produção.
+
+- Não contém credenciais de produção nem dados reais de clientes.
+- As portas do painel são publicadas em `127.0.0.1`; isso **não impede, por si só, que contêineres façam conexões externas**.
+- O n8n é executado de forma independente, com dados sintéticos e sem envios.
+- O sistema **não sincroniza decisões manuais de volta ao Google Sheets**.
+- Antes de qualquer implantação real, seriam necessárias revisões de segurança, gestão de credenciais, backups, proteção de dados e integrações.
+
+## 📄 Licenciamento
+
+O repositório está disponibilizado para **demonstração acadêmica**. Não há licença de código aberto atribuída nesta versão. A disponibilização pública do código, por si só, não concede autorização geral para redistribuição ou reutilização.
+
+---
+
+<div align="center">
+
+**MonitorRenova — aprendizado prático com PHP, MySQL, POO e automação demonstrativa.**
+
+[Voltar ao início](#-monitorrenova)
+
+</div>
