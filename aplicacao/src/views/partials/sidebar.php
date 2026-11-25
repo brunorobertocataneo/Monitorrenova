@@ -5,17 +5,6 @@
  */
 require_once __DIR__.'/../../Auth.php';
 $activePage=isset($activePage)&&is_string($activePage)?$activePage:'dashboard';
-$vendedoresMenu=[];
-try {
-    // Utiliza a mesma fonte da competência ativa, sem nomes fixos.
-    $vendedoresMenu=Database::connection()->query(
-        "SELECT DISTINCT vendedor FROM seguro_dashboard WHERE vendedor IS NOT NULL AND TRIM(vendedor)<>'' ORDER BY vendedor"
-    )->fetchAll(PDO::FETCH_COLUMN);
-} catch (Throwable $e) {
-    error_log('Menu de vendedores: '.$e->getMessage());
-}
-$vendedorAtual=isset($vendedorAtual)&&is_string($vendedorAtual)?$vendedorAtual:'';
-$menuVendedoresAberto=($activePage==='vendedores');
 ?>
 <aside class="app-sidebar" aria-label="Menu principal">
   <a class="brand" href="/" aria-label="MonitorRenova, voltar para início">
@@ -28,22 +17,9 @@ $menuVendedoresAberto=($activePage==='vendedores');
       <a class="nav-item <?=$activePage==='dashboard'?'active':''?>" href="/" <?=$activePage==='dashboard'?'aria-current="page"':''?>>
         <span class="symbol" aria-hidden="true">⌂</span><span>Início · Vencimentos de hoje</span>
       </a>
-      <details class="seller-folder" <?=$menuVendedoresAberto?'open':''?>>
-        <summary class="nav-item <?=$menuVendedoresAberto?'active':''?>">
-          <span class="symbol" aria-hidden="true">▣</span><span>Vendedores</span>
-          <span class="folder-chevron" aria-hidden="true">⌄</span>
-        </summary>
-        <div class="seller-subfolders">
-          <a href="/vendedores.php" class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===''?'selected':''?>"><svg class="seller-folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/><path d="M3 11h18"/></svg><span>Todos os vendedores</span></a>
-          <?php foreach($vendedoresMenu as $nome):?>
-            <a href="/vendedores.php?<?=h(http_build_query(['vendedor'=>$nome]))?>"
-               class="seller-subfolder <?=$menuVendedoresAberto&&$vendedorAtual===$nome?'selected':''?>">
-              <svg class="seller-folder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z"/><path d="M3 11h18"/></svg><span><?=h($nome)?></span>
-            </a>
-          <?php endforeach;?>
-          <?php if(!$vendedoresMenu):?><span class="seller-subfolder">Nenhum vendedor cadastrado</span><?php endif;?>
-        </div>
-      </details>
+      <a class="nav-item <?=$activePage==='vendedores'?'active':''?>" href="/vendedores.php" <?=$activePage==='vendedores'?'aria-current="page"':''?>>
+        <svg class="symbol" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 6h4M10 12h4M10 18h4"/></svg><span>Vendedores</span>
+      </a>
       <a class="nav-item <?=$activePage==='seguros'?'active':''?>" href="/seguros.php" <?=$activePage==='seguros'?'aria-current="page"':''?>>
         <span class="symbol" aria-hidden="true">⌕</span><span>Consultar seguros</span>
       </a>
@@ -52,7 +28,6 @@ $menuVendedoresAberto=($activePage==='vendedores');
     <div class="nav-category">Projeto acadêmico</div>
     <div class="nav-list">
       <a class="nav-item" href="/tarefas.php"><span class="symbol" aria-hidden="true">✓</span><span>Tarefas (CRUD)</span></a>
-      <a class="nav-item" href="/simulador.php"><span class="symbol" aria-hidden="true">◇</span><span>Simulador de triagem</span></a>
     </div>
   </nav>
   <div class="nav-spacer"></div>

@@ -25,6 +25,7 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
 <meta name="theme-color" content="#07523c">
 <title>Vendedores — MonitorRenova</title>
 <link rel="stylesheet" href="/assets/app.css?v=8">
+<link rel="stylesheet" href="/assets/armario.css?v=3">
 </head><body class="app-shell">
 <?php require __DIR__.'/partials/sidebar.php'; ?>
 <div class="app-content">
@@ -34,7 +35,7 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
     <div><div class="eyebrow">Pastas de vendedores</div>
     <h1><?=h($vendedorAtual!==''?$vendedorAtual:'Vendedores')?></h1>
     <p><?= $vendedorAtual!==''?'Seguros deste vendedor organizados como na planilha.':'Selecione uma pasta para consultar os seguros do vendedor.'?></p></div>
-    <?php if($vendedorAtual!==''):?><a class="btn-link" href="/vendedores.php">← Todos os vendedores</a><?php endif;?>
+    <?php if($vendedorAtual!==''):?><a class="btn-link" href="/vendedores.php">← Voltar ao armário 3D</a><?php endif;?>
   </div>
   <?php if($erro):?><div class="note-banner" role="alert"><?=h($erro)?></div><?php endif;?>
   <?php if($sucesso):?><div class="syncline" role="status"><?=h($sucesso)?></div><?php endif;?>
@@ -54,24 +55,32 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
         </div>
         <span class="vendor-explorer-summary" id="vendedores-visiveis" role="status" aria-live="polite"><?=h(count($vendedores))?> pastas encontradas</span>
       </div>
-      <div class="vendor-folder-grid" id="vendor-folder-list">
-        <?php foreach($vendedores as $nome):?>
-          <?php $dadosPasta=$estatisticasVendedores[$nome]??['total'=>0,'pendentes'=>0]; ?>
-          <a class="vendor-folder-card" data-vendor-name="<?=h(mb_strtolower((string)$nome,'UTF-8'))?>" href="/vendedores.php?<?=h(http_build_query(['vendedor'=>$nome]))?>" aria-label="Abrir pasta de <?=h($nome)?>: <?=h($dadosPasta['total'])?> seguros, <?=h($dadosPasta['pendentes'])?> pendentes">
-            <span class="vendor-folder-icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12a4 4 0 0 1 4-4h10l4 5h16a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V12Z" fill="#e3ab43"/>
-                <path d="M5 20a4 4 0 0 1 4-4h30a4 4 0 0 1 4 4v16a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5V20Z" fill="#f3cb70"/>
-                <path d="M9 21h30" stroke="#e3aa4d" stroke-width="1.4" stroke-linecap="round"/>
-              </svg>
-            </span>
-            <span class="vendor-folder-info">
-              <strong class="vendor-folder-name"><?=h($nome)?></strong>
-              <span class="vendor-folder-metrics"><?=h($dadosPasta['total'])?> seguro(s) <span aria-hidden="true">·</span> <?=h($dadosPasta['pendentes'])?> pendente(s)</span>
-            </span>
-            <svg class="vendor-folder-arrow" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
-          </a>
+      <div class="archive-room" id="vendor-folder-list">
+        <div class="archive-caption"><span>ARQUIVO CENTRAL</span><small>Selecione uma gaveta para abrir as renova&ccedil;&otilde;es.</small></div>
+        <div class="archive-cabinets">
+        <?php foreach(array_chunk($vendedores,5) as $grupo): ?>
+          <div class="archive-unit">
+
+            <div class="archive-body">
+              <div class="archive-brand">MONITORRENOVA</div>
+              <?php foreach($grupo as $nome): ?>
+                <?php $dadosPasta=$estatisticasVendedores[$nome]??['total'=>0,'pendentes'=>0]; ?>
+                <div class="archive-slot" data-vendor-name="<?=h(mb_strtolower((string)$nome,'UTF-8'))?>">
+                  <a class="archive-drawer" href="/vendedores.php?<?=h(http_build_query(['vendedor'=>$nome]))?>" aria-label="Abrir pasta de <?=h($nome)?>: <?=h($dadosPasta['total'])?> seguros, <?=h($dadosPasta['pendentes'])?> pendentes">
+                    <span class="drawer-tray" aria-hidden="true"></span>
+                    <span class="drawer-face">
+                      <span class="drawer-label"><strong><?=h($nome)?></strong><small><?=h($dadosPasta['total'])?> seguros &middot; <?=h($dadosPasta['pendentes'])?> pendentes</small></span>
+                      <span class="drawer-handle" aria-hidden="true"></span>
+                    </span>
+                  </a>
+                </div>
+              <?php endforeach;?>
+
+            </div>
+          </div>
         <?php endforeach;?>
+        </div>
+        <p class="archive-hint">Passe o mouse sobre uma gaveta para visualizar os documentos. Clique para consultar.</p>
       </div>
       <?php if(!$vendedores):?><p class="vendor-folder-empty">Ainda não há vendedores cadastrados nesta competência.</p><?php endif;?>
       <?php if($vendedores):?><p class="vendor-folder-empty" id="vendor-no-results" hidden>Nenhuma pasta corresponde à pesquisa. Experimente outro nome.</p><?php endif;?>
@@ -94,6 +103,7 @@ $params=['vendedor'=>$vendedorAtual,'busca'=>$busca];
           }
           counter.textContent=count+' pasta'+(count===1?'':'s')+' encontrada'+(count===1?'':'s');
           if(empty)empty.hidden=count!==0;
+          document.querySelectorAll(".archive-unit").forEach(unit=>{unit.hidden=![...unit.querySelectorAll(".archive-slot")].some(slot=>!slot.hidden);});
         });
       })();
     </script>

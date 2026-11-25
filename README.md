@@ -42,10 +42,9 @@ O projeto também explora **PHP orientado a objetos, padrão MVC, acesso ao banc
 | **Situação dos seguros** | Registrar **Pendente**, **Renovado** ou **Não vai renovar** |
 | **Histórico de alterações** | Preservar decisões locais com autoria, versão e trilha de mudanças |
 | **Tarefas** | Cadastrar, listar, editar e arquivar tarefas com categorias, responsáveis, prazos, recorrência e indicadores |
-| **Simulador de triagem** | Avaliar cenários fictícios com regras orientadas a objetos |
 | **n8n demonstrativo** | Classificar oito exemplos sintéticos em um fluxo manual e independente |
 
-A navegação principal mantém Início, Vendedores e Consultar seguros. A seção Projeto acadêmico oferece acesso ao CRUD de tarefas e ao simulador.
+A navegação principal mantém Início, Vendedores e Consultar seguros. A seção Projeto acadêmico oferece acesso ao CRUD de tarefas. As classes de triagem permanecem apenas como exemplo interno de POO e testes CLI, sem página pública.
 
 ### 📅 Base de demonstração
 

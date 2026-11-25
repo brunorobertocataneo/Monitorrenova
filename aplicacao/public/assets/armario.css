@@ -1,0 +1,115 @@
+/* Armario: perspectiva e abertura com CSS. */
+.archive-room {
+    padding: 28px 20px;
+    margin-top: 20px;
+    border-radius: 16px;
+    background: radial-gradient(ellipse, #dcebe0, #f5f8f5);
+    overflow: hidden;
+}
+.archive-caption, .archive-hint {
+    text-align: center;
+    color: #52705d;
+    font-size: 13px;
+}
+.archive-caption small { display: block; margin-top: 6px; }
+.archive-cabinets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    padding: 42px 24px;
+    perspective: 1000px;
+}
+.archive-unit {
+    width: min(340px, 100%);
+    position: relative;
+    transform: rotateY(-8deg);
+    background: #234b35;
+    border: 1px solid #668b70;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 15px 15px 0 #183a29, 24px 30px 25px #193e2933;
+}
+.archive-brand {
+    color: #d5e4d9;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 8px;
+}
+.archive-slot {
+    position: relative;
+    height: 80px;
+    margin-bottom: 5px;
+    background: #142e21;
+    perspective: 600px;
+}
+.archive-slot[hidden], .archive-unit[hidden] { display: none !important; }
+.archive-drawer {
+    position: absolute;
+    inset: 2px;
+    display: block;
+    text-decoration: none !important;
+    transform-style: preserve-3d;
+    transition: transform .4s ease;
+}
+.drawer-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    border: 1px solid #85a68b;
+    border-radius: 4px;
+    background: linear-gradient(#709679, #3b6248);
+    box-shadow: 0 4px 5px #152e2266;
+}
+.drawer-label {
+    flex: 1;
+    min-width: 0;
+    padding: 7px;
+    background: #eef3ea;
+    color: #294535;
+    border: 2px solid #294c35;
+    border-radius: 3px;
+}
+.drawer-label strong, .drawer-label small {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.drawer-label strong { font-size: 13px; }
+.drawer-label small { font-size: 11px; }
+.drawer-handle {
+    width: 58px;
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(#e0e6dc, #5e7564, #d5dfd5);
+    box-shadow: 0 3px 4px #173321;
+}
+.drawer-tray {
+    position: absolute;
+    inset: 0 8px 10px;
+    border: 8px solid #476d50;
+    background: repeating-linear-gradient(#f6f7ee 0 8px, #b9cdbb 9px 11px);
+    transform-origin: bottom;
+    transform: rotateX(70deg);
+    opacity: 0;
+    transition: opacity .3s, transform .4s;
+}
+.archive-slot:hover, .archive-slot:focus-within { z-index: 2; }
+.archive-drawer:hover, .archive-drawer:focus-visible {
+    transform: translate3d(0, 10px, 85px);
+}
+.archive-drawer:hover .drawer-tray, .archive-drawer:focus-visible .drawer-tray {
+    opacity: 1;
+    transform: translateY(-34px) rotateX(55deg);
+}
+@media (max-width: 650px) {
+    .archive-unit { transform: none; }
+    .drawer-handle { width: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .archive-drawer, .drawer-tray { transition: none; transform: none !important; }
+}
