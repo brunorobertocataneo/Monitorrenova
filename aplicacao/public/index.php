@@ -12,6 +12,11 @@ declare(strict_types=1);
  * Esta rota não realiza gravações, alterações em apólices ou envios WhatsApp.
  */
 require_once '/var/www/src/Auth.php';
+Auth::boot();
+if (!Auth::loggedIn()) {
+    require '/var/www/src/views/landing.php';
+    exit;
+}
 Auth::requireLogin();
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: DENY');

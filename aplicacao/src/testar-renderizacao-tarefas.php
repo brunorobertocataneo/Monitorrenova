@@ -20,6 +20,8 @@ $pagina = $dados['pagina'];
 $paginas = $dados['totalPaginas'];
 $seguros = $repository->segurosParaAssociar();
 $excluidas = $repository->contarExcluidas();
+$indicadores = $repository->indicadores();
+$vendedores = $repository->vendedores();
 
 ob_start();
 require __DIR__ . '/views/tarefas.php';
@@ -27,7 +29,7 @@ $html = ob_get_clean();
 $testes = [
     'pagina_html' => str_contains($html, '<html lang="pt-BR">'),
     'form_criar' => str_contains($html, 'name="acao" value="criar"'),
-    'filtro_consulta' => str_contains($html, 'Consultar tarefas (READ)'),
+    'filtro_consulta' => str_contains($html, 'name="busca"') && str_contains($html, 'name="situacao"'),
     'opcao_seguro' => str_contains($html, 'name="seguro_id"'),
     'tabela_sql' => str_contains($html, '<table class="task-table">'),
     'token_csrf' => str_contains($html, 'name="csrf"'),

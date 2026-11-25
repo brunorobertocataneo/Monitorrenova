@@ -48,7 +48,7 @@ As FKs usam ON DELETE RESTRICT: excluir tarefas logicamente **não exclui seguro
 
 ## Fluxo da apresentação
 
-1. Acesse http://localhost:8088/tarefas.php, com login admin.
+1. Acesse http://localhost:8090/tarefas.php, com login admin.
 2. **CREATE:** cadastre "Conferir vencimento de Itachi Uchiha" e vincule o seguro fictício correspondente, com situação "Pendente".
 3. **READ:** busque pelo título, selecione o filtro de situação e mostre a linha no MySQL.
 4. **UPDATE:** clique em "Editar", altere para "Em andamento" e confirme a atualização.
@@ -88,3 +88,7 @@ Para criar a tabela em um banco **existente**, execute a migração em um usuár
 Para uma instalação **nova**, o script aplicacao/database/demo-init.sql já inclui a tabela.
 
 **Limite:** módulo demonstrativo local, sem autorização para uso com segurados reais, cobrança, WhatsApp ou outros serviços externos. Não é apresentado como sistema pronto para produção.
+
+## Gestão de atividades
+
+A migração 005 acrescenta categoria, responsável opcional e recorrência. O responsável é um nome da base de vendedores, não uma conta de usuário. Os indicadores excluem tarefas arquivadas e tarefas concluídas não são consideradas atrasadas. A recorrência cria uma nova tarefa pendente ao concluir a anterior, dentro da mesma transação, com histórico próprio. Ocorrências passadas são puladas; não há cron ou envio externo. Teste: `php /var/www/src/testar-gestao-tarefas.php` no contêiner web.

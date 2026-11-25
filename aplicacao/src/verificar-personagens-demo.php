@@ -4,8 +4,8 @@ if(PHP_SAPI!=='cli')exit(1);
 require_once __DIR__.'/Database.php';
 $db=Database::connection();
 $tests=[
- 'historico_65'=>(int)$db->query('SELECT COUNT(*) FROM seguro_mensal')->fetchColumn()===65,
- 'nomes_unicos_65'=>(int)$db->query('SELECT COUNT(DISTINCT segurado) FROM seguro_mensal')->fetchColumn()===65,
+ 'historico_127'=>(int)$db->query('SELECT COUNT(*) FROM seguro_mensal')->fetchColumn()===127,
+ 'nomes_unicos_127'=>(int)$db->query('SELECT COUNT(DISTINCT segurado) FROM seguro_mensal')->fetchColumn()===127,
  'vendedores_historicos_5'=>(int)$db->query('SELECT COUNT(DISTINCT vendedor) FROM seguro_mensal')->fetchColumn()===5,
  'novembro_50'=>(int)$db->query('SELECT COUNT(*) FROM seguro_dashboard')->fetchColumn()===50,
  'sem_nomes_antigos'=>(int)$db->query("SELECT COUNT(*) FROM seguro_mensal WHERE segurado LIKE 'Cliente Exemplo %' OR vendedor LIKE 'Vendedor %'")->fetchColumn()===0,

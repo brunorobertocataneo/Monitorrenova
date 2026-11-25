@@ -543,3 +543,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW seguro_dashboard AS
    ON m.competencia=t.competencia AND m.linha_origem=t.linha_origem
  WHERE t.competencia=(SELECT competencia_ativa FROM sheet_sync_estado WHERE id=1)
    AND EXISTS(SELECT 1 FROM sheet_sync_estado WHERE id=1 AND total_registros>0);
+
+ALTER TABLE tarefa_acompanhamento
+ ADD COLUMN categoria ENUM('geral','comercial','financeiro','administrativo','renovacoes') NOT NULL DEFAULT 'geral',
+ ADD COLUMN responsavel VARCHAR(150) NULL,
+ ADD COLUMN recorrencia ENUM('nenhuma','diaria','semanal','mensal') NOT NULL DEFAULT 'nenhuma';

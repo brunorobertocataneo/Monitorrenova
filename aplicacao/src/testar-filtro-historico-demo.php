@@ -32,7 +32,7 @@ try {
     verificar('outubro_novembro_paginacao', $ambos['totalPages'] === 3 && $controller->index(['de'=>'2026-10-01','ate'=>'2026-11-30','pagina'=>'3'])['total'] === 65 && count($controller->index(['de'=>'2026-10-01','ate'=>'2026-11-30','pagina'=>'3'])['rows']) === 5, $ambos['totalPages']);
     verificar('outubro_novembro_vendedor', $controller->index(['de'=>'2026-10-01','ate'=>'2026-11-30','vendedor'=>'Ada Lovelace'])['total'] === 13, 'Ada Lovelace');
 
-    verificar('somente_data_inicial', $controller->index(['de'=>'2026-10-01'])['total'] === 65, '>= 01/10/2026');
+    verificar('somente_data_inicial', $controller->index(['de'=>'2026-10-01'])['total'] === 127, '>= 01/10/2026');
     verificar('somente_data_final', $controller->index(['ate'=>'2026-10-31'])['total'] === 15, '<= 31/10/2026');
     verificar('periodo_invertido', $controller->index(['de'=>'2026-11-30','ate'=>'2026-10-01'])['total'] === 0, 'intervalo invertido');
 } catch (Throwable $e) {

@@ -68,11 +68,11 @@ jobs:
         run: |
           docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 web php /var/www/src/testar-rnf-especificacao.php
 
-      - name: Preparar usuário fictício e verificar massa de 65 seguros
+      - name: Preparar usuário fictício e verificar massa de 127 seguros
         run: |
           docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T -e CI_RNF_ISOLATED=1 -e CI_RNF_PASSWORD="$CI_RNF_PASSWORD" web php /var/www/src/preparar-rnf-isolado.php admin
           cnt=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_demo.seguro_mensal"')
-          test "$cnt" = '65'
+          test "$cnt" = '127'
 
       - name: Evidência RNF04 - validação de CSV e zero gravações
         run: |
@@ -89,7 +89,7 @@ jobs:
           cat /tmp/rnf09-backup.sql | docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root monitor_renova_rnf09'
           restored=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_rnf09.seguro_mensal"')
           admins=$(docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml exec -T database sh -c 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -u root -N -s -e "SELECT COUNT(*) FROM monitor_renova_rnf09.usuario WHERE login = '\''admin'\'' AND CHAR_LENGTH(senha_hash)>30"')
-          test "$restored" = '65'
+          test "$restored" = '127'
           test "$admins" = '1'
           echo "RNF09 RESTAURACAO_OK seguros=$restored usuario_admin_hash=$admins"
           rm -f /tmp/rnf09-backup.sql

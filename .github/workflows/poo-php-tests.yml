@@ -2,6 +2,7 @@ name: Programacao II - POO (PHP)
 on:
   push:
     branches:
+      - main
       - feature/poo-interfaces-relacionamentos-unoesc-20261110
   pull_request:
     paths:

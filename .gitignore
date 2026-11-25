@@ -9,6 +9,7 @@
 !aplicacao/database/demo-init.sql
 !aplicacao/database/migrations/001_tarefa_acompanhamento.sql
 !aplicacao/database/migrations/003_historico_tarefas.sql
+!aplicacao/database/migrations/005_gestao_tarefas.sql
 **/*.sqlite
 **/*.sqlite3
 **/*.db

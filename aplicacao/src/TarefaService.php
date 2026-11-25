@@ -9,6 +9,8 @@ require_once __DIR__ . '/TarefaRepository.php';
  */
 final class TarefaService
 {
+    public const CATEGORIAS = ['geral'=>'Geral','comercial'=>'Comercial','financeiro'=>'Financeiro','administrativo'=>'Administrativo','renovacoes'=>'Renovações'];
+    public const RECORRENCIAS = ['nenhuma'=>'Não repetir','diaria'=>'Diária','semanal'=>'Semanal','mensal'=>'Mensal'];
     public const PRIORIDADES = [
         'baixa' => 'Baixa',
         'media' => 'Média',
@@ -65,7 +67,17 @@ final class TarefaService
                 throw new InvalidArgumentException('O seguro selecionado não existe.');
             }
         }
+        $categoria = $form['categoria'] ?? 'geral';
+        $recorrencia = $form['recorrencia'] ?? 'nenhuma';
+        $responsavel = $this->texto($form['responsavel'] ?? '', 150, 'Responsável');
+        if (!is_string($categoria) || !isset(self::CATEGORIAS[$categoria])) throw new InvalidArgumentException('Categoria inválida.');
+        if (!is_string($recorrencia) || !isset(self::RECORRENCIAS[$recorrencia])) throw new InvalidArgumentException('Recorrência inválida.');
+        if ($responsavel !== '' && !$this->repository->vendedorExiste($responsavel)) throw new InvalidArgumentException('Responsável inválido.');
+        if ($recorrencia !== 'nenhuma' && $date === '') throw new InvalidArgumentException('Informe um prazo para repetir a tarefa.');
         return [
+            'categoria' => $categoria,
+            'responsavel' => $responsavel === '' ? null : $responsavel,
+            'recorrencia' => $recorrencia,
             'titulo' => $titulo,
             'descricao' => $descricao,
             'prioridade' => $prioridade,

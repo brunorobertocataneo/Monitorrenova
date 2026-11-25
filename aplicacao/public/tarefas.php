@@ -115,4 +115,6 @@ try {
     exit('Não foi possível consultar as tarefas.');
 }
 
+$indicadores = $repository->indicadores();
+$vendedores = $repository->vendedores();
 require '/var/www/src/views/tarefas.php';

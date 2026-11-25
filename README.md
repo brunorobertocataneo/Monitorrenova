@@ -18,6 +18,11 @@
 
 ---
 
+## Integrantes
+
+- Bruno Roberto Cataneo
+- Alexandre da Silva Rocha
+
 ## 💡 Sobre o projeto
 
 O **MonitorRenova** foi desenvolvido como demonstração de um sistema de acompanhamento de seguros. A proposta é reunir os vencimentos em um painel, facilitar a consulta por vendedor e registrar decisões de acompanhamento sem modificar os dados importados originalmente.
@@ -25,7 +30,7 @@ O **MonitorRenova** foi desenvolvido como demonstração de um sistema de acompa
 O projeto também explora **PHP orientado a objetos, padrão MVC, acesso ao banco com PDO, CRUD, histórico auditável, testes e automações demonstrativas no n8n**.
 
 > [!IMPORTANT]
-> **Ambiente demonstrativo, sem dados de clientes reais.** A base contém 65 segurados fictícios (personagens de anime e desenhos) e cinco vendedores fictícios (nomes de figuras históricas). A presença desses nomes é apenas textual, sem associação ou endosso de seus titulares.
+> **Ambiente demonstrativo, sem dados de clientes reais.** A base contém 127 registros fictícios (personagens de anime e desenhos e nomes sintéticos) e cinco vendedores fictícios (nomes de figuras históricas). A presença desses nomes é apenas textual, sem associação ou endosso de seus titulares.
 
 ## ✨ Funcionalidades
 
@@ -36,17 +41,18 @@ O projeto também explora **PHP orientado a objetos, padrão MVC, acesso ao banc
 | **Consultar seguros** | Filtrar registros por segurado, vendedor, produto e vencimento |
 | **Situação dos seguros** | Registrar **Pendente**, **Renovado** ou **Não vai renovar** |
 | **Histórico de alterações** | Preservar decisões locais com autoria, versão e trilha de mudanças |
-| **Tarefas** | Cadastrar, listar, editar e arquivar tarefas de acompanhamento |
+| **Tarefas** | Cadastrar, listar, editar e arquivar tarefas com categorias, responsáveis, prazos, recorrência e indicadores |
 | **Simulador de triagem** | Avaliar cenários fictícios com regras orientadas a objetos |
 | **n8n demonstrativo** | Classificar oito exemplos sintéticos em um fluxo manual e independente |
 
-A navegação principal foi simplificada para **Início**, **Vendedores** e **Consultar seguros**. Os módulos complementares permanecem disponíveis no código para a demonstração acadêmica.
+A navegação principal mantém Início, Vendedores e Consultar seguros. A seção Projeto acadêmico oferece acesso ao CRUD de tarefas e ao simulador.
 
 ### 📅 Base de demonstração
 
 - **Outubro/2026:** 15 seguros fictícios.
 - **Novembro/2026:** 50 seguros fictícios.
-- **Total:** 65 seguros, distribuídos entre cinco vendedores fictícios.
+- **Dezembro/2026:** 62 seguros fictícios.
+- **Total:** 127 seguros, distribuídos entre cinco vendedores fictícios.
 
 ## 🧰 Tecnologias
 
@@ -176,6 +182,8 @@ As migrações de módulos existentes ficam em `aplicacao/database/migrations/`,
 - `002_status_manual_seguro.sql`: decisões manuais de acompanhamento;
 - `003_historico_tarefas.sql`: histórico auditável das tarefas.
 
+- `004_demo_dezembro_2026.sql`: expansão da base fictícia para dezembro.
+
 **Faça backup antes de aplicar qualquer migração** e respeite a ordem e as dependências descritas na documentação.
 
 ## 📚 Documentação técnica
@@ -209,3 +217,10 @@ O repositório está disponibilizado para **demonstração acadêmica**. Não h�
 [Voltar ao início](#-monitorrenova)
 
 </div>
+
+## Entrega acadêmica
+
+- [Materiais do seminário e artigo](Entrega-academica/)
+- [Diagramas UML editáveis](diagramas-corrigidos-editaveis/)
+- A página inicial pública apresenta o sistema; o painel e as tarefas exigem autenticação.
+- Migração 005: categoria, responsável e recorrência de tarefas. Aplicar uma vez em bancos existentes; novas instalações já incluem os campos.

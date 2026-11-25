@@ -23,8 +23,8 @@ $csrfToken = Auth::csrf();
 <style>
 .task-wrap{max-width:1200px;margin:0 auto;padding:6px 0 35px}
 .task-panel{background:white;border:1px solid #dbe4ee;border-radius:12px;padding:22px;margin:0 0 18px}
-.task-panel h2{margin:0 0 16px;font-size:19px;color:#173654}
-.task-note{padding:15px;border:1px solid #ccddef;background:#f4f8ff;border-radius:9px;line-height:1.55;margin-bottom:17px}
+.task-panel h2{margin:0 0 16px;font-size:19px;color:#174c35}
+.task-note{padding:15px;border:1px solid #ccddef;background:#f0f8f3;border-radius:9px;line-height:1.55;margin-bottom:17px}
 .task-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .task-field{display:flex;flex-direction:column;gap:6px}
 .task-field.wide{grid-column:1/-1}
@@ -32,20 +32,20 @@ $csrfToken = Auth::csrf();
 .task-field input,.task-field select,.task-field textarea{width:100%;border:1px solid #bacbdb;border-radius:8px;padding:11px;font:inherit;background:white;color:#193550}
 .task-field textarea{min-height:90px;resize:vertical}
 .task-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
-.task-btn{border:0;background:#205f93;color:white;border-radius:8px;padding:11px 18px;font:inherit;font-weight:650;cursor:pointer}
+.task-btn{border:0;background:#18794e;color:white;border-radius:8px;padding:11px 18px;font:inherit;font-weight:650;cursor:pointer}
 .task-btn.danger{background:#a93c3c}
-.task-link{color:#125d9a;font-weight:600}
+.task-link{color:#18794e;font-weight:600}
 .task-error{background:#fff0f0;border:1px solid #e7baba;color:#8c3030;padding:13px;border-radius:8px;margin:0 0 16px}
 .task-ok{background:#eaf7f0;border:1px solid #b6dcc9;color:#1f6044;padding:13px;border-radius:8px;margin:0 0 16px}
 .task-kpis{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:18px}
 .task-kpi{background:white;border:1px solid #dbe4ee;border-radius:9px;padding:15px 20px;flex:1;min-width:170px}
-.task-kpi strong{display:block;font-size:25px;margin-top:5px;color:#173654}
+.task-kpi strong{display:block;font-size:25px;margin-top:5px;color:#174c35}
 .task-tablewrap{overflow-x:auto}
 .task-table{width:100%;border-collapse:collapse;min-width:850px}
 .task-table th,.task-table td{padding:12px 9px;border-bottom:1px solid #e1eaf2;text-align:left;vertical-align:top}
 .task-table th{font-size:13px;color:#61738a}
 .task-table small{display:block;font-size:12px;color:#63758d}
-.task-status{border-radius:10px;background:#edf3f8;padding:5px 9px;display:inline-block;white-space:nowrap}
+.task-status{border-radius:10px;background:#eaf5ee;padding:5px 9px;display:inline-block;white-space:nowrap}
 .task-delete summary{cursor:pointer;color:#9b3939;text-decoration:underline}
 .task-delete form{padding:8px 0}
 .task-pages{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:15px}
@@ -67,20 +67,14 @@ $csrfToken = Auth::csrf();
       </div>
     </div>
     <div class="task-wrap">
-      <div class="task-note">
-        <strong>CRUD completo:</strong> criar (INSERT), consultar (SELECT), atualizar (UPDATE) e excluir logicamente
-        (UPDATE com data de arquivamento). Nenhuma apólice é apagada ou modificada.
-        Esta funcionalidade não faz cobranças nem envia mensagens.
-      </div>
-
       <?php if ($erro): ?><div class="task-error" role="alert"><?=h($erro)?></div><?php endif; ?>
       <?php if ($mensagem): ?><div class="task-ok" role="status"><?=h($mensagem)?></div><?php endif; ?>
 
       <div class="task-kpis">
-        <div class="task-kpi"><span>Registros ativos com os filtros</span><strong><?=h($total)?></strong></div>
-        <div class="task-kpi"><span>Arquivados (preservados)</span><strong><?=h($excluidas)?></strong></div>
+        <?php foreach (['pendentes'=>'Pendentes','andamento'=>'Em andamento','concluidas'=>'Concluídas','atrasadas'=>'Atrasadas'] as $key=>$label): ?>
+          <div class="task-kpi"><span><?=h($label)?></span><strong style="<?= $key==='atrasadas'?'color:#b33':'' ?>"><?=h($indicadores[$key] ?? 0)?></strong></div>
+        <?php endforeach; ?>
       </div>
-
       <section class="task-panel" id="formulario">
         <h2><?= $emEdicao ? 'Editar tarefa #'.h($editando['id']) : 'Cadastrar nova tarefa' ?></h2>
         <form method="post" action="/tarefas.php<?= $emEdicao ? '?editar='.h($editando['id']) : '' ?>">
@@ -93,7 +87,7 @@ $csrfToken = Auth::csrf();
           <div class="task-grid">
             <div class="task-field wide">
               <label for="titulo">Título da tarefa (3 a 120 caracteres) *</label>
-              <input id="titulo" name="titulo" required minlength="3" maxlength="120" value="<?=h($valor('titulo'))?>" placeholder="Ex.: Conferir vencimento de Itachi Uchiha">
+              <input id="titulo" name="titulo" required minlength="3" maxlength="120" value="<?=h($valor('titulo'))?>" placeholder="Ex.: Cobrar metas dos vendedores">
             </div>
             <div class="task-field wide">
               <label for="descricao">Descrição (até 500 caracteres)</label>
@@ -115,6 +109,16 @@ $csrfToken = Auth::csrf();
                 <?php endforeach; ?>
               </select>
             </div>
+            <?php foreach (['categoria'=>['Categoria',TarefaService::CATEGORIAS,'geral'],'recorrencia'=>['Repetir',TarefaService::RECORRENCIAS,'nenhuma']] as $campo=>$config): ?>
+            <div class="task-field"><label for="<?=h($campo)?>"><?=h($config[0])?></label>
+              <select id="<?=h($campo)?>" name="<?=h($campo)?>"><?php foreach ($config[1] as $k=>$v): ?>
+                <option value="<?=h($k)?>" <?= $valor($campo,$config[2])===$k?'selected':'' ?>><?=h($v)?></option>
+              <?php endforeach; ?></select>
+            </div>
+            <?php endforeach; ?>
+            <div class="task-field"><label for="responsavel">Responsável</label><select id="responsavel" name="responsavel"><option value="">Sem responsável</option>
+              <?php foreach (($vendedores ?? []) as $nome): ?><option value="<?=h($nome)?>" <?= $valor('responsavel')===$nome?'selected':'' ?>><?=h($nome)?></option><?php endforeach; ?>
+            </select></div>
             <div class="task-field">
               <label for="vencimento">Prazo da tarefa (opcional)</label>
               <input id="vencimento" type="date" name="vencimento" value="<?=h($valor('vencimento'))?>">
@@ -137,7 +141,7 @@ $csrfToken = Auth::csrf();
       </section>
 
       <section class="task-panel">
-        <h2>Consultar tarefas (READ)</h2>
+        <h2>Filtrar tarefas</h2>
         <form class="task-filter" method="get" action="/tarefas.php">
           <div class="task-field"><label for="busca">Buscar pelo título</label><input id="busca" name="busca" maxlength="100" value="<?=h($filtroBusca)?>" placeholder="Digite parte do título"></div>
           <div class="task-field"><label for="filtroSituacao">Situação</label>
@@ -163,10 +167,11 @@ $csrfToken = Auth::csrf();
                 <td><?=h($r['id'])?></td>
                 <td><strong><?=h($r['titulo'])?></strong>
                   <?php if ($r['descricao'] !== ''): ?><small><?=h($r['descricao'])?></small><?php endif; ?>
+                  <small><?=h(TarefaService::CATEGORIAS[$r['categoria'] ?? 'geral'])?> · <?=h($r['responsavel'] ?? 'Sem responsável')?> · <?=h(TarefaService::RECORRENCIAS[$r['recorrencia'] ?? 'nenhuma'])?></small>
                   <small><?= $r['segurado'] ? 'Seguro: '.h($r['segurado']).' ('.h($r['competencia']).')' : 'Sem seguro vinculado' ?></small>
                 </td>
                 <td><?=h(TarefaService::PRIORIDADES[$r['prioridade']] ?? '—')?></td>
-                <td><?=h($r['vencimento'] ?: 'Sem prazo')?></td>
+                <td><?=h($r['vencimento'] ?: 'Sem prazo')?><?php if ($r['vencimento'] && $r['situacao'] !== 'concluida' && $r['vencimento'] < (new DateTimeImmutable('today',new DateTimeZone('America/Sao_Paulo')))->format('Y-m-d')): ?><small style="color:#b33">Atrasada</small><?php endif; ?></td>
                 <td><span class="task-status"><?=h(TarefaService::SITUACOES[$r['situacao']] ?? '—')?></span></td>
                 <td><small><?=h($r['atualizado_em'])?></small></td>
                 <td>

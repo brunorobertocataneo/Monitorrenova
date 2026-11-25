@@ -17,7 +17,7 @@ if($mode==='admin'){
 }
 if($mode==='carga'){
     $present=(int)$db->query("SELECT COUNT(*) FROM seguro_mensal")->fetchColumn();
-    if($present!==65)throw new RuntimeException("A massa deve conter 65 seguros antes da carga; recebeu $present");
+    if($present!==127)throw new RuntimeException("A massa deve conter 127 seguros antes da carga; recebeu $present");
     $db->beginTransaction();
     try {
         $q=$db->prepare("INSERT INTO seguro_mensal(competencia,linha_origem,segurado,vendedor,vencimento,produto,renovado,cobrado,nao_vai_renovar) VALUES ('2027-12',?,?,?,?, 'Seguro ficticio',0,0,0)");
@@ -25,7 +25,7 @@ if($mode==='carga'){
         $db->commit();
     }catch(Throwable $e){if($db->inTransaction())$db->rollBack();throw $e;}
     $total=(int)$db->query('SELECT COUNT(*) FROM seguro_mensal')->fetchColumn();
-    if($total!==565)throw new RuntimeException("Esperado 565 registros após inserção, recebeu $total");
+    if($total!==627)throw new RuntimeException("Esperado 627 registros após inserção, recebeu $total");
     echo "RNF01 CARGA_FICTICIA_OK total=$total, adicionais=500\n";
     exit(0);
 }

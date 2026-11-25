@@ -49,6 +49,11 @@ $menuVendedoresAberto=($activePage==='vendedores');
       </a>
     </div>
 
+    <div class="nav-category">Projeto acadêmico</div>
+    <div class="nav-list">
+      <a class="nav-item" href="/tarefas.php"><span class="symbol" aria-hidden="true">✓</span><span>Tarefas (CRUD)</span></a>
+      <a class="nav-item" href="/simulador.php"><span class="symbol" aria-hidden="true">◇</span><span>Simulador de triagem</span></a>
+    </div>
   </nav>
   <div class="nav-spacer"></div>
   <div class="nav-footer">

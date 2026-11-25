@@ -27,6 +27,7 @@ $repository = new TarefaRepository($db);
 $service = new TarefaService($repository);
 $usuario = (int) $db->query('SELECT id FROM usuario ORDER BY id LIMIT 1')->fetchColumn();
 $seguro = (int) $db->query('SELECT id FROM seguro_mensal ORDER BY id LIMIT 1')->fetchColumn();
+$segurosAntes = (int) $db->query('SELECT COUNT(*) FROM seguro_mensal')->fetchColumn();
 $anterior = (int) $db->query('SELECT COUNT(*) FROM tarefa_acompanhamento')->fetchColumn();
 verificarCrud('seguro_ficticio_existe', $seguro > 0);
 $base = [
@@ -102,7 +103,7 @@ try {
 }
 $final = (int) $db->query('SELECT COUNT(*) FROM tarefa_acompanhamento')->fetchColumn();
 verificarCrud('rollback_preservou_tabela', $final === $anterior, ['antes'=>$anterior,'depois'=>$final]);
-verificarCrud('total_seguros_preservado', (int)$db->query('SELECT COUNT(*) FROM seguro_mensal')->fetchColumn() === 65);
+verificarCrud('total_seguros_preservado', (int)$db->query('SELECT COUNT(*) FROM seguro_mensal')->fetchColumn() === $segurosAntes);
 
 echo 'RESULTADO: ' . $passou . ' aprovados; ' . count($falhou) . ' falhas.' . PHP_EOL;
 if ($falhou !== []) {
