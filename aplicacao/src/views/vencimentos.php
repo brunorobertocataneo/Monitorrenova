@@ -54,7 +54,7 @@ function h(mixed $valor):string {
 <div class="eyebrow">Operação de seguros</div>
 <h1>Dashboard de vencimentos</h1>
 <p>Analise os vencimentos por período, vendedor e produto.</p>
-</div><a class="btn-link" href="/competencias.php">Competências aprovadas ↗</a></div><main>
+</div></div><main>
 <div class="note"><strong>Importante:</strong> estes dados vêm do espelho do Google Sheets no MySQL, atualizado periodicamente; pode haver atraso. Os números de renovados e cobrados dependem do preenchimento da planilha. <strong>“Sem confirmação” não significa que o seguro esteja ativo ou que deva ser cobrado.</strong> Não há envio de mensagens nesta tela.</div>
 
 <section class="panel today-panel" aria-labelledby="titulo-hoje">

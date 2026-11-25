@@ -1,38 +1,19 @@
-name: Programacao II - POO (PHP)
-on:
-  push:
-    branches:
-      - main
-      - feature/poo-interfaces-relacionamentos-unoesc-20261110
-  pull_request:
-    paths:
-      - 'aplicacao/src/**'
-      - 'aplicacao/docs/RELACIONAMENTOS-POO-PROGRAMACAO-II.md'
-      - '.github/workflows/poo-php-tests.yml'
-permissions:
-  contents: read
+name: Testes PHP
+on: [push, pull_request]
 jobs:
-  poo:
-    name: PHP 8.3 - syntax and no-database regression
+  testes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: mbstring, iconv
-          coverage: none
-      - name: Validate all PHP file syntax
-        shell: bash
+      - name: Iniciar ambiente
         run: |
-          set -euo pipefail
-          while IFS= read -r -d '' file; do
-            php -l "$file" >/dev/null
-          done < <(find aplicacao/src aplicacao/public -name '*.php' -print0)
-          echo 'PHP syntax OK'
-      - name: New interface, association, aggregation and composition tests
-        run: php aplicacao/src/testar-relacionamentos-poo.php
-      - name: Existing inheritance and polymorphism regression
-        run: php aplicacao/src/testar-heranca-polimorfismo.php
-      - name: Existing simulator validation regression
-        run: php aplicacao/src/testar-simulador-validacao.php
+          printf 'DEMO_DB_PASSWORD=%s\nDEMO_ROOT_PASSWORD=%s\n' "$(openssl rand -hex 18)" "$(openssl rand -hex 18)" > aplicacao/.env
+          docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml -p monitorrenova-ci up -d --build
+      - name: Executar testes
+        run: |
+          for teste in testar-crud-tarefas testar-gestao-tarefas testar-historico-tarefas testar-renderizacao-tarefas testar-filtros-demo testar-filtro-historico-demo; do
+            docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml -p monitorrenova-ci exec -T web php "/var/www/src/$teste.php"
+          done
+      - name: Encerrar ambiente
+        if: always()
+        run: docker compose --env-file aplicacao/.env -f aplicacao/compose.demo.yaml -p monitorrenova-ci down -v

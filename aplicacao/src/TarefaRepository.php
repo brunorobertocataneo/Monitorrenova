@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/Recorrencia.php';
 
 /**
  * Camada de persistencia das tarefas academicas. Todas as consultas utilizam
@@ -178,19 +179,14 @@ final class TarefaRepository
             }
             $this->registrarEvento($id, $usuarioId, 'edicao', $versao + 1, $anterior, $this->estado($id));
             if ($anterior['situacao'] !== 'concluida' && !$this->jaConcluida($id) && $data['situacao'] === 'concluida' && ($data['recorrencia'] ?? 'nenhuma') !== 'nenhuma' && $data['vencimento']) {
-                $proximo = new DateTimeImmutable($data['vencimento'], new DateTimeZone('America/Sao_Paulo'));
+                $agenda = new AgendaRecorrencias([
+                    'diaria' => new RecorrenciaDias(1),
+                    'semanal' => new RecorrenciaDias(7),
+                    'mensal' => new RecorrenciaMensal()
+                ]);
                 $hoje = new DateTimeImmutable('today', new DateTimeZone('America/Sao_Paulo'));
-                do {
-                    if ($data['recorrencia'] === 'mensal') {
-                        $dia = (int)$proximo->format('j');
-                        $proximo = $proximo->modify('first day of next month');
-                        $proximo = $proximo->setDate((int)$proximo->format('Y'),(int)$proximo->format('m'),min($dia,(int)$proximo->format('t')));
-                    } else {
-                        $proximo = $proximo->modify($data['recorrencia'] === 'diaria' ? '+1 day' : '+7 days');
-                    }
-                } while ($proximo <= $hoje);
                 $data['situacao'] = 'pendente';
-                $data['vencimento'] = $proximo->format('Y-m-d');
+                $data['vencimento'] = $agenda->calcular($data['recorrencia'], $data['vencimento'], $hoje);
                 $this->criar($data, $usuarioId);
             }
             return true;

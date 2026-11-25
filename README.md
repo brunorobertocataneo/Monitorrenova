@@ -18,6 +18,8 @@
 
 ---
 
+> **Versão atual:** código refatorado com auxílio de IA para reduzir o escopo. O painel, vendedores (armário), consultas e tarefas permanecem. Herança, interfaces, abstração e polimorfismo agora estão em Recorrencia.php; agregação em AgendaRecorrencias e composição em ListaVencimentos.php. Os documentos, diagramas e exemplos n8n anteriores foram preservados como registro da versão completa e podem descrever recursos removidos. A atualização desses materiais para a versão atual está pendente.
+
 ## Integrantes
 
 - Bruno Roberto Cataneo

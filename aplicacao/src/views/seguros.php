@@ -38,7 +38,7 @@ function query(array $valores): string {
 <div class="eyebrow">Operação de seguros</div>
 <h1>Consulta de seguros</h1>
 <p>Pesquise apólices por nome, vendedor, produto ou vencimento.</p>
-</div><a class="btn-link" href="/competencias.php">Competências aprovadas ↗</a></div>
+</div></div>
 <main><?php if(!empty($ultimaImportacao)):?><p class="muted"><strong>Último lote histórico importado:</strong> <?=h($ultimaImportacao['iniciado_em'])?> · <?=h($ultimaImportacao['total_registros'])?> registros.</p><?php endif;?><div class="notice"><strong>Demonstração com dados fictícios:</strong> sem datas, a consulta mostra a competência ativa. Ao aplicar um intervalo de vencimentos, a busca inclui as competências históricas preservadas no MySQL. <?php if ($modoHistorico):?><strong>Histórico mensal incluído nos resultados.</strong><?php endif;?> A ausência de marcações não confirma atraso; esta tela é somente leitura e não envia mensagens.</div>
 <div class="grid" style="margin-bottom:18px">
 <div class="panel"><span class="muted"><?= $modoHistorico ? 'Seguros no período' : 'Seguros nos filtros' ?></span><div class="metric"><?=h($stats['total']??0)?></div></div>
